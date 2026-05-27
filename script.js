@@ -192,6 +192,8 @@ class World {
         name: "thing",
         pos: { x: Math.random() * 400 - 200, y: Math.random() * 400 - 200 },
         interact: (self) => {
+          document.getElementById("text").innerText =
+            "picked up " + Math.round(self.x) + " " + Math.round(self.y);
           self.destroy();
         },
       });

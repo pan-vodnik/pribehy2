@@ -1,0 +1,1438 @@
+<!doctype html>
+<html lang="cs">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Pribehy 2 Editor Pro</title>
+        <style>
+            :root {
+                --bg-main: #1e1e1e;
+                --bg-sidebar: #252526;
+                --bg-input: #3c3c3c;
+                --accent: #007acc;
+                --border: #333;
+                --text: #eee;
+                --text-dim: #888;
+            }
+            body {
+                font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+                margin: 0;
+                display: flex;
+                height: 100vh;
+                overflow: hidden;
+                background: var(--bg-main);
+                color: var(--text);
+            }
+
+            #sidebar {
+                width: 320px;
+                background: var(--bg-sidebar);
+                border-right: 1px solid var(--border);
+                display: flex;
+                flex-direction: column;
+                box-sizing: border-box;
+                box-shadow: 2px 0 10px rgba(0, 0, 0, 0.5);
+                z-index: 10;
+            }
+            .sidebar-scroll {
+                flex-grow: 1;
+                overflow-y: auto;
+                padding: 15px;
+            }
+            #viewport {
+                flex-grow: 1;
+                position: relative;
+                overflow: hidden;
+                background: #1a1a1a;
+            }
+            canvas {
+                display: block;
+                image-rendering: pixelated;
+            }
+
+            h3 {
+                font-size: 10px;
+                text-transform: uppercase;
+                color: var(--text-dim);
+                margin: 20px 0 10px 0;
+                border-bottom: 1px solid var(--border);
+                padding-bottom: 5px;
+                letter-spacing: 1px;
+            }
+            h3:first-child {
+                margin-top: 0;
+            }
+
+            .control-group {
+                margin-bottom: 12px;
+            }
+            label {
+                display: block;
+                font-size: 11px;
+                margin-bottom: 4px;
+                color: var(--text-dim);
+                cursor: pointer;
+            }
+
+            input[type="text"],
+            input[type="number"],
+            select,
+            textarea {
+                width: 100%;
+                background: var(--bg-input);
+                border: 1px solid var(--border);
+                color: white;
+                padding: 6px;
+                border-radius: 3px;
+                font-size: 12px;
+                box-sizing: border-box;
+            }
+            textarea {
+                height: 60px;
+                resize: vertical;
+                font-family: inherit;
+            }
+            input:focus,
+            textarea:focus {
+                outline: 1px solid var(--accent);
+            }
+
+            .checkbox-row {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                font-size: 12px;
+                margin-bottom: 8px;
+                cursor: pointer;
+                user-select: none;
+            }
+            .checkbox-row input {
+                width: auto;
+                margin: 0;
+                cursor: pointer;
+            }
+
+            button {
+                width: 100%;
+                padding: 8px;
+                background: var(--bg-input);
+                border: 1px solid var(--border);
+                color: white;
+                cursor: pointer;
+                border-radius: 3px;
+                font-size: 12px;
+                transition: background 0.2s;
+            }
+            button:hover {
+                background: #4a4a4a;
+            }
+            button.primary {
+                background: var(--accent);
+                border: none;
+                font-weight: bold;
+            }
+            button.danger {
+                background: #633;
+                border: none;
+            }
+            button.danger:hover {
+                background: #844;
+            }
+
+            .list-container {
+                border: 1px solid var(--border);
+                background: #111;
+                border-radius: 3px;
+                overflow: hidden;
+                margin-bottom: 10px;
+            }
+            .scroll-list {
+                max-height: 200px;
+                overflow-y: auto;
+            }
+            .list-item {
+                padding: 6px 10px;
+                border-bottom: 1px solid #222;
+                cursor: pointer;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                font-size: 12px;
+            }
+            .list-item:hover {
+                background: #2a2a2a;
+            }
+            .list-item.selected {
+                background: var(--accent);
+                color: white;
+            }
+            .list-item span.dim {
+                color: var(--text-dim);
+                font-size: 10px;
+            }
+
+            #coords {
+                position: absolute;
+                bottom: 15px;
+                right: 15px;
+                background: rgba(0, 0, 0, 0.75);
+                padding: 6px 14px;
+                border-radius: 20px;
+                font-size: 11px;
+                color: #ccc;
+                pointer-events: none;
+                border: 1px solid #444;
+                backdrop-filter: blur(5px);
+            }
+
+            #modal-overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.85);
+                display: none;
+                justify-content: center;
+                align-items: center;
+                z-index: 100;
+            }
+            #modal-content {
+                background: var(--bg-sidebar);
+                width: 80%;
+                height: 80%;
+                padding: 25px;
+                border-radius: 8px;
+                display: flex;
+                flex-direction: column;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            }
+            #json-view {
+                flex-grow: 1;
+                background: #000;
+                color: #0f0;
+                font-family: "Consolas", monospace;
+                padding: 15px;
+                overflow: auto;
+                white-space: pre;
+                border-radius: 4px;
+                font-size: 13px;
+                border: 1px solid #333;
+            }
+
+            .footer-buttons {
+                padding: 15px;
+                background: #1a1a1a;
+                border-top: 1px solid var(--border);
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 8px;
+            }
+
+            kbd {
+                background: #444;
+                border-radius: 3px;
+                padding: 1px 4px;
+                font-size: 9px;
+                color: #aaa;
+                margin-left: 4px;
+                border: 1px solid #555;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="sidebar">
+            <div class="sidebar-scroll">
+                <h3>Soubory</h3>
+                <input type="file" id="fileInput" multiple accept="image/*" />
+
+                <h3>Nastavení plochy</h3>
+                <div
+                    style="display: flex; gap: 10px; align-items: flex-end"
+                    class="control-group"
+                >
+                    <div style="flex: 1">
+                        <label for="snapSize">Mřížka (velikost)</label>
+                        <input
+                            type="number"
+                            id="snapSize"
+                            value="1"
+                            min="0.1"
+                            step="any"
+                        />
+                    </div>
+                    <label class="checkbox-row" style="margin-bottom: 6px">
+                        <input type="checkbox" id="snapActive" checked />
+                        <span>Snap <kbd>S</kbd></span>
+                    </label>
+                </div>
+
+                <label class="checkbox-row">
+                    <input type="checkbox" id="autoYSort" checked />
+                    <span>Auto Y-Sort (Depth = Y)</span>
+                </label>
+
+                <label class="checkbox-row">
+                    <input type="checkbox" id="autoFront" checked />
+                    <span>Auto-popředí při výběru</span>
+                </label>
+
+                <label
+                    class="checkbox-row"
+                    style="
+                        background: #3a3a0055;
+                        padding: 5px;
+                        border-radius: 4px;
+                        border: 1px solid #550;
+                    "
+                >
+                    <input type="checkbox" id="editHitboxMode" />
+                    <span style="font-weight: bold; color: #ff0"
+                        >Režim úpravy hitboxů <kbd>H</kbd></span
+                    >
+                </label>
+
+                <label class="checkbox-row">
+                    <input type="checkbox" id="showHitboxes" checked />
+                    <span>Zobrazovat hitboxy</span>
+                </label>
+
+                <label class="checkbox-row">
+                    <input type="checkbox" id="showPivot" checked />
+                    <span>Zobrazovat pivoty</span>
+                </label>
+
+                <button
+                    id="cleanupBtn"
+                    style="
+                        margin-top: 5px;
+                        font-size: 11px;
+                        padding: 6px;
+                        background: #3a4a3a;
+                    "
+                    title="Vyčistí hloubky a zaokrouhlí float chyby"
+                >
+                    Vyčistit
+                </button>
+
+                <div id="props" style="display: none">
+                    <h3>Vlastnosti objektu</h3>
+                    <div class="control-group">
+                        <label for="objName">Název</label>
+                        <input type="text" id="objName" />
+                    </div>
+
+                    <div
+                        style="
+                            display: grid;
+                            grid-template-columns: 1fr 1fr;
+                            gap: 10px;
+                        "
+                        class="control-group"
+                    >
+                        <div>
+                            <label for="objX">X</label>
+                            <input type="number" id="objX" step="0.1" />
+                        </div>
+                        <div>
+                            <label for="objY">Y</label>
+                            <input type="number" id="objY" step="0.1" />
+                        </div>
+                    </div>
+
+                    <div
+                        style="
+                            display: grid;
+                            grid-template-columns: 1fr 1fr;
+                            gap: 10px;
+                        "
+                        class="control-group"
+                    >
+                        <div>
+                            <label for="objScale">Měřítko (Scale)</label>
+                            <input type="number" id="objScale" step="0.01" />
+                        </div>
+                        <div>
+                            <label for="objDepth">Hloubka (Depth)</label>
+                            <input type="number" id="objDepth" />
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label for="objNotes">Poznámky</label>
+                        <textarea
+                            id="objNotes"
+                            placeholder="Zde můžete napsat poznámku k objektu..."
+                        ></textarea>
+                    </div>
+
+                    <label class="checkbox-row">
+                        <input type="checkbox" id="objLocked" />
+                        <span>Zamknout (nelze posouvat)</span>
+                    </label>
+
+                    <h3>Hitboxy</h3>
+                    <button id="addHitboxBtn" style="margin-bottom: 8px">
+                        + Nový hitbox
+                    </button>
+                    <div class="list-container">
+                        <div id="hitboxList" class="scroll-list"></div>
+                    </div>
+
+                    <div
+                        id="hitboxProps"
+                        style="
+                            display: none;
+                            margin-top: 10px;
+                            background: rgba(0, 0, 0, 0.2);
+                            padding: 10px;
+                            border-radius: 4px;
+                            border: 1px solid #444;
+                        "
+                    >
+                        <div
+                            style="
+                                display: grid;
+                                grid-template-columns: 1fr 1fr;
+                                gap: 8px;
+                            "
+                        >
+                            <div>
+                                <label for="hbX">Rel X</label
+                                ><input type="number" id="hbX" step="0.1" />
+                            </div>
+                            <div>
+                                <label for="hbY">Rel Y</label
+                                ><input type="number" id="hbY" step="0.1" />
+                            </div>
+                            <div>
+                                <label for="hbW">Šířka</label
+                                ><input type="number" id="hbW" step="0.1" />
+                            </div>
+                            <div>
+                                <label for="hbH">Výška</label
+                                ><input type="number" id="hbH" step="0.1" />
+                            </div>
+                        </div>
+                        <button
+                            id="delHitboxBtn"
+                            class="danger"
+                            style="margin-top: 10px; padding: 4px"
+                        >
+                            Smazat hitbox
+                        </button>
+                    </div>
+
+                    <button
+                        id="deleteBtn"
+                        class="danger"
+                        style="margin-top: 20px"
+                    >
+                        Smazat objekt <kbd>Del</kbd>
+                    </button>
+                </div>
+
+                <h3>Obsah scény</h3>
+                <div class="list-container">
+                    <div id="objectList" class="scroll-list"></div>
+                </div>
+            </div>
+
+            <div class="footer-buttons">
+                <button id="exportBtn" class="primary">
+                    Export JSON <kbd>E</kbd>
+                </button>
+                <button id="viewJsonBtn">Zobrazit JSON <kbd>V</kbd></button>
+                <button id="importBtn">Import JSON</button>
+                <button id="clearBtn">Vymazat vše</button>
+            </div>
+        </div>
+
+        <div id="viewport">
+            <canvas id="canvas"></canvas>
+            <div id="coords">X: 0 Y: 0 | Zoom: 100%</div>
+        </div>
+
+        <div id="modal-overlay">
+            <div id="modal-content">
+                <h2 style="margin-top: 0">Náhled JSONu</h2>
+                <div id="json-view"></div>
+                <button
+                    onclick="
+                        document.getElementById('modal-overlay').style.display =
+                            'none'
+                    "
+                    style="margin-top: 15px; width: 120px; align-self: flex-end"
+                >
+                    Zavřít
+                </button>
+            </div>
+        </div>
+
+        <script>
+            const canvas = document.getElementById("canvas");
+            const ctx = canvas.getContext("2d");
+            const viewport = document.getElementById("viewport");
+            const fileInput = document.getElementById("fileInput");
+            const objectListDiv = document.getElementById("objectList");
+            const hitboxListDiv = document.getElementById("hitboxList");
+            const propsDiv = document.getElementById("props");
+            const coordsDiv = document.getElementById("coords");
+            const snapSizeInput = document.getElementById("snapSize");
+
+            let objects = [];
+            let selectedId = null;
+            let selectedHitboxIndex = -1;
+            let images = {};
+            let nextId = 1;
+
+            // Viewport
+            let camX = 0;
+            let camY = 0;
+            let zoom = 1.0;
+
+            // Interaction
+            let isDragging = false;
+            let isPanning = false;
+            let isResizing = false;
+            let isResizingImg = false;
+            let resizeHandle = null;
+
+            let lastMousePos = { x: 0, y: 0 };
+            let dragStartMouseWorld = { x: 0, y: 0 };
+            let startState = {};
+
+            function resizeCanvas() {
+                canvas.width = viewport.clientWidth;
+                canvas.height = viewport.clientHeight;
+                render();
+            }
+            window.addEventListener("resize", resizeCanvas);
+            resizeCanvas();
+
+            // --- Core Logic ---
+
+            function snap(val) {
+                if (!document.getElementById("snapActive").checked) return val;
+                const s = parseFloat(snapSizeInput.value) || 0.1;
+                return Math.round(val / s) * s;
+            }
+
+            function saveToLocal() {
+                const data = objects.map((o) => ({
+                    id: o.id,
+                    name: o.name,
+                    src: o.src,
+                    x: o.x,
+                    y: o.y,
+                    scale: o.scale,
+                    depth: o.depth,
+                    locked: o.locked,
+                    notes: o.notes,
+                    hitboxes: o.hitboxes || [],
+                }));
+                const settings = {
+                    snapSize: snapSizeInput.value,
+                    snapActive: document.getElementById("snapActive").checked,
+                    autoYSort: document.getElementById("autoYSort").checked,
+                    autoFront: document.getElementById("autoFront").checked,
+                    showHitboxes:
+                        document.getElementById("showHitboxes").checked,
+                    showPivot: document.getElementById("showPivot").checked,
+                    editHitboxMode:
+                        document.getElementById("editHitboxMode").checked,
+                    camX,
+                    camY,
+                    zoom,
+                    nextId,
+                };
+                localStorage.setItem(
+                    "pribehy_editor_pro_data_v8",
+                    JSON.stringify(data),
+                );
+                localStorage.setItem(
+                    "pribehy_editor_pro_settings_v8",
+                    JSON.stringify(settings),
+                );
+            }
+
+            function loadFromLocal() {
+                const data = localStorage.getItem("pribehy_editor_pro_data_v8");
+                if (data) importData(JSON.parse(data));
+
+                const settings = localStorage.getItem(
+                    "pribehy_editor_pro_settings_v8",
+                );
+                if (settings) {
+                    const s = JSON.parse(settings);
+                    snapSizeInput.value = s.snapSize ?? 1;
+                    document.getElementById("snapActive").checked =
+                        s.snapActive ?? true;
+                    document.getElementById("autoYSort").checked =
+                        s.autoYSort ?? true;
+                    document.getElementById("autoFront").checked =
+                        s.autoFront ?? true;
+                    document.getElementById("showHitboxes").checked =
+                        s.showHitboxes ?? true;
+                    document.getElementById("showPivot").checked =
+                        s.showPivot ?? true;
+                    document.getElementById("editHitboxMode").checked =
+                        s.editHitboxMode ?? false;
+                    camX = s.camX ?? 0;
+                    camY = s.camY ?? 0;
+                    zoom = s.zoom ?? 1;
+                    nextId = s.nextId ?? 1;
+                    render();
+                }
+            }
+
+            function importData(data) {
+                objects = [];
+                data.forEach((item) => {
+                    const img = new Image();
+                    img.onload = () => render();
+                    img.src = item.src;
+                    images[item.src] = img;
+                    const obj = {
+                        ...item,
+                        hitboxes: item.hitboxes || [],
+                        img: img,
+                        locked: item.locked ?? false,
+                        notes: item.notes ?? "",
+                    };
+                    if (!obj.id) obj.id = nextId++;
+                    objects.push(obj);
+                });
+                sortObjects();
+                updateObjectList();
+                render();
+            }
+
+            function sortObjects() {
+                if (document.getElementById("autoYSort").checked) {
+                    objects.forEach((obj) => (obj.depth = obj.y));
+                }
+                objects.sort((a, b) => a.depth - b.depth);
+            }
+
+            function getSelectedObject() {
+                return objects.find((o) => o.id === selectedId);
+            }
+
+            // --- UI Update ---
+
+            function updateObjectList() {
+                objectListDiv.innerHTML = "";
+                const displayList = [...objects].reverse();
+                displayList.forEach((obj) => {
+                    const div = document.createElement("div");
+                    div.className =
+                        "list-item" +
+                        (selectedId === obj.id ? " selected" : "");
+                    div.innerHTML = `<span>${obj.name}</span> <span class="dim">z:${Math.round(obj.depth)}</span>`;
+                    div.onclick = (e) => {
+                        e.stopPropagation();
+                        selectObjectById(obj.id);
+                    };
+                    objectListDiv.appendChild(div);
+                });
+            }
+
+            function updateHitboxList() {
+                hitboxListDiv.innerHTML = "";
+                const obj = getSelectedObject();
+                if (!obj) return;
+                obj.hitboxes.forEach((hb, i) => {
+                    const div = document.createElement("div");
+                    div.className =
+                        "hitbox-item list-item" +
+                        (selectedHitboxIndex === i ? " selected" : "");
+                    div.style.padding = "4px 8px";
+                    div.innerHTML = `<span>HB ${i + 1}</span> <span class="dim">${hb.w.toFixed(1)}x${hb.h.toFixed(1)}</span>`;
+                    div.onclick = (e) => {
+                        e.stopPropagation();
+                        selectHitbox(i);
+                    };
+                    hitboxListDiv.appendChild(div);
+                });
+            }
+
+            function syncInputs() {
+                const obj = getSelectedObject();
+                if (!obj) return;
+                document.getElementById("objName").value = obj.name;
+                document.getElementById("objScale").value =
+                    obj.scale.toFixed(2);
+                document.getElementById("objX").value = obj.x.toFixed(1);
+                document.getElementById("objY").value = obj.y.toFixed(1);
+                document.getElementById("objDepth").value = Math.round(
+                    obj.depth,
+                );
+                document.getElementById("objLocked").checked = obj.locked;
+                document.getElementById("objNotes").value = obj.notes || "";
+
+                if (selectedHitboxIndex !== -1) {
+                    const hb = obj.hitboxes[selectedHitboxIndex];
+                    document.getElementById("hbW").value = hb.w.toFixed(1);
+                    document.getElementById("hbH").value = hb.h.toFixed(1);
+                    document.getElementById("hbX").value = hb.x.toFixed(1);
+                    document.getElementById("hbY").value = hb.y.toFixed(1);
+                }
+                updateObjectList();
+                updateHitboxList();
+            }
+
+            function selectObjectById(id, keepHitbox = false) {
+                selectedId = id;
+                if (!keepHitbox) selectedHitboxIndex = -1;
+
+                const obj = getSelectedObject();
+                if (!obj) {
+                    propsDiv.style.display = "none";
+                } else {
+                    if (
+                        document.getElementById("autoFront").checked &&
+                        !document.getElementById("autoYSort").checked &&
+                        !keepHitbox
+                    ) {
+                        const maxDepth = objects.reduce(
+                            (max, o) => Math.max(max, o.depth),
+                            0,
+                        );
+                        obj.depth = maxDepth + 1;
+                        sortObjects();
+                    }
+                    propsDiv.style.display = "block";
+                    syncInputs();
+                    if (!keepHitbox)
+                        document.getElementById("hitboxProps").style.display =
+                            "none";
+                }
+
+                updateObjectList();
+                updateHitboxList();
+                render();
+            }
+
+            function selectHitbox(index) {
+                selectedHitboxIndex = index;
+                updateHitboxList();
+                const hbProps = document.getElementById("hitboxProps");
+                if (index === -1) {
+                    hbProps.style.display = "none";
+                } else {
+                    hbProps.style.display = "block";
+                    syncInputs();
+                }
+                render();
+            }
+
+            // --- Inputs ---
+
+            snapSizeInput.oninput = () => {
+                render();
+                saveToLocal();
+            };
+            snapSizeInput.onkeydown = (e) => {
+                let val = parseFloat(snapSizeInput.value);
+                if (e.key === "ArrowUp") {
+                    e.preventDefault();
+                    snapSizeInput.value =
+                        val >= 1
+                            ? Math.floor(val + 1)
+                            : parseFloat((val + 0.1).toFixed(1));
+                    snapSizeInput.oninput();
+                } else if (e.key === "ArrowDown") {
+                    e.preventDefault();
+                    snapSizeInput.value =
+                        val > 1
+                            ? Math.ceil(val - 1)
+                            : Math.max(0.1, parseFloat((val - 0.1).toFixed(1)));
+                    snapSizeInput.oninput();
+                }
+            };
+
+            fileInput.onchange = (e) => {
+                const files = Array.from(e.target.files);
+                files.forEach((file) => {
+                    const reader = new FileReader();
+                    reader.onload = (ev) => {
+                        const img = new Image();
+                        img.onload = () => {
+                            const obj = {
+                                id: nextId++,
+                                name: file.name.split(".")[0],
+                                src: ev.target.result,
+                                img: img,
+                                x: 0,
+                                y: 0,
+                                scale: 1,
+                                depth: 0,
+                                locked: false,
+                                notes: "",
+                                hitboxes: [
+                                    {
+                                        x: -img.width / 2,
+                                        y: -img.height,
+                                        w: img.width,
+                                        h: img.height,
+                                    },
+                                ],
+                            };
+                            objects.push(obj);
+                            images[ev.target.result] = img;
+                            sortObjects();
+                            selectObjectById(obj.id);
+                            saveToLocal();
+                        };
+                        img.src = ev.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                });
+            };
+
+            [
+                "objName",
+                "objScale",
+                "objX",
+                "objY",
+                "objDepth",
+                "objNotes",
+            ].forEach((id) => {
+                document.getElementById(id).oninput = (e) => {
+                    const obj = getSelectedObject();
+                    if (!obj) return;
+                    if (id === "objName") obj.name = e.target.value;
+                    if (id === "objScale")
+                        obj.scale = parseFloat(e.target.value) || 0.01;
+                    if (id === "objX") obj.x = parseFloat(e.target.value) || 0;
+                    if (id === "objY") {
+                        obj.y = parseFloat(e.target.value) || 0;
+                        if (document.getElementById("autoYSort").checked)
+                            obj.depth = obj.y;
+                    }
+                    if (id === "objDepth")
+                        obj.depth = parseInt(e.target.value) || 0;
+                    if (id === "objNotes") obj.notes = e.target.value;
+                    sortObjects();
+                    syncInputs();
+                    render();
+                    saveToLocal();
+                };
+            });
+
+            [
+                "snapActive",
+                "autoYSort",
+                "autoFront",
+                "editHitboxMode",
+                "showHitboxes",
+                "showPivot",
+                "objLocked",
+            ].forEach((id) => {
+                const el = document.getElementById(id);
+                el.onchange = () => {
+                    if (id === "objLocked") {
+                        const o = getSelectedObject();
+                        if (o) o.locked = el.checked;
+                    }
+                    if (id === "autoYSort") sortObjects();
+                    if (id === "editHitboxMode") selectHitbox(-1);
+                    syncInputs();
+                    render();
+                    saveToLocal();
+                };
+            });
+
+            document.getElementById("cleanupBtn").onclick = () => {
+                objects.sort((a, b) => a.depth - b.depth);
+                objects.forEach((obj, i) => {
+                    obj.depth = i + 1;
+                    obj.x = parseFloat(obj.x.toFixed(1));
+                    obj.y = parseFloat(obj.y.toFixed(1));
+                    obj.scale = parseFloat(obj.scale.toFixed(2));
+                    obj.hitboxes.forEach((hb) => {
+                        hb.x = parseFloat(hb.x.toFixed(1));
+                        hb.y = parseFloat(hb.y.toFixed(1));
+                        hb.w = parseFloat(hb.w.toFixed(1));
+                        hb.h = parseFloat(hb.h.toFixed(1));
+                    });
+                });
+                sortObjects();
+                selectObjectById(selectedId, true);
+                saveToLocal();
+            };
+
+            document.getElementById("addHitboxBtn").onclick = () => {
+                const o = getSelectedObject();
+                if (!o) return;
+                o.hitboxes.push({ x: -10, y: -10, w: 20, h: 20 });
+                selectHitbox(o.hitboxes.length - 1);
+                saveToLocal();
+            };
+            document.getElementById("delHitboxBtn").onclick = () => {
+                const o = getSelectedObject();
+                if (!o || selectedHitboxIndex === -1) return;
+                o.hitboxes.splice(selectedHitboxIndex, 1);
+                selectHitbox(-1);
+                saveToLocal();
+            };
+
+            ["hbW", "hbH", "hbX", "hbY"].forEach((id) => {
+                document.getElementById(id).oninput = (e) => {
+                    const o = getSelectedObject();
+                    if (!o || selectedHitboxIndex === -1) return;
+                    const hb = o.hitboxes[selectedHitboxIndex];
+                    const v = parseFloat(e.target.value) || 0;
+                    if (id === "hbW") hb.w = v;
+                    if (id === "hbH") hb.h = v;
+                    if (id === "hbX") hb.x = v;
+                    if (id === "hbY") hb.y = v;
+                    syncInputs();
+                    render();
+                    saveToLocal();
+                };
+            });
+
+            document.getElementById("deleteBtn").onclick = () => {
+                const o = getSelectedObject();
+                if (o) {
+                    objects = objects.filter((x) => x.id !== o.id);
+                    selectObjectById(null);
+                    saveToLocal();
+                }
+            };
+            document.getElementById("clearBtn").onclick = () => {
+                if (confirm("Smazat vše?")) {
+                    objects = [];
+                    selectObjectById(null);
+                    saveToLocal();
+                    render();
+                }
+            };
+            document.getElementById("viewJsonBtn").onclick = () => {
+                const clean = objects.map((o) => ({
+                    name: o.name,
+                    x: o.x,
+                    y: o.y,
+                    scale: o.scale,
+                    depth: o.depth,
+                    notes: o.notes,
+                    hitboxes: o.hitboxes,
+                }));
+                document.getElementById("json-view").textContent =
+                    JSON.stringify(clean, null, 2);
+                document.getElementById("modal-overlay").style.display = "flex";
+            };
+            document.getElementById("exportBtn").onclick = () => {
+                const clean = objects.map((o) => ({
+                    name: o.name,
+                    x: o.x,
+                    y: o.y,
+                    scale: o.scale,
+                    depth: o.depth,
+                    notes: o.notes,
+                    hitboxes: o.hitboxes,
+                }));
+                const blob = new Blob([JSON.stringify(clean, null, 2)], {
+                    type: "application/json",
+                });
+                const a = document.createElement("a");
+                a.href = URL.createObjectURL(blob);
+                a.download = "world_data.json";
+                a.click();
+            };
+
+            // --- Interaction ---
+
+            function screenToWorld(sx, sy) {
+                return {
+                    x: (sx - canvas.width / 2) / zoom + camX,
+                    y: (sy - canvas.height / 2) / zoom + camY,
+                };
+            }
+            function worldToScreen(wx, wy) {
+                return {
+                    sx: (wx - camX) * zoom + canvas.width / 2,
+                    sy: (wy - camY) * zoom + canvas.height / 2,
+                };
+            }
+
+            function drawHandle(pos, color = "#fff") {
+                ctx.fillStyle = color;
+                ctx.strokeStyle = "#000";
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                ctx.rect(pos.sx - 5, pos.sy - 5, 10, 10);
+                ctx.fill();
+                ctx.stroke();
+            }
+
+            function render() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                // Grid
+                if (document.getElementById("snapActive").checked) {
+                    const step = parseFloat(snapSizeInput.value) || 1;
+                    ctx.strokeStyle = "#2a2a2a";
+                    ctx.lineWidth = 1;
+                    ctx.beginPath();
+                    const start = screenToWorld(0, 0);
+                    const end = screenToWorld(canvas.width, canvas.height);
+                    for (
+                        let x = Math.floor(start.x / step) * step;
+                        x < end.x;
+                        x += step
+                    ) {
+                        const p = worldToScreen(x, 0);
+                        ctx.moveTo(p.sx, 0);
+                        ctx.lineTo(p.sx, canvas.height);
+                    }
+                    for (
+                        let y = Math.floor(start.y / step) * step;
+                        y < end.y;
+                        y += step
+                    ) {
+                        const p = worldToScreen(0, y);
+                        ctx.moveTo(0, p.sy);
+                        ctx.lineTo(canvas.width, p.sy);
+                    }
+                    ctx.stroke();
+                }
+
+                const origin = worldToScreen(0, 0);
+                ctx.strokeStyle = "#444";
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.moveTo(origin.sx, 0);
+                ctx.lineTo(origin.sx, canvas.height);
+                ctx.moveTo(0, origin.sy);
+                ctx.lineTo(canvas.width, origin.sy);
+                ctx.stroke();
+
+                objects.forEach((obj) => {
+                    const isSel = selectedId === obj.id;
+                    const w = obj.img.width * obj.scale;
+                    const h = obj.img.height * obj.scale;
+                    const pos = worldToScreen(obj.x, obj.y);
+
+                    ctx.imageSmoothingEnabled = false;
+                    ctx.drawImage(
+                        obj.img,
+                        pos.sx - (w * zoom) / 2,
+                        pos.sy - h * zoom,
+                        w * zoom,
+                        h * zoom,
+                    );
+
+                    if (isSel) {
+                        ctx.strokeStyle = "#007acc";
+                        ctx.lineWidth = 2;
+                        ctx.strokeRect(
+                            pos.sx - (w * zoom) / 2,
+                            pos.sy - h * zoom,
+                            w * zoom,
+                            h * zoom,
+                        );
+                        const isHitMode =
+                            document.getElementById("editHitboxMode").checked;
+                        if (!isHitMode) {
+                            drawHandle({
+                                sx: pos.sx - (w * zoom) / 2,
+                                sy: pos.sy - h * zoom,
+                            });
+                            drawHandle({
+                                sx: pos.sx + (w * zoom) / 2,
+                                sy: pos.sy - h * zoom,
+                            });
+                            drawHandle({
+                                sx: pos.sx - (w * zoom) / 2,
+                                sy: pos.sy,
+                            });
+                            drawHandle({
+                                sx: pos.sx + (w * zoom) / 2,
+                                sy: pos.sy,
+                            });
+                        }
+                    }
+
+                    if (document.getElementById("showHitboxes").checked) {
+                        obj.hitboxes.forEach((hb, hi) => {
+                            const isHbSel = isSel && selectedHitboxIndex === hi;
+                            ctx.strokeStyle = isHbSel
+                                ? "#ff0"
+                                : isSel
+                                  ? "#0f0"
+                                  : "#0a0";
+                            ctx.lineWidth = isHbSel ? 2 : 1;
+                            const hbx = pos.sx + hb.x * obj.scale * zoom;
+                            const hby = pos.sy + hb.y * obj.scale * zoom;
+                            const hbw = hb.w * obj.scale * zoom;
+                            const hbh = hb.h * obj.scale * zoom;
+                            ctx.strokeRect(hbx, hby, hbw, hbh);
+                            if (
+                                isHbSel &&
+                                document.getElementById("editHitboxMode")
+                                    .checked
+                            ) {
+                                drawHandle({ sx: hbx, sy: hby });
+                                drawHandle({ sx: hbx + hbw, sy: hby });
+                                drawHandle({ sx: hbx, sy: hby + hbh });
+                                drawHandle({ sx: hbx + hbw, sy: hby + hbh });
+                            }
+                        });
+                    }
+
+                    if (document.getElementById("showPivot").checked) {
+                        ctx.fillStyle = isSel ? "#f00" : "#800";
+                        ctx.fillRect(pos.sx - 3, pos.sy - 3, 6, 6);
+                    }
+                });
+                coordsDiv.textContent = `X: ${snap(camX).toFixed(1)} Y: ${snap(camY).toFixed(1)} | Zoom: ${Math.round(zoom * 100)}%`;
+            }
+
+            function getHandleAt(mx, my) {
+                const obj = getSelectedObject();
+                if (!obj) return null;
+                const pos = worldToScreen(obj.x, obj.y);
+                const w = obj.img.width * obj.scale * zoom,
+                    h = obj.img.height * obj.scale * zoom;
+                const check = (x, y) => Math.hypot(x - mx, y - my) < 8;
+                const isHitboxMode =
+                    document.getElementById("editHitboxMode").checked;
+                if (!isHitboxMode) {
+                    if (check(pos.sx - w / 2, pos.sy - h))
+                        return { type: "objScale", h: "nw" };
+                    if (check(pos.sx + w / 2, pos.sy - h))
+                        return { type: "objScale", h: "ne" };
+                    if (check(pos.sx - w / 2, pos.sy))
+                        return { type: "objScale", h: "sw" };
+                    if (check(pos.sx + w / 2, pos.sy))
+                        return { type: "objScale", h: "se" };
+                } else if (selectedHitboxIndex !== -1) {
+                    const hb = obj.hitboxes[selectedHitboxIndex];
+                    const hbx = pos.sx + hb.x * obj.scale * zoom;
+                    const hby = pos.sy + hb.y * obj.scale * zoom;
+                    const hbw = hb.w * obj.scale * zoom;
+                    const hbh = hb.h * obj.scale * zoom;
+                    if (check(hbx, hby)) return { type: "hb", h: "nw" };
+                    if (check(hbx + hbw, hby)) return { type: "hb", h: "ne" };
+                    if (check(hbx, hby + hbh)) return { type: "hb", h: "sw" };
+                    if (check(hbx + hbw, hby + hbh))
+                        return { type: "hb", h: "se" };
+                }
+                return null;
+            }
+
+            canvas.onmousedown = (e) => {
+                const x = e.clientX;
+                const y = e.clientY;
+                lastMousePos = { x, y };
+                const rect = canvas.getBoundingClientRect();
+                const mx = x - rect.left,
+                    my = y - rect.top;
+                const wp = screenToWorld(mx, my);
+                dragStartMouseWorld = { ...wp };
+
+                if (e.button === 1 || (e.button === 0 && e.altKey)) {
+                    isPanning = true;
+                    return;
+                }
+
+                const isHitMode =
+                    document.getElementById("editHitboxMode").checked;
+                const handle = getHandleAt(mx, my);
+
+                if (handle) {
+                    if (handle.type === "objScale") {
+                        isResizingImg = true;
+                        resizeHandle = handle.h;
+                        startState = {
+                            scale: getSelectedObject().scale,
+                            x: getSelectedObject().x,
+                            y: getSelectedObject().y,
+                        };
+                    } else {
+                        isResizing = true;
+                        resizeHandle = handle.h;
+                        startState = {
+                            ...getSelectedObject().hitboxes[
+                                selectedHitboxIndex
+                            ],
+                        };
+                    }
+                    return;
+                }
+
+                let fObjId = null;
+                let fHbIdx = -1;
+                const selObj = getSelectedObject();
+
+                if (selObj && isHitMode) {
+                    for (let hi = selObj.hitboxes.length - 1; hi >= 0; hi--) {
+                        const hb = selObj.hitboxes[hi];
+                        const hbx = selObj.x + hb.x * selObj.scale,
+                            hby = selObj.y + hb.y * selObj.scale,
+                            hbw = hb.w * selObj.scale,
+                            hbh = hb.h * selObj.scale;
+                        if (
+                            wp.x >= hbx &&
+                            wp.x <= hbx + hbw &&
+                            wp.y >= hby &&
+                            wp.y <= hby + hbh
+                        ) {
+                            fObjId = selObj.id;
+                            fHbIdx = hi;
+                            break;
+                        }
+                    }
+                }
+
+                if (fObjId === null) {
+                    for (let i = objects.length - 1; i >= 0; i--) {
+                        const obj = objects[i];
+                        if (isHitMode) {
+                            for (
+                                let hi = obj.hitboxes.length - 1;
+                                hi >= 0;
+                                hi--
+                            ) {
+                                const hb = obj.hitboxes[hi];
+                                const hbx = obj.x + hb.x * obj.scale,
+                                    hby = obj.y + hb.y * obj.scale,
+                                    hbw = hb.w * obj.scale,
+                                    hbh = hb.h * obj.scale;
+                                if (
+                                    wp.x >= hbx &&
+                                    wp.x <= hbx + hbw &&
+                                    wp.y >= hby &&
+                                    wp.y <= hby + hbh
+                                ) {
+                                    fObjId = obj.id;
+                                    fHbIdx = hi;
+                                    break;
+                                }
+                            }
+                        }
+                        if (fObjId !== null) break;
+                        const w = obj.img.width * obj.scale,
+                            h = obj.img.height * obj.scale;
+                        if (
+                            wp.x >= obj.x - w / 2 &&
+                            wp.x <= obj.x + w / 2 &&
+                            wp.y >= obj.y - h &&
+                            wp.y <= obj.y
+                        ) {
+                            fObjId = obj.id;
+                            break;
+                        }
+                    }
+                }
+
+                if (fObjId !== null) {
+                    const wasHitboxMode = isHitMode;
+                    if (fObjId !== selectedId) selectObjectById(fObjId);
+                    if (fHbIdx !== -1 && wasHitboxMode) selectHitbox(fHbIdx);
+
+                    const obj = getSelectedObject();
+                    if (wasHitboxMode && fHbIdx !== -1) {
+                        isDragging = true;
+                        startState = { ...obj.hitboxes[fHbIdx] };
+                    } else if (!wasHitboxMode && !obj.locked) {
+                        isDragging = true;
+                        startState = { x: obj.x, y: obj.y };
+                    }
+                } else {
+                    selectObjectById(null);
+                }
+            };
+
+            window.onmousemove = (e) => {
+                const rect = canvas.getBoundingClientRect();
+                const mx = e.clientX - rect.left,
+                    my = e.clientY - rect.top;
+                const wp = screenToWorld(mx, my);
+                const dx = e.clientX - lastMousePos.x,
+                    dy = e.clientY - lastMousePos.y;
+                lastMousePos = { x: e.clientX, y: e.clientY };
+
+                if (isPanning) {
+                    camX -= dx / zoom;
+                    camY -= dy / zoom;
+                    render();
+                    return;
+                }
+                const obj = getSelectedObject();
+                if (!obj) return;
+
+                if (isResizingImg) {
+                    // Uniform scale relative to anchor (bottom-center)
+                    const distX = Math.abs(wp.x - obj.x) / (obj.img.width / 2);
+                    const distY = Math.abs(wp.y - obj.y) / obj.img.height;
+                    const newScale = Math.max(distX, distY);
+                    const s = document.getElementById("snapActive").checked
+                        ? 0.05
+                        : 0.001;
+                    obj.scale = Math.round(newScale / s) * s;
+                    syncInputs();
+                    render();
+                    return;
+                }
+
+                if (isResizing) {
+                    const hb = obj.hitboxes[selectedHitboxIndex];
+                    const dwx = (wp.x - dragStartMouseWorld.x) / obj.scale,
+                        dwy = (wp.y - dragStartMouseWorld.y) / obj.scale;
+                    const fixedX =
+                        startState.x +
+                        (resizeHandle.includes("e") ? 0 : startState.w);
+                    const fixedY =
+                        startState.y +
+                        (resizeHandle.includes("s") ? 0 : startState.h);
+                    const movingX = snap(
+                        startState.x +
+                            (resizeHandle.includes("e")
+                                ? startState.w + dwx
+                                : dwx),
+                    );
+                    const movingY = snap(
+                        startState.y +
+                            (resizeHandle.includes("s")
+                                ? startState.h + dwy
+                                : dwy),
+                    );
+                    hb.x = Math.min(fixedX, movingX);
+                    hb.y = Math.min(fixedY, movingY);
+                    hb.w = Math.max(0.1, Math.abs(fixedX - movingX));
+                    hb.h = Math.max(0.1, Math.abs(fixedY - movingY));
+                    syncInputs();
+                    render();
+                    return;
+                }
+
+                if (isDragging) {
+                    if (
+                        selectedHitboxIndex !== -1 &&
+                        document.getElementById("editHitboxMode").checked
+                    ) {
+                        const hb = obj.hitboxes[selectedHitboxIndex];
+                        hb.x = snap(
+                            startState.x +
+                                (wp.x - dragStartMouseWorld.x) / obj.scale,
+                        );
+                        hb.y = snap(
+                            startState.y +
+                                (wp.y - dragStartMouseWorld.y) / obj.scale,
+                        );
+                    } else {
+                        obj.x = snap(
+                            startState.x + (wp.x - dragStartMouseWorld.x),
+                        );
+                        obj.y = snap(
+                            startState.y + (wp.y - dragStartMouseWorld.y),
+                        );
+                        if (document.getElementById("autoYSort").checked)
+                            obj.depth = obj.y;
+                    }
+                    syncInputs();
+                    render();
+                }
+            };
+
+            window.onmouseup = () => {
+                if (isDragging || isPanning || isResizing || isResizingImg) {
+                    if (isDragging && selectedHitboxIndex === -1) sortObjects();
+                    selectObjectById(selectedId, true);
+                    saveToLocal();
+                }
+                isDragging = false;
+                isPanning = false;
+                isResizing = false;
+                isResizingImg = false;
+            };
+
+            canvas.onwheel = (e) => {
+                e.preventDefault();
+                const factor = 1.25;
+                const delta = e.deltaY > 0 ? 1 / factor : factor;
+                zoom = Math.min(Math.max(zoom * delta, 0.05), 40);
+                const rect = canvas.getBoundingClientRect();
+                const mx = e.clientX - rect.left,
+                    my = e.clientY - rect.top;
+                const wb = screenToWorld(mx, my);
+                camX = wb.x - (mx - canvas.width / 2) / zoom;
+                camY = wb.y - (my - canvas.height / 2) / zoom;
+                render();
+                saveToLocal();
+            };
+
+            window.onkeydown = (e) => {
+                // Globální zkratky
+                const activeTag = document.activeElement.tagName.toLowerCase();
+                if (activeTag === "input" || activeTag === "textarea") return;
+
+                if (e.key === "s") {
+                    document.getElementById("snapActive").click();
+                    return;
+                }
+                if (e.key === "h") {
+                    document.getElementById("editHitboxMode").click();
+                    return;
+                }
+                if (e.key === "v") {
+                    document.getElementById("viewJsonBtn").click();
+                    return;
+                }
+                if (e.key === "e") {
+                    document.getElementById("exportBtn").click();
+                    return;
+                }
+                if (e.key === "r" && !selectedId) {
+                    camX = 0;
+                    camY = 0;
+                    zoom = 1;
+                    render();
+                    saveToLocal();
+                    return;
+                }
+
+                if (!selectedId) return;
+                const obj = getSelectedObject();
+                if (!obj) return;
+                const step = e.shiftKey ? 10 : snap(1);
+
+                if (
+                    selectedHitboxIndex !== -1 &&
+                    document.getElementById("editHitboxMode").checked
+                ) {
+                    const hb = obj.hitboxes[selectedHitboxIndex];
+                    if (e.key === "ArrowUp") hb.y -= step;
+                    else if (e.key === "ArrowDown") hb.y += step;
+                    else if (e.key === "ArrowLeft") hb.x -= step;
+                    else if (e.key === "ArrowRight") hb.x += step;
+                    else if (e.key === "Delete") {
+                        obj.hitboxes.splice(selectedHitboxIndex, 1);
+                        selectHitbox(-1);
+                    } else return;
+                    syncInputs();
+                    render();
+                } else {
+                    if (e.key === "ArrowUp") obj.y -= step;
+                    else if (e.key === "ArrowDown") obj.y += step;
+                    else if (e.key === "ArrowLeft") obj.x -= step;
+                    else if (e.key === "ArrowRight") obj.x += step;
+                    else if (e.key === "Delete") {
+                        objects = objects.filter((o) => o.id !== obj.id);
+                        selectObjectById(null);
+                    } else return;
+                    if (document.getElementById("autoYSort").checked)
+                        obj.depth = obj.y;
+                    sortObjects();
+                    selectObjectById(obj.id, true);
+                }
+                saveToLocal();
+            };
+
+            loadFromLocal();
+        </script>
+    </body>
+</html>
