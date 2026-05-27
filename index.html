@@ -1,0 +1,131 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Příběhy 2</title>
+        <script src="phaser.min.js"></script>
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover"
+        />
+        <style>
+            @font-face {
+                font-family: Pixelbasel;
+                src: url("assets/pixelbasel.ttf");
+            }
+            html,
+            body {
+                margin: 0;
+                padding: 0;
+                overflow: hidden;
+                height: 100%;
+                width: 100%;
+            }
+            * {
+                font-family: Pixelbasel;
+                font-size: 23px;
+                font-smooth: never;
+                -webkit-font-smoothing: none;
+                -moz-osx-font-smoothing: none;
+            }
+            #ui {
+                position: absolute;
+                left: 0;
+                right: 0;
+                top: 0;
+                bottom: 0;
+                z-index: 100;
+                user-select: none;
+                -webkit-user-select: none;
+                -ms-user-select: none;
+                touch-action: none;
+                -ms-touch-select: none;
+                -webkit-touch-callout: none;
+            }
+            #joystick-container {
+                position: absolute;
+                left: 0;
+                right: 0;
+                top: 50%;
+                bottom: 0;
+            }
+            #joystick {
+                position: absolute;
+                left: 50%;
+                top: 70%;
+                opacity: 0.6;
+                overflow: visible;
+            }
+        </style>
+    </head>
+    <body>
+        <script>
+            var gameVersion = "0.0.0";
+            fetch("./version.txt")
+                .then((response) => response.text())
+                .then((text) => {
+                    gameVersion = text.trim();
+                    document.getElementById("version").textContent =
+                        "v" + gameVersion;
+                })
+                .catch((err) => {
+                    console.error(err);
+                });
+        </script>
+        <script src="script.js"></script>
+        <div id="ui" ontouchstart="event.preventDefault()">
+            <div style="position: absolute">
+                <span id="version">v0.0.0</span><br />
+                <span id="fps">fps: 0</span>
+            </div>
+            <div style="z-index: 10; position: absolute; bottom: 0">
+                <button onpointerdown="location.reload()" style="padding: 10px">
+                    reload
+                </button>
+                <button
+                    onpointerdown="location.href='?debug'"
+                    style="padding: 10px"
+                >
+                    debug
+                </button>
+                <button
+                    onpointerdown="location.href='?many'"
+                    style="padding: 10px"
+                >
+                    many
+                </button>
+            </div>
+            <button
+                id="interact"
+                onpointerdown="main.player.interact()"
+                disabled
+                style="
+                    padding: 10px;
+                    z-index: 10;
+                    position: absolute;
+                    bottom: 0;
+                    right: 0;
+                "
+            >
+                interact
+            </button>
+            <div id="joystick-container">
+                <svg id="joystick">
+                    <circle
+                        id="joystick-base"
+                        cx="0"
+                        cy="0"
+                        r="70"
+                        fill="#555555"
+                    />
+                    <circle
+                        id="joystick-stick"
+                        cx="0"
+                        cy="0"
+                        r="35"
+                        fill="#bbbbbbbb"
+                    />
+                </svg>
+            </div>
+        </div>
+    </body>
+</html>
