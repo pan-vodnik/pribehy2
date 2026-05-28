@@ -75,7 +75,6 @@ class UI {
     });
   }
   update() {
-    console.log(this.interact_key);
     if (this.joystick.pointer === null) {
       if (this.cursors.up.isDown) {
         this.joystick.dir.y = -1;
@@ -174,88 +173,394 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
 class World {
   constructor() {
-    this.rooms = [
+    this.thingsGroup = main.add.group();
+    this.thingsStaticGroup = main.physics.add.staticGroup();
+    this.things = [
       {
         name: "room",
-        pos: { x: 0, y: 0 },
-        group: main.physics.add.staticGroup(),
+        x: 0,
+        y: 0,
+        scale: 4,
+        depth: -999,
+        notes: "",
+        hitboxes: [
+          {
+            x: -50,
+            y: -100,
+            w: 100,
+            h: 100,
+            type: "solid",
+          },
+        ],
+      },
+      {
+        name: "thing",
+        x: 105,
+        y: -315,
+        scale: 1,
+        depth: -315,
+        notes: "",
+        hitboxes: [
+          {
+            x: -8,
+            y: -1,
+            w: 16,
+            h: 1,
+            type: "solid",
+          },
+          {
+            x: -8,
+            y: -16,
+            w: 16,
+            h: 15,
+            type: "trigger",
+          },
+        ],
+      },
+      {
+        name: "thing",
+        x: -120,
+        y: -267,
+        scale: 1,
+        depth: -267,
+        notes: "",
+        hitboxes: [
+          {
+            x: -8,
+            y: -1,
+            w: 16,
+            h: 1,
+            type: "solid",
+          },
+          {
+            x: -8,
+            y: -16,
+            w: 16,
+            h: 15,
+            type: "trigger",
+          },
+        ],
+      },
+      {
+        name: "thing",
+        x: 160,
+        y: -259,
+        scale: 1,
+        depth: -259,
+        notes: "",
+        hitboxes: [
+          {
+            x: -8,
+            y: -1,
+            w: 16,
+            h: 1,
+            type: "solid",
+          },
+          {
+            x: -8,
+            y: -16,
+            w: 16,
+            h: 15,
+            type: "trigger",
+          },
+        ],
+      },
+      {
+        name: "thing",
+        x: 14,
+        y: -247,
+        scale: 1,
+        depth: -247,
+        notes: "",
+        hitboxes: [
+          {
+            x: -8,
+            y: -1,
+            w: 16,
+            h: 1,
+            type: "solid",
+          },
+          {
+            x: -8,
+            y: -16,
+            w: 16,
+            h: 15,
+            type: "trigger",
+          },
+        ],
+      },
+      {
+        name: "thing",
+        x: -83,
+        y: -240,
+        scale: 1,
+        depth: -240,
+        notes: "",
+        hitboxes: [
+          {
+            x: -8,
+            y: -1,
+            w: 16,
+            h: 1,
+            type: "solid",
+          },
+          {
+            x: -8,
+            y: -16,
+            w: 16,
+            h: 15,
+            type: "trigger",
+          },
+        ],
+      },
+      {
+        name: "thing",
+        x: 106,
+        y: -214,
+        scale: 1,
+        depth: -214,
+        notes: "",
+        hitboxes: [
+          {
+            x: -8,
+            y: -1,
+            w: 16,
+            h: 1,
+            type: "solid",
+          },
+          {
+            x: -8,
+            y: -16,
+            w: 16,
+            h: 15,
+            type: "trigger",
+          },
+        ],
+      },
+      {
+        name: "thing",
+        x: -52,
+        y: -200,
+        scale: 1,
+        depth: -200,
+        notes: "",
+        hitboxes: [
+          {
+            x: -8,
+            y: -1,
+            w: 16,
+            h: 1,
+            type: "solid",
+          },
+          {
+            x: -8,
+            y: -16,
+            w: 16,
+            h: 15,
+            type: "trigger",
+          },
+        ],
+      },
+      {
+        name: "thing",
+        x: 37,
+        y: -184,
+        scale: 1,
+        depth: -184,
+        notes: "",
+        hitboxes: [
+          {
+            x: -8,
+            y: -1,
+            w: 16,
+            h: 1,
+            type: "solid",
+          },
+          {
+            x: -8,
+            y: -16,
+            w: 16,
+            h: 15,
+            type: "trigger",
+          },
+        ],
+      },
+      {
+        name: "thing",
+        x: -13,
+        y: -151,
+        scale: 1,
+        depth: -151,
+        notes: "",
+        hitboxes: [
+          {
+            x: -8,
+            y: -1,
+            w: 16,
+            h: 1,
+            type: "solid",
+          },
+          {
+            x: -8,
+            y: -16,
+            w: 16,
+            h: 15,
+            type: "trigger",
+          },
+        ],
+      },
+      {
+        name: "thing",
+        x: -109,
+        y: -125,
+        scale: 1,
+        depth: -125,
+        notes: "",
+        hitboxes: [
+          {
+            x: -8,
+            y: -1,
+            w: 16,
+            h: 1,
+            type: "solid",
+          },
+          {
+            x: -8,
+            y: -16,
+            w: 16,
+            h: 15,
+            type: "trigger",
+          },
+        ],
+      },
+      {
+        name: "thing",
+        x: 120,
+        y: -71,
+        scale: 1,
+        depth: -71,
+        notes: "",
+        hitboxes: [
+          {
+            x: -8,
+            y: -1,
+            w: 16,
+            h: 1,
+            type: "solid",
+          },
+          {
+            x: -8,
+            y: -16,
+            w: 16,
+            h: 15,
+            type: "trigger",
+          },
+        ],
+      },
+      {
+        name: "thing",
+        x: 31,
+        y: -48,
+        scale: 1,
+        depth: -48,
+        notes: "",
+        hitboxes: [
+          {
+            x: -8,
+            y: -1,
+            w: 16,
+            h: 1,
+            type: "solid",
+          },
+          {
+            x: -8,
+            y: -16,
+            w: 16,
+            h: 15,
+            type: "trigger",
+          },
+        ],
       },
     ];
-    this.thingsGroup = main.physics.add.staticGroup();
-    this.things = [];
-    for (
-      let i = 0;
-      i < (window.location.search.includes("many") ? 10000 : 100);
-      i++
-    ) {
-      this.things.push({
-        name: "thing",
-        pos: { x: Math.random() * 400 - 200, y: Math.random() * 400 - 200 },
-        interact: (self) => {
-          document.getElementById("text").innerText =
-            "picked up " + Math.round(self.x) + " " + Math.round(self.y);
-          self.destroy();
-        },
-      });
+    {
+      // for (
+      //   let i = 0;
+      //   i < (window.location.search.includes("many") ? 10000 : 100);
+      //   i++
+      // ) {
+      //   this.things.push({
+      //     name: "thing",
+      //     pos: { x: Math.random() * 400 - 200, y: Math.random() * 400 - 200 },
+      //     interact: (self) => {
+      //       document.getElementById("text").innerText =
+      //         "picked up " + Math.round(self.x) + " " + Math.round(self.y);
+      //       self.destroy();
+      //     },
+      //   });
+      // }
+      // this.rooms.forEach((room) => {
+      //   main.add
+      //     .image(room.pos.x, room.pos.y, room.name)
+      //     .setScale(5)
+      //     .setDepth(-9999);
+      //   // TODO: this is aaahh bad
+      //   const texture = main.textures.get(room.name);
+      //   const image = texture.getSourceImage();
+      //   const canvas = document.createElement("canvas");
+      //   canvas.width = image.width;
+      //   canvas.height = image.height;
+      //   const ctx = canvas.getContext("2d");
+      //   ctx.drawImage(image, 0, 0);
+      //   const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+      //   for (let y = 0; y < canvas.height; y++) {
+      //     let inWall = false;
+      //     let wallStartX = 0;
+      //     for (let x = 0; x < canvas.width; x++) {
+      //       const index = (y * canvas.width + x) * 4;
+      //       const r = imgData[index];
+      //       const g = imgData[index + 1];
+      //       const b = imgData[index + 2];
+      //       const isBlack = r < 50 && g < 50 && b < 50;
+      //       if (isBlack && !inWall) {
+      //         inWall = true;
+      //         wallStartX = x;
+      //       } else if (x === canvas.width - 1 || (!isBlack && inWall)) {
+      //         const gameX = wallStartX * 5 - (image.width * 5) / 2;
+      //         const gameY = y * 5 - (image.height * 5) / 2;
+      //         const gameW = (x - wallStartX) * 5;
+      //         const gameH = 1 * 5;
+      //         const centerX = gameX + gameW / 2;
+      //         const centerY = gameY + gameH / 2;
+      //         const zone = main.add.zone(centerX, centerY, gameW, gameH);
+      //         main.physics.add.existing(zone, true);
+      //         zone.body.setSize(gameW, gameH);
+      //         room.group.add(zone);
+      //         inWall = false;
+      //       }
+      //     }
+      //   }
+      // });
     }
-    this.rooms.forEach((room) => {
-      main.add
-        .image(room.pos.x, room.pos.y, room.name)
-        .setScale(5)
-        .setDepth(-9999);
-
-      // TODO: this is aaahh bad
-      const texture = main.textures.get(room.name);
-      const image = texture.getSourceImage();
-      const canvas = document.createElement("canvas");
-      canvas.width = image.width;
-      canvas.height = image.height;
-      const ctx = canvas.getContext("2d");
-      ctx.drawImage(image, 0, 0);
-      const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
-      for (let y = 0; y < canvas.height; y++) {
-        let inWall = false;
-        let wallStartX = 0;
-        for (let x = 0; x < canvas.width; x++) {
-          const index = (y * canvas.width + x) * 4;
-          const r = imgData[index];
-          const g = imgData[index + 1];
-          const b = imgData[index + 2];
-          const isBlack = r < 50 && g < 50 && b < 50;
-          if (isBlack && !inWall) {
-            inWall = true;
-            wallStartX = x;
-          } else if (x === canvas.width - 1 || (!isBlack && inWall)) {
-            const gameX = wallStartX * 5 - (image.width * 5) / 2;
-            const gameY = y * 5 - (image.height * 5) / 2;
-            const gameW = (x - wallStartX) * 5;
-            const gameH = 1 * 5;
-
-            const centerX = gameX + gameW / 2;
-            const centerY = gameY + gameH / 2;
-
-            const zone = main.add.zone(centerX, centerY, gameW, gameH);
-            main.physics.add.existing(zone, true);
-            zone.body.setSize(gameW, gameH);
-
-            room.group.add(zone);
-            inWall = false;
-          }
-        }
-      }
-    });
     this.things.forEach((thing) => {
-      // console.log(thing.pos.x, thing.pos.y);
-      const t = this.thingsGroup.create(
-        thing.pos.x,
-        thing.pos.y,
-        "thing",
-        false,
-      );
+      const t = this.thingsGroup.create(thing.x, thing.y, thing.name, false);
+      t.setScale(thing.scale);
       t.interact = thing.interact;
       t.setOrigin(0.5, 1);
-      t.body.reset(t.x, t.y);
-      t.setDepth(t.y);
+      t.setDepth(thing.depth);
+      thing.hitboxes.forEach((hitbox) => {
+        if (hitbox.type === "static") {
+          const h = this.thingsStaticGroup;
+          //   thing.x,
+          //   thing.y,
+          //   undefined,
+          //   false,
+          // );
+          h.setScale(thing.scale);
+          h.setOrigin(0.5, 1);
+          // this.thingsStaticGroup.add(h);
+          // main.physics.add.collider(t, h);
+        }
+      });
     });
   }
 }
@@ -283,9 +588,9 @@ class MainScene extends Phaser.Scene {
     this.cameras.main.setZoom(2);
     // main.cameras.main.setZoom(0.08);
 
-    this.world.rooms.forEach((room) => {
-      this.physics.add.collider(this.player, room.group);
-    });
+    // this.world.rooms.forEach((room) => {
+    //   this.physics.add.collider(this.player, room.group);
+    // });
     ui.create();
   }
 
