@@ -155,9 +155,13 @@ class Player extends Phaser.Physics.Arcade.Sprite {
   }
   getOverlaps() {
     this.overlaps.length = 0;
-    main.physics.overlap(this, main.world.thingsGroup, (player, thing) => {
-      this.overlaps.push(thing);
-    });
+    main.physics.overlap(
+      this,
+      main.world.thingsTriggerGroup,
+      (player, thing) => {
+        this.overlaps.push(thing);
+      },
+    );
     this.overlaps.sort(
       (a, b) =>
         Phaser.Math.Distance.Between(a.x, a.y, this.x, this.y) -
@@ -167,7 +171,8 @@ class Player extends Phaser.Physics.Arcade.Sprite {
   }
   interact() {
     if (this.overlaps.length === 0) return;
-    this.overlaps[0].interact(this.overlaps[0]);
+    if (this.overlaps[0].parent.interact)
+      this.overlaps[0].parent.interact(this.overlaps[0].parent);
   }
 }
 
@@ -175,6 +180,7 @@ class World {
   constructor() {
     this.thingsGroup = main.add.group();
     this.thingsStaticGroup = main.physics.add.staticGroup();
+    this.thingsTriggerGroup = main.physics.add.staticGroup();
     this.things = {
       room: {
         image: "room",
@@ -470,6 +476,10 @@ class World {
         ],
       },
       thing: {
+        interact: (self) => {
+          self.destroy();
+          self.zones.forEach((z) => z.destroy());
+        },
         image: "thing",
         src: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAIxJREFUOI1jYBhowIhD/D+xellwaTyZqgQXFONBVabYfwvORpb5j6wJl+b/nIIofCZ0zeaz7zGYz76HVTM2wITMgWpkJFYzhgGEALrzSTaAYhfgNYCQn7E5H8MF9wvVGBiIS0RwgJwS/0MNIGi7UttJuF5kdzMq9t+C2w4zDJfTsbkAxVK8uvDrJQ0AALEfID2H8gN+AAAAAElFTkSuQmCC",
         x: 10,
@@ -497,6 +507,10 @@ class World {
         ],
       },
       thing1: {
+        interact: (self) => {
+          self.destroy();
+          self.zones.forEach((z) => z.destroy());
+        },
         image: "thing",
         src: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAIxJREFUOI1jYBhowIhD/D+xellwaTyZqgQXFONBVabYfwvORpb5j6wJl+b/nIIofCZ0zeaz7zGYz76HVTM2wITMgWpkJFYzhgGEALrzSTaAYhfgNYCQn7E5H8MF9wvVGBiIS0RwgJwS/0MNIGi7UttJuF5kdzMq9t+C2w4zDJfTsbkAxVK8uvDrJQ0AALEfID2H8gN+AAAAAElFTkSuQmCC",
         x: -130,
@@ -524,6 +538,10 @@ class World {
         ],
       },
       thing2: {
+        interact: (self) => {
+          self.destroy();
+          self.zones.forEach((z) => z.destroy());
+        },
         image: "thing",
         src: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAIxJREFUOI1jYBhowIhD/D+xellwaTyZqgQXFONBVabYfwvORpb5j6wJl+b/nIIofCZ0zeaz7zGYz76HVTM2wITMgWpkJFYzhgGEALrzSTaAYhfgNYCQn7E5H8MF9wvVGBiIS0RwgJwS/0MNIGi7UttJuF5kdzMq9t+C2w4zDJfTsbkAxVK8uvDrJQ0AALEfID2H8gN+AAAAAElFTkSuQmCC",
         x: -61,
@@ -551,6 +569,10 @@ class World {
         ],
       },
       thing3: {
+        interact: (self) => {
+          self.destroy();
+          self.zones.forEach((z) => z.destroy());
+        },
         image: "thing",
         src: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAIxJREFUOI1jYBhowIhD/D+xellwaTyZqgQXFONBVabYfwvORpb5j6wJl+b/nIIofCZ0zeaz7zGYz76HVTM2wITMgWpkJFYzhgGEALrzSTaAYhfgNYCQn7E5H8MF9wvVGBiIS0RwgJwS/0MNIGi7UttJuF5kdzMq9t+C2w4zDJfTsbkAxVK8uvDrJQ0AALEfID2H8gN+AAAAAElFTkSuQmCC",
         x: 42,
@@ -578,6 +600,10 @@ class World {
         ],
       },
       thing4: {
+        interact: (self) => {
+          self.destroy();
+          self.zones.forEach((z) => z.destroy());
+        },
         image: "thing",
         src: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAIxJREFUOI1jYBhowIhD/D+xellwaTyZqgQXFONBVabYfwvORpb5j6wJl+b/nIIofCZ0zeaz7zGYz76HVTM2wITMgWpkJFYzhgGEALrzSTaAYhfgNYCQn7E5H8MF9wvVGBiIS0RwgJwS/0MNIGi7UttJuF5kdzMq9t+C2w4zDJfTsbkAxVK8uvDrJQ0AALEfID2H8gN+AAAAAElFTkSuQmCC",
         x: 51,
@@ -605,6 +631,10 @@ class World {
         ],
       },
       thing5: {
+        interact: (self) => {
+          self.destroy();
+          self.zones.forEach((z) => z.destroy());
+        },
         image: "thing",
         src: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAIxJREFUOI1jYBhowIhD/D+xellwaTyZqgQXFONBVabYfwvORpb5j6wJl+b/nIIofCZ0zeaz7zGYz76HVTM2wITMgWpkJFYzhgGEALrzSTaAYhfgNYCQn7E5H8MF9wvVGBiIS0RwgJwS/0MNIGi7UttJuF5kdzMq9t+C2w4zDJfTsbkAxVK8uvDrJQ0AALEfID2H8gN+AAAAAElFTkSuQmCC",
         x: 172,
@@ -632,6 +662,10 @@ class World {
         ],
       },
       thing6: {
+        interact: (self) => {
+          self.destroy();
+          self.zones.forEach((z) => z.destroy());
+        },
         image: "thing",
         src: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAIxJREFUOI1jYBhowIhD/D+xellwaTyZqgQXFONBVabYfwvORpb5j6wJl+b/nIIofCZ0zeaz7zGYz76HVTM2wITMgWpkJFYzhgGEALrzSTaAYhfgNYCQn7E5H8MF9wvVGBiIS0RwgJwS/0MNIGi7UttJuF5kdzMq9t+C2w4zDJfTsbkAxVK8uvDrJQ0AALEfID2H8gN+AAAAAElFTkSuQmCC",
         x: 139,
@@ -659,6 +693,10 @@ class World {
         ],
       },
       thing7: {
+        interact: (self) => {
+          self.destroy();
+          self.zones.forEach((z) => z.destroy());
+        },
         image: "thing",
         src: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAIxJREFUOI1jYBhowIhD/D+xellwaTyZqgQXFONBVabYfwvORpb5j6wJl+b/nIIofCZ0zeaz7zGYz76HVTM2wITMgWpkJFYzhgGEALrzSTaAYhfgNYCQn7E5H8MF9wvVGBiIS0RwgJwS/0MNIGi7UttJuF5kdzMq9t+C2w4zDJfTsbkAxVK8uvDrJQ0AALEfID2H8gN+AAAAAElFTkSuQmCC",
         x: -153,
@@ -686,6 +724,10 @@ class World {
         ],
       },
       thing8: {
+        interact: (self) => {
+          self.destroy();
+          self.zones.forEach((z) => z.destroy());
+        },
         image: "thing",
         src: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAIxJREFUOI1jYBhowIhD/D+xellwaTyZqgQXFONBVabYfwvORpb5j6wJl+b/nIIofCZ0zeaz7zGYz76HVTM2wITMgWpkJFYzhgGEALrzSTaAYhfgNYCQn7E5H8MF9wvVGBiIS0RwgJwS/0MNIGi7UttJuF5kdzMq9t+C2w4zDJfTsbkAxVK8uvDrJQ0AALEfID2H8gN+AAAAAElFTkSuQmCC",
         x: -131,
@@ -713,6 +755,10 @@ class World {
         ],
       },
       thing9: {
+        interact: (self) => {
+          self.destroy();
+          self.zones.forEach((z) => z.destroy());
+        },
         image: "thing",
         src: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAIxJREFUOI1jYBhowIhD/D+xellwaTyZqgQXFONBVabYfwvORpb5j6wJl+b/nIIofCZ0zeaz7zGYz76HVTM2wITMgWpkJFYzhgGEALrzSTaAYhfgNYCQn7E5H8MF9wvVGBiIS0RwgJwS/0MNIGi7UttJuF5kdzMq9t+C2w4zDJfTsbkAxVK8uvDrJQ0AALEfID2H8gN+AAAAAElFTkSuQmCC",
         x: -77,
@@ -740,6 +786,10 @@ class World {
         ],
       },
       thing10: {
+        interact: (self) => {
+          self.destroy();
+          self.zones.forEach((z) => z.destroy());
+        },
         image: "thing",
         src: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAIxJREFUOI1jYBhowIhD/D+xellwaTyZqgQXFONBVabYfwvORpb5j6wJl+b/nIIofCZ0zeaz7zGYz76HVTM2wITMgWpkJFYzhgGEALrzSTaAYhfgNYCQn7E5H8MF9wvVGBiIS0RwgJwS/0MNIGi7UttJuF5kdzMq9t+C2w4zDJfTsbkAxVK8uvDrJQ0AALEfID2H8gN+AAAAAElFTkSuQmCC",
         x: -147,
@@ -767,6 +817,10 @@ class World {
         ],
       },
       thing11: {
+        interact: (self) => {
+          self.destroy();
+          self.zones.forEach((z) => z.destroy());
+        },
         image: "thing",
         src: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAIxJREFUOI1jYBhowIhD/D+xellwaTyZqgQXFONBVabYfwvORpb5j6wJl+b/nIIofCZ0zeaz7zGYz76HVTM2wITMgWpkJFYzhgGEALrzSTaAYhfgNYCQn7E5H8MF9wvVGBiIS0RwgJwS/0MNIGi7UttJuF5kdzMq9t+C2w4zDJfTsbkAxVK8uvDrJQ0AALEfID2H8gN+AAAAAElFTkSuQmCC",
         x: 66,
@@ -794,71 +848,13 @@ class World {
         ],
       },
     };
-    {
-      // for (
-      //   let i = 0;
-      //   i < (window.location.search.includes("many") ? 10000 : 100);
-      //   i++
-      // ) {
-      //   this.things.push({
-      //     name: "thing",
-      //     pos: { x: Math.random() * 400 - 200, y: Math.random() * 400 - 200 },
-      //     interact: (self) => {
-      //       document.getElementById("text").innerText =
-      //         "picked up " + Math.round(self.x) + " " + Math.round(self.y);
-      //       self.destroy();
-      //     },
-      //   });
-      // }
-      // this.rooms.forEach((room) => {
-      //   main.add
-      //     .image(room.pos.x, room.pos.y, room.name)
-      //     .setScale(5)
-      //     .setDepth(-9999);
-      //   // TODO: this is aaahh bad
-      //   const texture = main.textures.get(room.name);
-      //   const image = texture.getSourceImage();
-      //   const canvas = document.createElement("canvas");
-      //   canvas.width = image.width;
-      //   canvas.height = image.height;
-      //   const ctx = canvas.getContext("2d");
-      //   ctx.drawImage(image, 0, 0);
-      //   const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
-      //   for (let y = 0; y < canvas.height; y++) {
-      //     let inWall = false;
-      //     let wallStartX = 0;
-      //     for (let x = 0; x < canvas.width; x++) {
-      //       const index = (y * canvas.width + x) * 4;
-      //       const r = imgData[index];
-      //       const g = imgData[index + 1];
-      //       const b = imgData[index + 2];
-      //       const isBlack = r < 50 && g < 50 && b < 50;
-      //       if (isBlack && !inWall) {
-      //         inWall = true;
-      //         wallStartX = x;
-      //       } else if (x === canvas.width - 1 || (!isBlack && inWall)) {
-      //         const gameX = wallStartX * 5 - (image.width * 5) / 2;
-      //         const gameY = y * 5 - (image.height * 5) / 2;
-      //         const gameW = (x - wallStartX) * 5;
-      //         const gameH = 1 * 5;
-      //         const centerX = gameX + gameW / 2;
-      //         const centerY = gameY + gameH / 2;
-      //         const zone = main.add.zone(centerX, centerY, gameW, gameH);
-      //         main.physics.add.existing(zone, true);
-      //         zone.body.setSize(gameW, gameH);
-      //         room.group.add(zone);
-      //         inWall = false;
-      //       }
-      //     }
-      //   }
-      // });
-    }
     Object.entries(this.things).forEach(([key, thing]) => {
       const t = this.thingsGroup.create(thing.x, thing.y, thing.image, false);
       t.setScale(thing.scale);
-      t.interact = thing.interact;
+      if (thing.interact) t.interact = thing.interact;
       t.setOrigin(0.5, 1);
       t.setDepth(thing.depth);
+      t.zones = [];
       thing.hitboxes.forEach((hitbox) => {
         if (hitbox.type === "solid") {
           const h = main.add.zone(
@@ -867,9 +863,9 @@ class World {
             thing.scale * hitbox.w,
             thing.scale * hitbox.h,
           );
-          // h.setOrigin(0.5, 1);
           this.thingsStaticGroup.add(h);
           main.physics.add.collider(main.player, h);
+          t.zones.push(h);
         }
         if (hitbox.type === "trigger") {
           const h = main.add.zone(
@@ -878,11 +874,9 @@ class World {
             thing.scale * hitbox.w,
             thing.scale * hitbox.h,
           );
-          // h.setOrigin(0.5, 1);
-          this.thingsStaticGroup.add(h);
-          main.physics.add.overlap(main.player, h, () => {
-            if (thing.interact) thing.interact();
-          });
+          h.parent = t;
+          this.thingsTriggerGroup.add(h);
+          t.zones.push(h);
         }
       });
     });
