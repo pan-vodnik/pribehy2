@@ -671,18 +671,27 @@
                         finalName = baseName + nameCounts[baseName];
                     }
 
-                    result[finalName] = {
+                    const exportObj = {
                         image: o.image || o.name,
-                        src: o.src,
                         x: o.x,
                         y: o.y,
                         scale: o.scale,
-                        depth: o.depth,
                         notes: o.notes,
-                        locked: o.locked,
-                        useManualDepth: o.useManualDepth,
-                        hitboxes: o.hitboxes,
                     };
+
+                    // Only include depth if it's different from y or if manual depth is used
+                    // But user asked to remove useManualDepth, so we'll just include depth if it's not default Y
+                    if (Math.abs(o.depth - o.y) > 0.1) {
+                        exportObj.depth = o.depth;
+                    }
+
+                    if (o.hitboxes && o.hitboxes.length > 0) {
+                        exportObj.hitboxes = o.hitboxes;
+                    }
+
+                    if (!exportObj.notes) delete exportObj.notes;
+
+                    result[finalName] = exportObj;
                 });
                 return result;
             }
@@ -731,32 +740,68 @@
             }
 
             function syncInputs() {
+                updateObjectList();
+                updateHitboxList();
+
                 const obj = getSelectedObject();
-                if (!obj) return;
-                document.getElementById("objName").value = obj.name;
-                document.getElementById("objScale").value =
-                    obj.scale.toFixed(2);
-                document.getElementById("objX").value = obj.x.toFixed(1);
-                document.getElementById("objY").value = obj.y.toFixed(1);
-                document.getElementById("objDepth").value = Math.round(
-                    obj.depth,
-                );
+                const activeId = document.activeElement
+                    ? document.activeElement.id
+                    : null;
+
+                if (!obj) {
+                    // Clear inputs if no object (only if not focused)
+                    const fields = [
+                        "objName",
+                        "objScale",
+                        "objX",
+                        "objY",
+                        "objDepth",
+                        "objLocked",
+                        "objManualDepth",
+                        "objNotes",
+                    ];
+                    fields.forEach((id) => {
+                        if (id !== activeId) {
+                            const el = document.getElementById(id);
+                            if (el.type === "checkbox") el.checked = false;
+                            else el.value = "";
+                        }
+                    });
+                    return;
+                }
+
+                if (activeId !== "objName")
+                    document.getElementById("objName").value = obj.name;
+                if (activeId !== "objScale")
+                    document.getElementById("objScale").value =
+                        obj.scale.toFixed(2);
+                if (activeId !== "objX")
+                    document.getElementById("objX").value = obj.x.toFixed(1);
+                if (activeId !== "objY")
+                    document.getElementById("objY").value = obj.y.toFixed(1);
+                if (activeId !== "objDepth")
+                    document.getElementById("objDepth").value = Math.round(
+                        obj.depth,
+                    );
                 document.getElementById("objLocked").checked = obj.locked;
                 document.getElementById("objManualDepth").checked =
                     obj.useManualDepth || false;
-                document.getElementById("objNotes").value = obj.notes || "";
+                if (activeId !== "objNotes")
+                    document.getElementById("objNotes").value = obj.notes || "";
 
                 if (selectedHitboxIndex !== -1) {
                     const hb = obj.hitboxes[selectedHitboxIndex];
-                    document.getElementById("hbW").value = hb.w.toFixed(1);
-                    document.getElementById("hbH").value = hb.h.toFixed(1);
-                    document.getElementById("hbX").value = hb.x.toFixed(1);
-                    document.getElementById("hbY").value = hb.y.toFixed(1);
+                    if (activeId !== "hbW")
+                        document.getElementById("hbW").value = hb.w.toFixed(1);
+                    if (activeId !== "hbH")
+                        document.getElementById("hbH").value = hb.h.toFixed(1);
+                    if (activeId !== "hbX")
+                        document.getElementById("hbX").value = hb.x.toFixed(1);
+                    if (activeId !== "hbY")
+                        document.getElementById("hbY").value = hb.y.toFixed(1);
                     document.getElementById("hbType").value =
                         hb.type || "solid";
                 }
-                updateObjectList();
-                updateHitboxList();
             }
 
             function selectObjectById(id, keepHitbox = false) {
@@ -888,14 +933,17 @@
                     if (id === "objX") obj.x = parseFloat(e.target.value) || 0;
                     if (id === "objY") {
                         obj.y = parseFloat(e.target.value) || 0;
-                        if (document.getElementById("autoYSort").checked)
+                        if (
+                            document.getElementById("autoYSort").checked &&
+                            !obj.useManualDepth
+                        )
                             obj.depth = obj.y;
                     }
                     if (id === "objDepth")
                         obj.depth = parseInt(e.target.value) || 0;
                     if (id === "objNotes") obj.notes = e.target.value;
                     sortObjects();
-                    syncInputs();
+                    // syncInputs();
                     render();
                     saveToLocal();
                 };
@@ -982,7 +1030,7 @@
                         if (id === "hbX") hb.x = v;
                         if (id === "hbY") hb.y = v;
                     }
-                    syncInputs();
+                    // syncInputs();
                     render();
                     saveToLocal();
                 };
@@ -1406,22 +1454,26 @@
                 if (!obj) return;
 
                 if (isResizingImg) {
+                    const dx_total = wp.x - dragStartMouseWorld.x;
                     const dy_total = wp.y - dragStartMouseWorld.y;
                     let newHeight = startState.h;
+
                     if (resizeHandle.includes("n"))
                         newHeight = startState.h - dy_total;
-                    else {
+                    else if (resizeHandle.includes("s"))
                         newHeight = startState.h + dy_total;
-                    }
-                    const newScale = Math.max(0.01, newHeight / obj.img.height);
-                    const s = document.getElementById("snapActive").checked
-                        ? 0.05
-                        : 0.001;
-                    obj.scale = Math.round(newScale / s) * s;
-                    if (resizeHandle.includes("n")) {
-                        const h_old = startState.h;
-                        const h_new = obj.img.height * obj.scale;
-                    }
+                    else if (resizeHandle.includes("w"))
+                        newHeight =
+                            (startState.w - dx_total) *
+                            (obj.img.height / obj.img.width);
+                    else if (resizeHandle.includes("e"))
+                        newHeight =
+                            (startState.w + dx_total) *
+                            (obj.img.height / obj.img.width);
+
+                    const snappedHeight = snap(newHeight);
+                    obj.scale = Math.max(0.01, snappedHeight / obj.img.height);
+
                     syncInputs();
                     render();
                     return;
@@ -1484,8 +1536,14 @@
                         obj.y = snap(
                             startState.y + (wp.y - dragStartMouseWorld.y),
                         );
-                        if (document.getElementById("autoYSort").checked)
+                        if (
+                            document.getElementById("autoYSort").checked &&
+                            !obj.useManualDepth
+                        )
                             obj.depth = obj.y;
+
+                        if (document.getElementById("autoYSort").checked)
+                            sortObjects();
                     }
                     syncInputs();
                     render();
@@ -1603,7 +1661,10 @@
                         objects = objects.filter((o) => o.id !== obj.id);
                         selectObjectById(null);
                     } else return;
-                    if (document.getElementById("autoYSort").checked)
+                    if (
+                        document.getElementById("autoYSort").checked &&
+                        !obj.useManualDepth
+                    )
                         obj.depth = obj.y;
                     sortObjects();
                     selectObjectById(obj.id, true);

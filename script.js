@@ -133,7 +133,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     });
     this.texture.setFilter(Phaser.Textures.FilterMode.NEAREST);
 
-    this.speed = 50;
+    this.speed = 100;
     this.overlaps = [];
   }
 
@@ -175,31 +175,310 @@ class World {
   constructor() {
     this.thingsGroup = main.add.group();
     this.thingsStaticGroup = main.physics.add.staticGroup();
-    this.things = [
-      {
-        name: "room",
+    this.things = {
+      room: {
+        image: "room",
+        src: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABkCAYAAABw4pVUAAABIGlDQ1BzUkdCAAAYlWNgYHzAAAQsDgwMuXklRUHuTgoRkVEKDEggMbm4gAEv+HaNgRFEX9YNLGHjxq8WA3AVAS0E0n+AWCQdzGYUALGTIGwVELu8pKAEyLYAsZMLikBsHyBbKTkjMQXIBrlPpygkyBnIngNkK6QjsZOQ2CmpxclA9h4gWwXhz/z5DAwWXxgYmCcixJKmMTBsb2dgkLiDEFNZyMDA38rAsO0yQuyzP9jvjGKHcnNKk6F+AonwpOaFBgNpNiCWYfBj0GdwZGAoTjM2gqjgcWBgYL37//9nLQYG9kkMDH/7////vej//7+Lge64xcBwoL0gsSgRrJYZiJnS0hgYPi1nYOCNZGAQvgAMtmgc9nGA7StmCGJwZ3ACAHssTnV9IHqGAAAACXBIWXMAABAmAAAQJgGDtkwVAAAB0UlEQVR4nO3cwU7DMBAA0TXi/385XKgEVaCJ68Sz3plzkUIfttYladu2bQvD9DH7Aux3gsASBJYgsASBJQgsQWB9vnpBa+2O6yjb8zHwJcjeD9mY9v7Y3bJgCQJLEFiCwBIEliCwBIElCCxBYAkCSxBYgsBKA1LlU+c0IFUSBJYgsASBJQgsQQY1agoU5J9mjNqC/NGsc48gO7XWpt1pI8hTvRjbtg1ZVYL8aObKeCTIdwSMCEEigoMRIQgKI6I4CA0jojAIESOiKMhVGCNG30OPI1xRz4WPOj0TV8ajaSDkN2VmJbcscoLAEgSWILAEGdy7o68gsASBJQgsQWAdOqlTbnSucLr3qzVguWVd0DujryCwBIElCCxBYAkCSxBYglxU7+grCCxBYAkCSxBYgsBKAXJmWqH8q6C3FCBHo91A3TP6LgNCw+htCZBVMCIWAFkJIyI5yGoYEYlBVsSISApyF8YM8HQg2VbG2dE3FUg2jJ7SgFTAiBj8jOHVH1v40OfJrvpFq6yOiERbVpUEgSXIDZ0ZfQWBJQgsQWAJclNHx3ZBYKUAqXIojEgCUilBYAkCSxBYgsASBJYgsFJ910mFXoJUOpQRcsuCJQgsQWB9AZy7fN7ZN/u6AAAAAElFTkSuQmCC",
         x: 0,
-        y: 0,
-        scale: 4,
-        depth: -999,
+        y: 0.02,
+        scale: 4.5,
+        depth: -9999,
         notes: "",
+        locked: false,
+        useManualDepth: true,
         hitboxes: [
           {
-            x: -50,
-            y: -100,
-            w: 100,
-            h: 100,
+            x: -42,
+            y: -92,
+            w: 1,
+            h: 88,
+            type: "solid",
+          },
+          {
+            x: -41,
+            y: -49,
+            w: 34,
+            h: 1,
+            type: "solid",
+          },
+          {
+            x: -20,
+            y: -60,
+            w: 31,
+            h: 1,
+            type: "solid",
+          },
+          {
+            x: -8,
+            y: -78,
+            w: 1,
+            h: 18,
+            type: "solid",
+          },
+          {
+            x: -31,
+            y: -23,
+            w: 42,
+            h: 1,
+            type: "solid",
+          },
+          {
+            x: -9,
+            y: -34,
+            w: 1,
+            h: 21,
+            type: "solid",
+          },
+          {
+            x: -41,
+            y: -92,
+            w: 86,
+            h: 1,
+            type: "solid",
+          },
+          {
+            x: 45,
+            y: -92,
+            w: 1,
+            h: 88,
+            type: "solid",
+          },
+          {
+            x: -41,
+            y: -5,
+            w: 86,
+            h: 1,
+            type: "solid",
+          },
+          {
+            x: 21,
+            y: -71,
+            w: 1,
+            h: 44,
+            type: "solid",
+          },
+          {
+            x: 32,
+            y: -72,
+            w: 1,
+            h: 4,
+            type: "solid",
+          },
+          {
+            x: 33,
+            y: -68,
+            w: 1,
+            h: 7,
+            type: "solid",
+          },
+          {
+            x: 34,
+            y: -61,
+            w: 1,
+            h: 7,
+            type: "solid",
+          },
+          {
+            x: 35,
+            y: -54,
+            w: 1,
+            h: 7,
+            type: "solid",
+          },
+          {
+            x: 36,
+            y: -47,
+            w: 1,
+            h: 7,
+            type: "solid",
+          },
+          {
+            x: 37,
+            y: -40,
+            w: 1,
+            h: 7,
+            type: "solid",
+          },
+          {
+            x: 38,
+            y: -33,
+            w: 1,
+            h: 7,
+            type: "solid",
+          },
+          {
+            x: 39,
+            y: -26,
+            w: 1,
+            h: 7,
+            type: "solid",
+          },
+          {
+            x: 40,
+            y: -19,
+            w: 1,
+            h: 4,
+            type: "solid",
+          },
+          {
+            x: 11,
+            y: -61,
+            w: 1,
+            h: 1,
+            type: "solid",
+          },
+          {
+            x: 12,
+            y: -62,
+            w: 1,
+            h: 1,
+            type: "solid",
+          },
+          {
+            x: 13,
+            y: -63,
+            w: 1,
+            h: 1,
+            type: "solid",
+          },
+          {
+            x: 14,
+            y: -64,
+            w: 1,
+            h: 1,
+            type: "solid",
+          },
+          {
+            x: 15,
+            y: -65,
+            w: 1,
+            h: 1,
+            type: "solid",
+          },
+          {
+            x: 16,
+            y: -66,
+            w: 1,
+            h: 1,
+            type: "solid",
+          },
+          {
+            x: 17,
+            y: -67,
+            w: 1,
+            h: 1,
+            type: "solid",
+          },
+          {
+            x: 18,
+            y: -68,
+            w: 1,
+            h: 1,
+            type: "solid",
+          },
+          {
+            x: 19,
+            y: -69,
+            w: 1,
+            h: 1,
+            type: "solid",
+          },
+          {
+            x: 20,
+            y: -70,
+            w: 1,
+            h: 1,
+            type: "solid",
+          },
+          {
+            x: -8,
+            y: -24,
+            w: 1,
+            h: 1,
+            type: "solid",
+          },
+          {
+            x: -7,
+            y: -25,
+            w: 1,
+            h: 1,
+            type: "solid",
+          },
+          {
+            x: -6,
+            y: -26,
+            w: 1,
+            h: 1,
+            type: "solid",
+          },
+          {
+            x: -5,
+            y: -27,
+            w: 1,
+            h: 1,
+            type: "solid",
+          },
+          {
+            x: -4,
+            y: -27.9,
+            w: 1,
+            h: 0.8999999999999986,
+            type: "solid",
+          },
+          {
+            x: -3,
+            y: -29,
+            w: 1,
+            h: 1,
+            type: "solid",
+          },
+          {
+            x: -2,
+            y: -30,
+            w: 1,
+            h: 1,
+            type: "solid",
+          },
+          {
+            x: -1,
+            y: -31,
+            w: 1,
+            h: 1,
+            type: "solid",
+          },
+          {
+            x: 0,
+            y: -32,
+            w: 1,
+            h: 1,
+            type: "solid",
+          },
+          {
+            x: 1,
+            y: -33,
+            w: 1,
+            h: 1,
+            type: "solid",
+          },
+          {
+            x: 2,
+            y: -34,
+            w: 1,
+            h: 1,
             type: "solid",
           },
         ],
       },
-      {
-        name: "thing",
-        x: 105,
-        y: -315,
+      thing: {
+        image: "thing",
+        src: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAIxJREFUOI1jYBhowIhD/D+xellwaTyZqgQXFONBVabYfwvORpb5j6wJl+b/nIIofCZ0zeaz7zGYz76HVTM2wITMgWpkJFYzhgGEALrzSTaAYhfgNYCQn7E5H8MF9wvVGBiIS0RwgJwS/0MNIGi7UttJuF5kdzMq9t+C2w4zDJfTsbkAxVK8uvDrJQ0AALEfID2H8gN+AAAAAElFTkSuQmCC",
+        x: 10,
+        y: -195,
         scale: 1,
         depth: -315,
         notes: "",
+        locked: false,
+        useManualDepth: false,
         hitboxes: [
           {
             x: -8,
@@ -209,21 +488,24 @@ class World {
             type: "solid",
           },
           {
-            x: -8,
-            y: -16,
-            w: 16,
-            h: 15,
+            x: -9,
+            y: -17,
+            w: 18,
+            h: 17,
             type: "trigger",
           },
         ],
       },
-      {
-        name: "thing",
-        x: -120,
-        y: -267,
+      thing1: {
+        image: "thing",
+        src: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAIxJREFUOI1jYBhowIhD/D+xellwaTyZqgQXFONBVabYfwvORpb5j6wJl+b/nIIofCZ0zeaz7zGYz76HVTM2wITMgWpkJFYzhgGEALrzSTaAYhfgNYCQn7E5H8MF9wvVGBiIS0RwgJwS/0MNIGi7UttJuF5kdzMq9t+C2w4zDJfTsbkAxVK8uvDrJQ0AALEfID2H8gN+AAAAAElFTkSuQmCC",
+        x: -130,
+        y: -270,
         scale: 1,
-        depth: -267,
+        depth: -314.9,
         notes: "",
+        locked: false,
+        useManualDepth: false,
         hitboxes: [
           {
             x: -8,
@@ -233,21 +515,24 @@ class World {
             type: "solid",
           },
           {
-            x: -8,
-            y: -16,
-            w: 16,
-            h: 15,
+            x: -9,
+            y: -17,
+            w: 18,
+            h: 17,
             type: "trigger",
           },
         ],
       },
-      {
-        name: "thing",
-        x: 160,
-        y: -259,
+      thing2: {
+        image: "thing",
+        src: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAIxJREFUOI1jYBhowIhD/D+xellwaTyZqgQXFONBVabYfwvORpb5j6wJl+b/nIIofCZ0zeaz7zGYz76HVTM2wITMgWpkJFYzhgGEALrzSTaAYhfgNYCQn7E5H8MF9wvVGBiIS0RwgJwS/0MNIGi7UttJuF5kdzMq9t+C2w4zDJfTsbkAxVK8uvDrJQ0AALEfID2H8gN+AAAAAElFTkSuQmCC",
+        x: -61,
+        y: -318,
         scale: 1,
-        depth: -259,
+        depth: -314.79999999999995,
         notes: "",
+        locked: false,
+        useManualDepth: false,
         hitboxes: [
           {
             x: -8,
@@ -257,21 +542,24 @@ class World {
             type: "solid",
           },
           {
-            x: -8,
-            y: -16,
-            w: 16,
-            h: 15,
+            x: -9,
+            y: -17,
+            w: 18,
+            h: 17,
             type: "trigger",
           },
         ],
       },
-      {
-        name: "thing",
-        x: 14,
-        y: -247,
+      thing3: {
+        image: "thing",
+        src: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAIxJREFUOI1jYBhowIhD/D+xellwaTyZqgQXFONBVabYfwvORpb5j6wJl+b/nIIofCZ0zeaz7zGYz76HVTM2wITMgWpkJFYzhgGEALrzSTaAYhfgNYCQn7E5H8MF9wvVGBiIS0RwgJwS/0MNIGi7UttJuF5kdzMq9t+C2w4zDJfTsbkAxVK8uvDrJQ0AALEfID2H8gN+AAAAAElFTkSuQmCC",
+        x: 42,
+        y: -58,
         scale: 1,
-        depth: -247,
+        depth: -314.69999999999993,
         notes: "",
+        locked: false,
+        useManualDepth: false,
         hitboxes: [
           {
             x: -8,
@@ -281,21 +569,51 @@ class World {
             type: "solid",
           },
           {
-            x: -8,
-            y: -16,
-            w: 16,
-            h: 15,
+            x: -9,
+            y: -17,
+            w: 18,
+            h: 17,
             type: "trigger",
           },
         ],
       },
-      {
-        name: "thing",
-        x: -83,
-        y: -240,
+      thing4: {
+        image: "thing",
+        src: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAIxJREFUOI1jYBhowIhD/D+xellwaTyZqgQXFONBVabYfwvORpb5j6wJl+b/nIIofCZ0zeaz7zGYz76HVTM2wITMgWpkJFYzhgGEALrzSTaAYhfgNYCQn7E5H8MF9wvVGBiIS0RwgJwS/0MNIGi7UttJuF5kdzMq9t+C2w4zDJfTsbkAxVK8uvDrJQ0AALEfID2H8gN+AAAAAElFTkSuQmCC",
+        x: 51,
+        y: -330,
+        scale: 3.2,
+        depth: -314.5999999999999,
+        notes: "",
+        locked: false,
+        useManualDepth: false,
+        hitboxes: [
+          {
+            x: -8,
+            y: -1,
+            w: 16,
+            h: 1,
+            type: "solid",
+          },
+          {
+            x: -9,
+            y: -17,
+            w: 18,
+            h: 17,
+            type: "trigger",
+          },
+        ],
+      },
+      thing5: {
+        image: "thing",
+        src: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAIxJREFUOI1jYBhowIhD/D+xellwaTyZqgQXFONBVabYfwvORpb5j6wJl+b/nIIofCZ0zeaz7zGYz76HVTM2wITMgWpkJFYzhgGEALrzSTaAYhfgNYCQn7E5H8MF9wvVGBiIS0RwgJwS/0MNIGi7UttJuF5kdzMq9t+C2w4zDJfTsbkAxVK8uvDrJQ0AALEfID2H8gN+AAAAAElFTkSuQmCC",
+        x: 172,
+        y: -353,
         scale: 1,
-        depth: -240,
+        depth: -314.5999999999999,
         notes: "",
+        locked: false,
+        useManualDepth: false,
         hitboxes: [
           {
             x: -8,
@@ -305,21 +623,51 @@ class World {
             type: "solid",
           },
           {
-            x: -8,
-            y: -16,
-            w: 16,
-            h: 15,
+            x: -9,
+            y: -17,
+            w: 18,
+            h: 17,
             type: "trigger",
           },
         ],
       },
-      {
-        name: "thing",
-        x: 106,
-        y: -214,
+      thing6: {
+        image: "thing",
+        src: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAIxJREFUOI1jYBhowIhD/D+xellwaTyZqgQXFONBVabYfwvORpb5j6wJl+b/nIIofCZ0zeaz7zGYz76HVTM2wITMgWpkJFYzhgGEALrzSTaAYhfgNYCQn7E5H8MF9wvVGBiIS0RwgJwS/0MNIGi7UttJuF5kdzMq9t+C2w4zDJfTsbkAxVK8uvDrJQ0AALEfID2H8gN+AAAAAElFTkSuQmCC",
+        x: 139,
+        y: -47,
+        scale: 3.2,
+        depth: -314.4999999999999,
+        notes: "",
+        locked: false,
+        useManualDepth: false,
+        hitboxes: [
+          {
+            x: -8,
+            y: -1,
+            w: 16,
+            h: 1,
+            type: "solid",
+          },
+          {
+            x: -9,
+            y: -17,
+            w: 18,
+            h: 17,
+            type: "trigger",
+          },
+        ],
+      },
+      thing7: {
+        image: "thing",
+        src: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAIxJREFUOI1jYBhowIhD/D+xellwaTyZqgQXFONBVabYfwvORpb5j6wJl+b/nIIofCZ0zeaz7zGYz76HVTM2wITMgWpkJFYzhgGEALrzSTaAYhfgNYCQn7E5H8MF9wvVGBiIS0RwgJwS/0MNIGi7UttJuF5kdzMq9t+C2w4zDJfTsbkAxVK8uvDrJQ0AALEfID2H8gN+AAAAAElFTkSuQmCC",
+        x: -153,
+        y: -33,
         scale: 1,
-        depth: -214,
+        depth: -314.4999999999999,
         notes: "",
+        locked: false,
+        useManualDepth: false,
         hitboxes: [
           {
             x: -8,
@@ -329,69 +677,24 @@ class World {
             type: "solid",
           },
           {
-            x: -8,
-            y: -16,
-            w: 16,
-            h: 15,
+            x: -9,
+            y: -17,
+            w: 18,
+            h: 17,
             type: "trigger",
           },
         ],
       },
-      {
-        name: "thing",
-        x: -52,
-        y: -200,
-        scale: 1,
-        depth: -200,
-        notes: "",
-        hitboxes: [
-          {
-            x: -8,
-            y: -1,
-            w: 16,
-            h: 1,
-            type: "solid",
-          },
-          {
-            x: -8,
-            y: -16,
-            w: 16,
-            h: 15,
-            type: "trigger",
-          },
-        ],
-      },
-      {
-        name: "thing",
-        x: 37,
-        y: -184,
-        scale: 1,
-        depth: -184,
-        notes: "",
-        hitboxes: [
-          {
-            x: -8,
-            y: -1,
-            w: 16,
-            h: 1,
-            type: "solid",
-          },
-          {
-            x: -8,
-            y: -16,
-            w: 16,
-            h: 15,
-            type: "trigger",
-          },
-        ],
-      },
-      {
-        name: "thing",
-        x: -13,
+      thing8: {
+        image: "thing",
+        src: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAIxJREFUOI1jYBhowIhD/D+xellwaTyZqgQXFONBVabYfwvORpb5j6wJl+b/nIIofCZ0zeaz7zGYz76HVTM2wITMgWpkJFYzhgGEALrzSTaAYhfgNYCQn7E5H8MF9wvVGBiIS0RwgJwS/0MNIGi7UttJuF5kdzMq9t+C2w4zDJfTsbkAxVK8uvDrJQ0AALEfID2H8gN+AAAAAElFTkSuQmCC",
+        x: -131,
         y: -151,
         scale: 1,
-        depth: -151,
+        depth: -314.39999999999986,
         notes: "",
+        locked: false,
+        useManualDepth: false,
         hitboxes: [
           {
             x: -8,
@@ -401,21 +704,24 @@ class World {
             type: "solid",
           },
           {
-            x: -8,
-            y: -16,
-            w: 16,
-            h: 15,
+            x: -9,
+            y: -17,
+            w: 18,
+            h: 17,
             type: "trigger",
           },
         ],
       },
-      {
-        name: "thing",
-        x: -109,
-        y: -125,
-        scale: 1,
-        depth: -125,
+      thing9: {
+        image: "thing",
+        src: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAIxJREFUOI1jYBhowIhD/D+xellwaTyZqgQXFONBVabYfwvORpb5j6wJl+b/nIIofCZ0zeaz7zGYz76HVTM2wITMgWpkJFYzhgGEALrzSTaAYhfgNYCQn7E5H8MF9wvVGBiIS0RwgJwS/0MNIGi7UttJuF5kdzMq9t+C2w4zDJfTsbkAxVK8uvDrJQ0AALEfID2H8gN+AAAAAElFTkSuQmCC",
+        x: -77,
+        y: -150,
+        scale: 0.35000000000000003,
+        depth: -314.29999999999984,
         notes: "",
+        locked: false,
+        useManualDepth: false,
         hitboxes: [
           {
             x: -8,
@@ -425,21 +731,24 @@ class World {
             type: "solid",
           },
           {
-            x: -8,
-            y: -16,
-            w: 16,
-            h: 15,
+            x: -9,
+            y: -17,
+            w: 18,
+            h: 17,
             type: "trigger",
           },
         ],
       },
-      {
-        name: "thing",
-        x: 120,
-        y: -71,
-        scale: 1,
-        depth: -71,
+      thing10: {
+        image: "thing",
+        src: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAIxJREFUOI1jYBhowIhD/D+xellwaTyZqgQXFONBVabYfwvORpb5j6wJl+b/nIIofCZ0zeaz7zGYz76HVTM2wITMgWpkJFYzhgGEALrzSTaAYhfgNYCQn7E5H8MF9wvVGBiIS0RwgJwS/0MNIGi7UttJuF5kdzMq9t+C2w4zDJfTsbkAxVK8uvDrJQ0AALEfID2H8gN+AAAAAElFTkSuQmCC",
+        x: -147,
+        y: -362,
+        scale: 1.3,
+        depth: -314.1999999999998,
         notes: "",
+        locked: false,
+        useManualDepth: false,
         hitboxes: [
           {
             x: -8,
@@ -449,21 +758,24 @@ class World {
             type: "solid",
           },
           {
-            x: -8,
-            y: -16,
-            w: 16,
-            h: 15,
+            x: -9,
+            y: -17,
+            w: 18,
+            h: 17,
             type: "trigger",
           },
         ],
       },
-      {
-        name: "thing",
-        x: 31,
-        y: -48,
-        scale: 1,
-        depth: -48,
+      thing11: {
+        image: "thing",
+        src: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAIxJREFUOI1jYBhowIhD/D+xellwaTyZqgQXFONBVabYfwvORpb5j6wJl+b/nIIofCZ0zeaz7zGYz76HVTM2wITMgWpkJFYzhgGEALrzSTaAYhfgNYCQn7E5H8MF9wvVGBiIS0RwgJwS/0MNIGi7UttJuF5kdzMq9t+C2w4zDJfTsbkAxVK8uvDrJQ0AALEfID2H8gN+AAAAAElFTkSuQmCC",
+        x: 66,
+        y: -274,
+        scale: 1.3,
+        depth: -314.0999999999998,
         notes: "",
+        locked: false,
+        useManualDepth: false,
         hitboxes: [
           {
             x: -8,
@@ -473,15 +785,15 @@ class World {
             type: "solid",
           },
           {
-            x: -8,
-            y: -16,
-            w: 16,
-            h: 15,
+            x: -9,
+            y: -17,
+            w: 18,
+            h: 17,
             type: "trigger",
           },
         ],
       },
-    ];
+    };
     {
       // for (
       //   let i = 0;
@@ -541,24 +853,36 @@ class World {
       //   }
       // });
     }
-    this.things.forEach((thing) => {
-      const t = this.thingsGroup.create(thing.x, thing.y, thing.name, false);
+    Object.entries(this.things).forEach(([key, thing]) => {
+      const t = this.thingsGroup.create(thing.x, thing.y, thing.image, false);
       t.setScale(thing.scale);
       t.interact = thing.interact;
       t.setOrigin(0.5, 1);
       t.setDepth(thing.depth);
       thing.hitboxes.forEach((hitbox) => {
-        if (hitbox.type === "static") {
-          const h = this.thingsStaticGroup;
-          //   thing.x,
-          //   thing.y,
-          //   undefined,
-          //   false,
-          // );
-          h.setScale(thing.scale);
-          h.setOrigin(0.5, 1);
-          // this.thingsStaticGroup.add(h);
-          // main.physics.add.collider(t, h);
+        if (hitbox.type === "solid") {
+          const h = main.add.zone(
+            thing.x + thing.scale * hitbox.x + (thing.scale * hitbox.w) / 2,
+            thing.y + thing.scale * hitbox.y + (thing.scale * hitbox.h) / 2,
+            thing.scale * hitbox.w,
+            thing.scale * hitbox.h,
+          );
+          // h.setOrigin(0.5, 1);
+          this.thingsStaticGroup.add(h);
+          main.physics.add.collider(main.player, h);
+        }
+        if (hitbox.type === "trigger") {
+          const h = main.add.zone(
+            thing.x + thing.scale * hitbox.x + (thing.scale * hitbox.w) / 2,
+            thing.y + thing.scale * hitbox.y + (thing.scale * hitbox.h) / 2,
+            thing.scale * hitbox.w,
+            thing.scale * hitbox.h,
+          );
+          // h.setOrigin(0.5, 1);
+          this.thingsStaticGroup.add(h);
+          main.physics.add.overlap(main.player, h, () => {
+            if (thing.interact) thing.interact();
+          });
         }
       });
     });
@@ -582,8 +906,8 @@ class MainScene extends Phaser.Scene {
   }
 
   create() {
-    this.world = new World();
     this.player = new Player();
+    this.world = new World();
     this.cameras.main.startFollow(this.player, true); //, 0.1, 0.1);
     this.cameras.main.setZoom(2);
     // main.cameras.main.setZoom(0.08);
