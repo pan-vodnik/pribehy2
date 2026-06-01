@@ -571,5 +571,6 @@ function pickUp(self) {
     zone.destroy();
   });
   self.destroy();
+  window.ui.write("picked up " + self.name, 2000);
   console.log(self.name);
 }

@@ -8,8 +8,10 @@ export class UI {
       base: document.getElementById("joystick-base"),
       stick: document.getElementById("joystick-stick"),
       pointer: null,
+      keys: false,
       dir: { x: 0, y: 0 },
     };
+    this.textTimeout = null;
   }
   create(scene) {
     this.scene = scene;
@@ -20,15 +22,6 @@ export class UI {
       right: "D",
     });
     this.interact_key = scene.input.keyboard.addKey("E");
-    this.joystick = {
-      container: document.getElementById("joystick-container"),
-      element: document.getElementById("joystick"),
-      base: document.getElementById("joystick-base"),
-      stick: document.getElementById("joystick-stick"),
-      pointer: null,
-      keys: false,
-      dir: { x: 0, y: 0 },
-    };
     this.joystick.container.addEventListener("pointerdown", (e) => {
       if (this.joystick.pointer === null) {
         this.joystick.pointer = e.pointerId;
@@ -74,6 +67,15 @@ export class UI {
         this.joystick.stick.setAttribute("cy", "0px");
       }
     });
+  }
+  write(text, timeout = 0) {
+    document.getElementById("text").textContent = text;
+    if (timeout > 0) {
+      clearTimeout(this.textTimeout);
+      this.textTimeout = setTimeout(() => {
+        document.getElementById("text").textContent = "";
+      }, timeout);
+    }
   }
   update() {
     if (this.joystick.pointer === null) {
