@@ -24,14 +24,8 @@ echo $NEW_VERSION > version.txt
 
 echo "New version: v$NEW_VERSION"
 
-# if [ -z "$2" ]; then
-#     COMMIT_MSG="Bump to v$NEW_VERSION"
-# else
-#     COMMIT_MSG="$2"
-# fi
-
-# git add .
-# git commit -m "$COMMIT_MSG"
+git add .
+git commit -m "Bump to v$NEW_VERSION"
 git tag $NEW_VERSION
 git push origin master
 
