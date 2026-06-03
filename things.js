@@ -543,8 +543,54 @@ export let things = {
   },
   thing11: {
     image: "thing",
-    x: -153,
-    y: -33,
+    x: 100,
+    y: -50,
+    scale: 1,
+    // interact: pickUp,
+    hitboxes: [
+      {
+        x: -8,
+        y: -1,
+        w: 16,
+        h: 1,
+        type: "solid",
+      },
+      {
+        x: -9,
+        y: -17,
+        w: 18,
+        h: 17,
+        type: "trigger",
+      },
+    ],
+  },
+  thing12: {
+    image: "thing",
+    x: 110,
+    y: -50,
+    scale: 1,
+    interact: pickUp,
+    hitboxes: [
+      {
+        x: -8,
+        y: -1,
+        w: 16,
+        h: 1,
+        type: "solid",
+      },
+      {
+        x: -9,
+        y: -17,
+        w: 18,
+        h: 17,
+        type: "trigger",
+      },
+    ],
+  },
+  thing13: {
+    image: "thing",
+    x: 120,
+    y: -50,
     scale: 1,
     interact: pickUp,
     hitboxes: [

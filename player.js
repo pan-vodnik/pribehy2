@@ -37,7 +37,9 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
       this.setFrame(0);
     }
     this.getOverlaps();
-    document.getElementById("interact").disabled = this.overlaps.length === 0;
+    document.getElementById("interact").disabled =
+      this.overlaps.length === 0 ||
+      this.overlaps.every((o) => !o.parent.interact);
   }
   getOverlaps() {
     this.overlaps.length = 0;
@@ -57,7 +59,11 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
   }
   interact() {
     if (this.overlaps.length === 0) return;
-    if (this.overlaps[0].parent.interact)
-      this.overlaps[0].parent.interact(this.overlaps[0].parent);
+    for (const o of this.overlaps) {
+      if (o.parent.interact) {
+        o.parent.interact(o.parent);
+        break;
+      }
+    }
   }
 }
