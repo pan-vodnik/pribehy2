@@ -463,6 +463,7 @@
                 <button id="exportBtn" class="primary">
                     Export JSON <kbd>E</kbd>
                 </button>
+                <button id="playBtn" class="primary">Hrát <kbd>P</kbd></button>
                 <button id="viewJsonBtn">Zobrazit <kbd>V</kbd></button>
                 <button id="copyJsonBtn">Kopírovat <kbd>C</kbd></button>
                 <button id="importBtn">Import JSON <kbd>I</kbd></button>
@@ -1101,6 +1102,13 @@
                 a.href = URL.createObjectURL(blob);
                 a.download = "world_data.json";
                 a.click();
+            };
+
+            document.getElementById("playBtn").onclick = () => {
+                const clean = formatForExport();
+                const jsonString = JSON.stringify(clean);
+                const dataUri = encodeURIComponent(jsonString);
+                window.open(`index.html?things=${dataUri}`, "_blank");
             };
 
             // --- Interaction ---

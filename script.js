@@ -48,7 +48,7 @@ let config = {
   physics: {
     default: "arcade",
     arcade: {
-      debug: window.location.search.includes("debug"),
+      debug: params.has("debug"),
     },
   },
   scene: MainScene,

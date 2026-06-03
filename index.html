@@ -78,6 +78,7 @@
                 .catch((err) => {
                     console.error(err);
                 });
+            window.params = new URLSearchParams(location.search);
         </script>
         <script type="module" src="script.js"></script>
         <div id="ui" ontouchstart="event.preventDefault()">

@@ -574,3 +574,7 @@ function pickUp(self) {
   window.ui.write("picked up " + self.name, 2000);
   console.log(self.name);
 }
+
+if (window.params.has("things")) {
+  things = JSON.parse(decodeURIComponent(window.params.get("things")));
+}
