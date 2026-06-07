@@ -11,7 +11,6 @@ export class UI {
       keys: false,
       dir: { x: 0, y: 0 },
     };
-    this.textTimeout = null;
   }
   create(scene) {
     this.scene = scene;
@@ -68,13 +67,34 @@ export class UI {
       }
     });
   }
-  write(text, timeout = 0) {
-    document.getElementById("text").textContent = text;
-    if (timeout > 0) {
+  async write(text, { speed = 20, timeout = 0 } = {}) {
+    const myTextId = Symbol("writeTask");
+    this.currentTextId = myTextId;
+    if (this.textTimeout) {
       clearTimeout(this.textTimeout);
-      this.textTimeout = setTimeout(() => {
-        document.getElementById("text").textContent = "";
-      }, timeout);
+    }
+    if (speed > 0) {
+      // const tree = new TreeWalker();
+      document.getElementById("text-hidden").textContent = text;
+      for (let i = 0; i < text.length; i++) {
+        if (this.currentTextId !== myTextId) return;
+        document.getElementById("text-visible").textContent = text.substring(
+          0,
+          i + 1,
+        );
+        document.getElementById("text-hidden").textContent = text.substring(
+          i + 1,
+          text.length,
+        );
+        await new Promise((resolve) => setTimeout(resolve, speed));
+      }
+    } else {
+      document.getElementById("text-visible").textContent = text;
+    }
+    if (timeout > 0) {
+      await new Promise((resolve) => setTimeout(resolve, timeout));
+      if (this.currentTextId !== myTextId) return;
+      document.getElementById("text-visible").textContent = "";
     }
   }
   update() {

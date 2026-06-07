@@ -56,12 +56,20 @@
             }
             #text {
                 position: absolute;
-                top: 20px;
-                left: 30px;
-                right: 30px;
-                background-color: #efefefef;
+                top: 25px;
+                left: 35px;
+                right: 35px;
+                height: fit-content;
+                background-color: #efefeff5;
                 border-radius: 10px;
                 text-align: center;
+                max-height: 25%;
+                overflow-y: scroll;
+                overflow-x: hidden;
+                overscroll-behavior-y: none;
+            }
+            #text:has(span:not(:empty)) {
+                padding: 10px;
             }
         </style>
     </head>
@@ -81,11 +89,17 @@
             window.params = new URLSearchParams(location.search);
         </script>
         <script type="module" src="script.js"></script>
-        <div id="ui" ontouchstart="event.preventDefault()">
-            <div id="text"></div>
-            <div style="position: absolute">
-                <span id="version">v0.0.0</span><br />
-                <span id="fps">fps: 0</span>
+        <div id="ui">
+            <div style="position: absolute; font-size: 15px">
+                <span id="version" style="font-size: inherit">v0.0.0</span>
+                <span id="fps" style="font-size: inherit">fps: 0</span>
+            </div>
+            <div id="text">
+                <span id="text-visible" style="white-space: pre-wrap"></span
+                ><span
+                    id="text-hidden"
+                    style="white-space: pre-wrap; visibility: hidden"
+                ></span>
             </div>
             <div style="z-index: 10; position: absolute; bottom: 0">
                 <button onpointerdown="location.reload()" style="padding: 10px">
@@ -97,16 +111,10 @@
                 >
                     debug
                 </button>
-                <button
-                    onpointerdown="location.href='?many'"
-                    style="padding: 10px"
-                >
-                    many
-                </button>
             </div>
             <button
                 id="interact"
-                onpointerdown="main.player.interact()"
+                onclick="main.player.interact()"
                 disabled
                 style="
                     padding: 10px;
