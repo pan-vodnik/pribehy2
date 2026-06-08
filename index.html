@@ -21,7 +21,7 @@
             }
             * {
                 font-family: Pixelbasel;
-                font-size: 24px;
+                font-size: 20px;
                 font-smooth: never;
                 -webkit-font-smoothing: none;
                 -moz-osx-font-smoothing: none;
@@ -56,12 +56,11 @@
             }
             #text {
                 position: absolute;
-                top: 25px;
-                left: 35px;
-                right: 35px;
+                top: 20px;
+                left: 25px;
+                right: 25px;
                 height: fit-content;
-                background-color: #efefeff5;
-                border-radius: 10px;
+                image-rendering: pixelated;
                 text-align: center;
                 max-height: 25%;
                 overflow-y: scroll;
@@ -70,6 +69,8 @@
             }
             #text:has(span:not(:empty)) {
                 padding: 10px;
+                border: 4px solid;
+                border-image: url("assets/frame.png") 8 fill / 16px repeat;
             }
         </style>
     </head>

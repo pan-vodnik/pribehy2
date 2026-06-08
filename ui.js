@@ -76,6 +76,7 @@ export class UI {
     if (speed > 0) {
       // const tree = new TreeWalker();
       document.getElementById("text-hidden").textContent = text;
+      document.getElementById("text").scroll(0, 0);
       for (let i = 0; i < text.length; i++) {
         if (this.currentTextId !== myTextId) return;
         document.getElementById("text-visible").textContent = text.substring(
@@ -90,6 +91,7 @@ export class UI {
       }
     } else {
       document.getElementById("text-visible").textContent = text;
+      document.getElementById("text").scroll(0, 0);
     }
     if (timeout > 0) {
       await new Promise((resolve) => setTimeout(resolve, timeout));
