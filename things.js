@@ -523,7 +523,7 @@ export let things = {
     x: 139,
     y: -47,
     scale: 3.2,
-    interact: pickUp,
+    interact: playPribehy,
     hitboxes: [
       {
         x: -8,
@@ -629,6 +629,12 @@ function pickUp(self) {
   // );
   // window.ui.write("picked up " + self.name, { timeout: 2000 });
   console.log(self.name);
+}
+
+function playPribehy(self) {
+  window.paused = true;
+  document.getElementById("content").innerHTML =
+    '<button style="position: absolute; top: calc(10% - 50px); right: 10%; width: 50px; height: 50px; font-size: 24px; background-color: red; border: none; color: white;" onclick="window.paused = false;document.getElementById(\'content\').innerHTML = \'\'">X</button><iframe src="https://pribehy.surge.sh"></iframe>';
 }
 
 if (window.params.has("things")) {

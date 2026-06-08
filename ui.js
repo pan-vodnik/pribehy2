@@ -100,41 +100,47 @@ export class UI {
     }
   }
   update() {
-    if (this.joystick.pointer === null) {
-      if (this.cursors.up.isDown) {
-        this.joystick.dir.y = -1;
-        this.joystick.keys = true;
-      } else if (this.cursors.down.isDown) {
-        this.joystick.dir.y = 1;
-        this.joystick.keys = true;
-      } else {
-        this.joystick.dir.y = 0;
+    if (!window.paused) {
+      if (this.joystick.pointer === null) {
+        if (this.cursors.up.isDown) {
+          this.joystick.dir.y = -1;
+          this.joystick.keys = true;
+        } else if (this.cursors.down.isDown) {
+          this.joystick.dir.y = 1;
+          this.joystick.keys = true;
+        } else {
+          this.joystick.dir.y = 0;
+        }
+        if (this.cursors.left.isDown) {
+          this.joystick.dir.x = -1;
+          this.joystick.keys = true;
+        } else if (this.cursors.right.isDown) {
+          this.joystick.dir.x = 1;
+          this.joystick.keys = true;
+        } else {
+          this.joystick.dir.x = 0;
+        }
+        if (
+          this.joystick.dir.x === 0 &&
+          this.joystick.dir.y === 0 &&
+          this.joystick.keys === true
+        ) {
+          this.joystick.keys = false;
+        }
+        let vec = new Phaser.Math.Vector2(
+          this.joystick.dir.x,
+          this.joystick.dir.y,
+        ).normalize();
+        this.joystick.dir.x = vec.x;
+        this.joystick.dir.y = vec.y;
       }
-      if (this.cursors.left.isDown) {
-        this.joystick.dir.x = -1;
-        this.joystick.keys = true;
-      } else if (this.cursors.right.isDown) {
-        this.joystick.dir.x = 1;
-        this.joystick.keys = true;
-      } else {
-        this.joystick.dir.x = 0;
+      if (Phaser.Input.Keyboard.JustDown(this.interact_key)) {
+        this.scene.player.interact();
       }
-      if (
-        this.joystick.dir.x === 0 &&
-        this.joystick.dir.y === 0 &&
-        this.joystick.keys === true
-      ) {
-        this.joystick.keys = false;
-      }
-      let vec = new Phaser.Math.Vector2(
-        this.joystick.dir.x,
-        this.joystick.dir.y,
-      ).normalize();
-      this.joystick.dir.x = vec.x;
-      this.joystick.dir.y = vec.y;
-    }
-    if (Phaser.Input.Keyboard.JustDown(this.interact_key)) {
-      this.scene.player.interact();
+    } else {
+      this.joystick.dir.x = 0;
+      this.joystick.dir.y = 0;
+      this.joystick.keys = false;
     }
   }
 }

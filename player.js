@@ -25,21 +25,30 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
 
   update() {
     this.setDepth(this.y);
-    if (window.ui.joystick.pointer != null || window.ui.joystick.keys) {
-      const dir = window.ui.joystick.dir;
-      this.setVelocity(dir.x * this.speed, dir.y * this.speed);
-      this.setFlipX(dir.x > 0);
-      this.anims.play("walk", true);
-      this.anims.timeScale = Math.sqrt(Math.pow(dir.x, 2) + Math.pow(dir.y, 2)); // TODO: tweak speed
+    if (!paused) {
+      if (window.ui.joystick.pointer != null || window.ui.joystick.keys) {
+        const dir = window.ui.joystick.dir;
+        this.setVelocity(dir.x * this.speed, dir.y * this.speed);
+        this.setFlipX(dir.x > 0);
+        this.anims.play("walk", true);
+        this.anims.timeScale = Math.sqrt(
+          Math.pow(dir.x, 2) + Math.pow(dir.y, 2),
+        ); // TODO: tweak speed
+      } else {
+        this.anims.stop();
+        this.setVelocity(0);
+        this.setFrame(0);
+      }
+      this.getOverlaps();
+      document.getElementById("interact").disabled =
+        this.overlaps.length === 0 ||
+        this.overlaps.every((o) => !o.parent.interact);
     } else {
+      document.getElementById("interact").disabled = true;
       this.anims.stop();
       this.setVelocity(0);
       this.setFrame(0);
     }
-    this.getOverlaps();
-    document.getElementById("interact").disabled =
-      this.overlaps.length === 0 ||
-      this.overlaps.every((o) => !o.parent.interact);
   }
   getOverlaps() {
     this.overlaps.length = 0;
