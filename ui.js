@@ -144,6 +144,7 @@ export class UI {
           await new Promise((resolve) => setTimeout(resolve, speed));
         }
       }
+      await new Promise((resolve) => setTimeout(resolve, 500));
     } else {
       text_visible.textContent = text;
       text_invisible.textContent = "";
