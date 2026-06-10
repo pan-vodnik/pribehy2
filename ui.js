@@ -69,8 +69,18 @@ export class UI {
   }
   async write(
     text,
-    { speed = 20, timeout = 0, next = false, skip = false } = {},
+    {
+      speed = 20,
+      timeout = 0,
+      next = false,
+      skip = true,
+      freeze = false,
+      skipTime = false,
+    } = {},
   ) {
+    if (freeze) {
+      window.paused = true;
+    }
     const text_visible = document.getElementById("text-visible");
     const text_invisible = document.getElementById("text-invisible");
     const myTextId = Symbol("writeTask");
@@ -80,9 +90,16 @@ export class UI {
     }
     if (speed > 0) {
       let skipping = false;
-      document.body.ondblclick = (event) => {
-        skipping = true;
-      };
+      if (skip) {
+        document.addEventListener(
+          "dblclick",
+          (event) => {
+            skipping = true;
+          },
+          { once: true },
+        );
+      }
+      text_visible.innerHTML = "";
       text_invisible.innerHTML = text;
       document.getElementById("text").scroll(0, 0);
       const steps = [];
@@ -134,12 +151,28 @@ export class UI {
       document.getElementById("text").scroll(0, 0);
     }
     if (timeout > 0) {
-      await new Promise((resolve) => setTimeout(resolve, timeout));
+      if (skipTime) {
+        await Promise.race([
+          new Promise((resolve) => setTimeout(resolve, timeout)),
+          new Promise((resolve) =>
+            document.addEventListener("dblclick", resolve, { once: true }),
+          ),
+        ]);
+      } else {
+        await new Promise((resolve) => setTimeout(resolve, timeout));
+      }
       if (this.currentTextId !== myTextId) return;
       text_visible.textContent = "";
       text_invisible.textContent = "";
     }
-    document.body.ondblclick = null;
+    if (next) {
+      await new Promise((resolve) =>
+        document.addEventListener("click", resolve),
+      );
+    }
+    if (freeze) {
+      window.paused = false;
+    }
   }
   update() {
     if (!window.paused) {
