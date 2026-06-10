@@ -74,19 +74,48 @@ export class UI {
       clearTimeout(this.textTimeout);
     }
     if (speed > 0) {
-      // const tree = new TreeWalker();
-      document.getElementById("text-hidden").textContent = text;
+      const text_visible = document.getElementById("text-visible");
+      const text_invisible = document.getElementById("text-invisible");
+      text_invisible.innerHTML = text;
       document.getElementById("text").scroll(0, 0);
-      for (let i = 0; i < text.length; i++) {
-        if (this.currentTextId !== myTextId) return;
-        document.getElementById("text-visible").textContent = text.substring(
-          0,
-          i + 1,
-        );
-        document.getElementById("text-hidden").textContent = text.substring(
-          i + 1,
-          text.length,
-        );
+      const steps = [];
+      const stack = [text_visible];
+      for (const child of text_invisible.childNodes) {
+        steps.push({
+          node: child,
+          parentNode: text_visible,
+          cloneParent: text_invisible,
+        });
+      }
+      while (steps.length > 0) {
+        const { node, parentNode, cloneParent } = steps.shift();
+        if (node.nodeType == Node.TEXT_NODE) {
+          if (node.textContent.length > 0) {
+            parentNode.appendChild(
+              document.createTextNode(node.textContent[0]),
+            );
+            node.textContent = node.textContent.slice(1);
+            steps.unshift({
+              node: node,
+              parentNode: parentNode,
+              cloneParent: cloneParent,
+            });
+          } else if (cloneParent !== text_invisible) {
+            cloneParent.remove();
+          }
+        }
+        if (node.nodeType == Node.ELEMENT_NODE) {
+          const clone = node.cloneNode(false);
+          parentNode.appendChild(clone);
+          stack.push(clone);
+          for (let child of Array.from(node.childNodes)) {
+            steps.unshift({
+              node: child,
+              parentNode: clone,
+              cloneParent: node,
+            });
+          }
+        }
         await new Promise((resolve) => setTimeout(resolve, speed));
       }
     } else {
