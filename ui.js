@@ -22,7 +22,7 @@ export class UI {
     });
     this.interact_key = scene.input.keyboard.addKey("E");
     this.joystick.container.addEventListener("pointerdown", (e) => {
-      if (this.joystick.pointer === null) {
+      if (this.joystick.pointer === null && !window.paused) {
         this.joystick.pointer = e.pointerId;
         this.joystick.element.style.left =
           e.clientX - this.joystick.container.getBoundingClientRect().x + "px";
@@ -67,15 +67,15 @@ export class UI {
       }
     });
   }
-  async write(text, { speed = 20, timeout = 0 } = {}) {
+  async write(text, { speed = 20, timeout = 0, next = false } = {}) {
+    const text_visible = document.getElementById("text-visible");
+    const text_invisible = document.getElementById("text-invisible");
     const myTextId = Symbol("writeTask");
     this.currentTextId = myTextId;
     if (this.textTimeout) {
       clearTimeout(this.textTimeout);
     }
     if (speed > 0) {
-      const text_visible = document.getElementById("text-visible");
-      const text_invisible = document.getElementById("text-invisible");
       text_invisible.innerHTML = text;
       document.getElementById("text").scroll(0, 0);
       const steps = [];
@@ -125,7 +125,8 @@ export class UI {
     if (timeout > 0) {
       await new Promise((resolve) => setTimeout(resolve, timeout));
       if (this.currentTextId !== myTextId) return;
-      document.getElementById("text-visible").textContent = "";
+      text_visible.textContent = "";
+      text_invisible.textContent = "";
     }
   }
   update() {
@@ -170,6 +171,13 @@ export class UI {
       this.joystick.dir.x = 0;
       this.joystick.dir.y = 0;
       this.joystick.keys = false;
+      this.joystick.pointer = null;
+      this.joystick.dir = { x: 0, y: 0 };
+      this.joystick.element.style.top = "70%";
+      this.joystick.element.style.left = "50%";
+      this.joystick.element.style.opacity = 0.6;
+      this.joystick.stick.setAttribute("cx", "0px");
+      this.joystick.stick.setAttribute("cy", "0px");
     }
   }
 }
