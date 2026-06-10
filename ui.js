@@ -67,7 +67,10 @@ export class UI {
       }
     });
   }
-  async write(text, { speed = 20, timeout = 0, next = false } = {}) {
+  async write(
+    text,
+    { speed = 20, timeout = 0, next = false, skip = false } = {},
+  ) {
     const text_visible = document.getElementById("text-visible");
     const text_invisible = document.getElementById("text-invisible");
     const myTextId = Symbol("writeTask");
@@ -76,6 +79,10 @@ export class UI {
       clearTimeout(this.textTimeout);
     }
     if (speed > 0) {
+      let skipping = false;
+      document.body.ondblclick = (event) => {
+        skipping = true;
+      };
       text_invisible.innerHTML = text;
       document.getElementById("text").scroll(0, 0);
       const steps = [];
@@ -116,10 +123,14 @@ export class UI {
             });
           }
         }
-        await new Promise((resolve) => setTimeout(resolve, speed));
+        if (!skipping) {
+          await new Promise((resolve) => setTimeout(resolve, speed));
+        }
       }
     } else {
-      document.getElementById("text-visible").textContent = text;
+      text_visible.textContent = text;
+      text_invisible.textContent = "";
+
       document.getElementById("text").scroll(0, 0);
     }
     if (timeout > 0) {
@@ -128,6 +139,7 @@ export class UI {
       text_visible.textContent = "";
       text_invisible.textContent = "";
     }
+    document.body.ondblclick = null;
   }
   update() {
     if (!window.paused) {
