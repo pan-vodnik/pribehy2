@@ -2,6 +2,7 @@ import Phaser from "./phaser.esm.min.js";
 import { UI } from "./ui.js";
 import { Player } from "./player.js";
 import { World } from "./world.js";
+import { create } from "./things.js";
 
 class MainScene extends Phaser.Scene {
   constructor() {
@@ -25,6 +26,7 @@ class MainScene extends Phaser.Scene {
     this.cameras.main.startFollow(this.player, true); //, 0.1, 0.1);
     this.cameras.main.setZoom(2);
     window.ui.create(this);
+    create();
   }
 
   update() {

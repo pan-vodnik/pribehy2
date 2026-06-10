@@ -641,3 +641,11 @@ function playPribehy(self) {
 if (window.params.has("things")) {
   things = JSON.parse(decodeURIComponent(window.params.get("things")));
 }
+
+export async function create() {
+  await window.ui.write("Zdravím!", { timeout: 1000 });
+  await window.ui.write(
+    "Vítej ve hře <b>Příběhy 2</b>, inspirovanou originálními Příběhy.",
+    { timeout: 2000 },
+  );
+}
