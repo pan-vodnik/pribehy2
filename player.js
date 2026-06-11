@@ -12,7 +12,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
       key: "walk",
       frames: this.anims.generateFrameNumbers("person", {
         start: 1,
-        end: 4,
+        end: 7,
       }),
       frameRate: 10,
       repeat: -1,
