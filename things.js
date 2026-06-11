@@ -645,10 +645,10 @@ if (window.params.has("things")) {
 export async function create() {
   window.paused = true;
   await window.ui.write("Zdravím!", { next: true });
-  await window.ui.write(
-    "Vítej ve hře <b>Příběhy 2</b>, inspirovanou originálními Příběhy.",
-    { next: true },
-  );
+  // await window.ui.write(
+  //   "Vítej ve hře <b>Příběhy 2</b>, inspirované originálními Příběhy.",
+  //   { next: true },
+  // );
   window.paused = false;
   await window.ui.write("Zkus se tady projít.", {
     timeout: 3000,
