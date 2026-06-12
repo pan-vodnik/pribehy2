@@ -92,6 +92,32 @@
                 display: none;
                 pointer-events: none;
             }
+            #answers {
+                z-index: 10;
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                padding: 10px;
+                display: flex;
+                flex-direction: column;
+                justify-self: center;
+                width: 85%;
+                max-width: 500px;
+            }
+            button {
+                margin: 0.15rem;
+                border: none;
+                border-radius: 3px;
+                cursor: pointer;
+                padding: 0.35rem;
+            }
+            button {
+                background-color: #e0e0e0;
+            }
+            button.active {
+                background-color: #b3b3b3;
+            }
         </style>
     </head>
     <body>
@@ -121,6 +147,14 @@
                     id="text-invisible"
                     style="white-space: pre-wrap; visibility: hidden"
                 ></span>
+            </div>
+            <div id="answers">
+                <button>test 123 456 789</button>
+                <button>test 123 456 789</button>
+                <button>test 123 456 789</button>
+                <button>test 123 456 789</button>
+                <button>test 123 456 789</button>
+                <button>test 123 456 789</button>
             </div>
             <div id="content"></div>
             <div style="z-index: 10; position: absolute; bottom: 0">
