@@ -76,6 +76,7 @@ export class UI {
       skip = true,
       freeze = false,
       skipTime = false,
+      question = [],
     } = {},
   ) {
     if (freeze) {
@@ -144,7 +145,7 @@ export class UI {
           await new Promise((resolve) => setTimeout(resolve, speed));
         }
       }
-      await new Promise((resolve) => setTimeout(resolve, 500));
+      await new Promise((resolve) => setTimeout(resolve, 300));
     } else {
       text_visible.textContent = text;
       text_invisible.textContent = "";
@@ -170,6 +171,9 @@ export class UI {
       await new Promise((resolve) =>
         document.addEventListener("click", resolve),
       );
+    }
+    if (question.length > 0) {
+      // TODO
     }
     if (freeze) {
       window.paused = false;
