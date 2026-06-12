@@ -635,7 +635,7 @@ function playPribehy(self) {
   window.paused = true;
   document.getElementById("content").innerHTML =
     `<button style="position: absolute; top: calc(10% - 50px); right: 10%; width: 50px; height: 50px; font-size: 24px; background-color: red; border: none; color: white;" onclick="window.paused = false;document.getElementById(\'content\').innerHTML = \'\'">X</button>
-    <iframe style="border: 3px solid black; border-radius: 5px; width: 80%; height: 80%; margin: auto; zoom: 0.75;" src="https://pribehy.surge.sh"></iframe>`;
+    <iframe style="background-color: white; border: 3px solid black; border-radius: 5px; width: 80%; height: 80%; margin: auto; zoom: 0.75;" src="https://pribehy.surge.sh"></iframe>`;
 }
 
 if (window.params.has("things")) {
