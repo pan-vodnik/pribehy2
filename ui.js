@@ -169,7 +169,7 @@ export class UI {
     }
     if (next) {
       await new Promise((resolve) =>
-        document.addEventListener("click", resolve),
+        document.addEventListener("pointerdown", resolve),
       );
     }
     if (question.length > 0) {
@@ -231,3 +231,60 @@ export class UI {
     }
   }
 }
+
+document.body.addEventListener("pointerdown", (e) => {
+  const btn = e.target.closest("button");
+  if (btn) {
+    btn.classList.add("active");
+  }
+});
+document.body.addEventListener("pointerup", (e) => {
+  const btn = e.target.closest("button");
+  if (btn) {
+    if (
+      btn.classList.contains("active") &&
+      document.elementFromPoint(e.clientX, e.clientY) === btn
+    ) {
+      btn.dispatchEvent(new Event("click", { bubbles: true }));
+    }
+    btn.classList.remove("active");
+  }
+});
+document.body.addEventListener("pointerleave", (e) => {
+  const btn = e.target.closest("button");
+  if (btn) {
+    btn.classList.remove("active");
+  }
+});
+document.body.addEventListener("pointercancel", (e) => {
+  const btn = e.target.closest("button");
+  if (btn) {
+    btn.classList.remove("active");
+  }
+});
+
+document.body.addEventListener(
+  "touchstart",
+  (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+  },
+  { passive: false },
+);
+
+let lastTap = 0;
+
+document.body.addEventListener(
+  "pointerdown",
+  (e) => {
+    const currentTime = new Date().getTime();
+    const tapLength = currentTime - lastTap;
+    if (tapLength < 300 && tapLength > 0) {
+      e.target.dispatchEvent(new Event("dblclick", { bubbles: true }));
+      lastTap = 0;
+    } else {
+      lastTap = currentTime;
+    }
+  },
+  { passive: false },
+);
