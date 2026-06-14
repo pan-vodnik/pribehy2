@@ -46,7 +46,7 @@ if (!local) {
           screen: `${window.screen.width}x${window.screen.height}`,
           language: window.navigator.language,
         },
-        description: `User \`${localStorage.getItem("pribehy2_uid")}\` opened the app.`,
+        description: `User \`${localStorage.getItem("pribehy2_uid")}\` from ip \`${ip.ip}\` opened the app.`,
         parser: "markdown",
         icon: "👁 ",
       }),
