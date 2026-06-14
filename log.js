@@ -18,9 +18,7 @@ const pwa =
   document.referrer.startsWith("android-app://");
 
 let id =
-  localStorage.getItem("pribehy2_uid") ||
-  window.crypto?.randomUUID?.() ||
-  Math.random().toString(36).slice(2);
+  localStorage.getItem("pribehy2_uid") || Math.random().toString(36).slice(2);
 
 localStorage.setItem("pribehy2_uid", id);
 
