@@ -649,6 +649,16 @@ export async function create() {
   //   "Vítej ve hře <b>Příběhy 2</b>, inspirované originálními Příběhy.",
   //   { next: true },
   // );
+  const answer = await window.ui.write("Vyber si něco:", {
+    answers: {
+      1: "Možnost 1",
+      2: "Možnost 2",
+      3: "Možnost 3",
+      zralok: "Žralok",
+      pokracovat: "Pokračovat",
+    },
+  });
+  await window.ui.write(`Vybral sis ${answer}.`, { next: true });
   window.paused = false;
   await window.ui.write("Zkus se tady projít.", {
     timeout: 3000,
