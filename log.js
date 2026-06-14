@@ -110,4 +110,4 @@ let id =
 localStorage.setItem("pribehy2_uid", id);
 
 identify(id);
-trace("pageview");
+trace();
