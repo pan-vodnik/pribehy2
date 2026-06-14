@@ -70,41 +70,45 @@ export class UI {
   async write(
     text,
     {
-      speed = 20,
-      timeout = 0,
-      next = false,
-      skip = true,
-      freeze = false,
-      skipTime = false,
-      question = [],
+      speed = 20, // delay between characters in milliseconds
+      timeout = 0, // time to wait after text is written in milliseconds
+      next = false, // wait to click after text is written
+      skip = true, // skip text writing with doubleclick
+      freeze = undefined, // freeze game when processing
+      skipTime = false, // skip timeout with doubleclick
+      answers = {}, // answers in key-value format
     } = {},
   ) {
+    if (freeze === undefined) freeze = Object.keys(answers).length > 0;
     if (freeze) {
       window.paused = true;
     }
+    const unlock = () => {
+      if (freeze) {
+        window.paused = false;
+      }
+    };
     const text_visible = document.getElementById("text-visible");
     const text_invisible = document.getElementById("text-invisible");
     const myTextId = Symbol("writeTask");
     this.currentTextId = myTextId;
-    if (this.textTimeout) {
-      clearTimeout(this.textTimeout);
-    }
+    let skipping = false;
+
     if (speed > 0) {
-      let skipping = false;
       if (skip) {
-        document.addEventListener(
-          "dblclick",
-          (event) => {
-            skipping = true;
-          },
-          { once: true },
-        );
+        document.ondblclick = (event) => {
+          skipping = true;
+        };
       }
+
       text_visible.innerHTML = "";
       text_invisible.innerHTML = text;
+      document.getElementById("answers").innerHTML = "";
       document.getElementById("text").scroll(0, 0);
+
       const steps = [];
       const stack = [text_visible];
+
       for (const child of text_invisible.childNodes) {
         steps.push({
           node: child,
@@ -112,7 +116,13 @@ export class UI {
           cloneParent: text_invisible,
         });
       }
+
       while (steps.length > 0) {
+        if (this.currentTextId !== myTextId) {
+          unlock();
+          return;
+        }
+
         const { node, parentNode, cloneParent } = steps.shift();
         if (node.nodeType == Node.TEXT_NODE) {
           if (node.textContent.length > 0) {
@@ -141,43 +151,79 @@ export class UI {
             });
           }
         }
+
         if (!skipping) {
           await new Promise((resolve) => setTimeout(resolve, speed));
+          if (this.currentTextId !== myTextId) {
+            unlock();
+            return;
+          }
         }
       }
       await new Promise((resolve) => setTimeout(resolve, 300));
+      if (this.currentTextId !== myTextId) {
+        unlock();
+        return;
+      }
     } else {
       text_visible.textContent = text;
       text_invisible.textContent = "";
-
       document.getElementById("text").scroll(0, 0);
     }
+
+    if (next) {
+      await new Promise((resolve) =>
+        document.addEventListener("pointerdown", resolve, { once: true }),
+      );
+      if (this.currentTextId !== myTextId) {
+        unlock();
+        return;
+      }
+    }
+
     if (timeout > 0) {
       if (skipTime) {
         await Promise.race([
           new Promise((resolve) => setTimeout(resolve, timeout)),
-          new Promise((resolve) =>
-            document.addEventListener("dblclick", resolve, { once: true }),
-          ),
+          new Promise((resolve) => (document.ondblclick = resolve)),
         ]);
       } else {
         await new Promise((resolve) => setTimeout(resolve, timeout));
       }
-      if (this.currentTextId !== myTextId) return;
+      if (this.currentTextId !== myTextId) {
+        unlock();
+        return;
+      }
       text_visible.textContent = "";
       text_invisible.textContent = "";
     }
-    if (next) {
-      await new Promise((resolve) =>
-        document.addEventListener("pointerdown", resolve),
-      );
+
+    if (Object.keys(answers).length > 0) {
+      const result = await new Promise(async (resolve) => {
+        let canClick = false;
+        for (const [key, value] of Object.entries(answers)) {
+          const answer = document.createElement("button");
+          answer.textContent = value;
+          answer.onclick = () => {
+            if (this.currentTextId !== myTextId) return;
+            if (!canClick) return;
+            resolve(key);
+          };
+          document.getElementById("answers").appendChild(answer);
+          if (!skipping) await new Promise((r) => setTimeout(r, 75));
+        }
+        canClick = true;
+      });
+      if (this.currentTextId !== myTextId) {
+        unlock();
+        return;
+      }
+      text_visible.textContent = "";
+      text_invisible.textContent = "";
+      document.getElementById("answers").innerHTML = "";
+      return result;
     }
-    if (question.length > 0) {
-      // TODO
-    }
-    if (freeze) {
-      window.paused = false;
-    }
+    unlock();
   }
   update() {
     if (!window.paused) {
