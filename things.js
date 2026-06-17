@@ -651,11 +651,11 @@ export async function create() {
   // );
   const answer = await window.ui.write("Vyber si něco:", {
     answers: {
-      1: "Možnost 1",
-      2: "Možnost 2",
-      3: "Možnost 3",
-      zralok: "Žralok",
-      pokracovat: "Pokračovat",
+      1: "Možnost 1 󱢻",
+      2: "Možnost 2 󱢻",
+      3: "Možnost 3 󱢻",
+      zralok: "Žralok 󱢺",
+      pokracovat: "Pokračovat ",
     },
   });
   await window.ui.write(`Vybral sis ${answer}.`, { next: true });
