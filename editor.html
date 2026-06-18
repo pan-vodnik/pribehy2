@@ -414,6 +414,14 @@
                             <label for="objDepth">Hloubka (Depth)</label>
                             <input type="number" id="objDepth" />
                         </div>
+                        <div>
+                            <label for="objOriginX">Pivot X (0=vlevo, 1=vpravo)</label>
+                            <input type="number" id="objOriginX" step="0.05" value="0.5" />
+                        </div>
+                        <div>
+                            <label for="objOriginY">Pivot Y (0=nahoře, 1=dole)</label>
+                            <input type="number" id="objOriginY" step="0.05" value="1" />
+                        </div>
                     </div>
 
                     <div class="control-group">
@@ -612,6 +620,8 @@
                     scale: o.scale,
                     depth: o.depth,
                     locked: o.locked,
+                    originX: o.originX,
+                    originY: o.originY,
                     useManualDepth: o.useManualDepth,
                     notes: o.notes,
                     hitboxes: o.hitboxes || [],
@@ -685,6 +695,8 @@
                         hitboxes: item.hitboxes || [],
                         img: img,
                         locked: item.locked ?? false,
+                        originX: item.originX ?? 0.5,
+                        originY: item.originY ?? 1,
                         useManualDepth: item.useManualDepth ?? false,
                         notes: item.notes ?? "",
                     };
@@ -709,7 +721,9 @@
                     document.getElementById("autoYSort").checked;
                 objects.forEach((obj) => {
                     if (globalAutoY && !obj.useManualDepth) {
-                        obj.depth = obj.y;
+                        const originY = obj.originY ?? 1;
+                        const h = obj.img ? obj.img.height * obj.scale : 0;
+                        obj.depth = obj.y + h * (1 - originY);
                     }
                 });
                 objects.sort((a, b) => a.depth - b.depth);
@@ -738,6 +752,13 @@
                         scale: o.scale,
                         notes: o.notes,
                     };
+
+                    if (o.originX !== undefined && o.originX !== 0.5) {
+                        exportObj.originX = o.originX;
+                    }
+                    if (o.originY !== undefined && o.originY !== 1) {
+                        exportObj.originY = o.originY;
+                    }
 
                     // Only include depth if it's different from y or if manual depth is used
                     // But user asked to remove useManualDepth, so we'll just include depth if it's not default Y
@@ -816,6 +837,8 @@
                         "objX",
                         "objY",
                         "objDepth",
+                        "objOriginX",
+                        "objOriginY",
                         "objLocked",
                         "objManualDepth",
                         "objNotes",
@@ -844,6 +867,10 @@
                         obj.depth,
                     );
                 document.getElementById("objLocked").checked = obj.locked;
+                document.getElementById("objOriginX").value =
+                    obj.originX ?? 0.5;
+                document.getElementById("objOriginY").value =
+                    obj.originY ?? 1;
                 document.getElementById("objManualDepth").checked =
                     obj.useManualDepth || false;
                 if (activeId !== "objNotes")
@@ -952,6 +979,8 @@
                                 scale: 1,
                                 depth: 0,
                                 locked: false,
+                                originX: 0.5,
+                                originY: 1,
                                 useManualDepth: false,
                                 notes: "",
                                 hitboxes: [
@@ -982,6 +1011,8 @@
                 "objX",
                 "objY",
                 "objDepth",
+                "objOriginX",
+                "objOriginY",
                 "objNotes",
             ].forEach((id) => {
                 document.getElementById(id).oninput = (e) => {
@@ -996,11 +1027,26 @@
                         if (
                             document.getElementById("autoYSort").checked &&
                             !obj.useManualDepth
-                        )
-                            obj.depth = obj.y;
+                        ) {
+                            const originY = obj.originY ?? 1;
+                            const h = obj.img.height * obj.scale;
+                            obj.depth = obj.y + h * (1 - originY);
+                        }
                     }
                     if (id === "objDepth")
                         obj.depth = parseInt(e.target.value) || 0;
+                    if (id === "objOriginX") {
+                        const newVal = parseFloat(e.target.value);
+                        const delta = -obj.img.width * (newVal - (obj.originX ?? 0.5));
+                        obj.originX = newVal;
+                        obj.hitboxes.forEach(hb => hb.x += delta);
+                    }
+                    if (id === "objOriginY") {
+                        const newVal = parseFloat(e.target.value);
+                        const delta = -obj.img.height * (newVal - (obj.originY ?? 1));
+                        obj.originY = newVal;
+                        obj.hitboxes.forEach(hb => hb.y += delta);
+                    }
                     if (id === "objNotes") obj.notes = e.target.value;
                     sortObjects();
                     // syncInputs();
@@ -1242,12 +1288,18 @@
                     const w = obj.img.width * obj.scale;
                     const h = obj.img.height * obj.scale;
                     const pos = worldToScreen(obj.x, obj.y);
+                    const originX = obj.originX ?? 0.5;
+                    const originY = obj.originY ?? 1;
+                    const imgLeft = pos.sx - w * zoom * originX;
+                    const imgTop = pos.sy - h * zoom * originY;
+                    const imgRight = pos.sx + w * zoom * (1 - originX);
+                    const imgBottom = pos.sy + h * zoom * (1 - originY);
 
                     ctx.imageSmoothingEnabled = false;
                     ctx.drawImage(
                         obj.img,
-                        pos.sx - (w * zoom) / 2,
-                        pos.sy - h * zoom,
+                        imgLeft,
+                        imgTop,
                         w * zoom,
                         h * zoom,
                     );
@@ -1256,30 +1308,18 @@
                         ctx.strokeStyle = "#007acc";
                         ctx.lineWidth = 2;
                         ctx.strokeRect(
-                            pos.sx - (w * zoom) / 2,
-                            pos.sy - h * zoom,
-                            w * zoom,
-                            h * zoom,
+                            imgLeft,
+                            imgTop,
+                            imgRight - imgLeft,
+                            imgBottom - imgTop,
                         );
                         const isHitMode =
                             document.getElementById("editHitboxMode").checked;
                         if (!isHitMode) {
-                            drawHandle({
-                                sx: pos.sx - (w * zoom) / 2,
-                                sy: pos.sy - h * zoom,
-                            });
-                            drawHandle({
-                                sx: pos.sx + (w * zoom) / 2,
-                                sy: pos.sy - h * zoom,
-                            });
-                            drawHandle({
-                                sx: pos.sx - (w * zoom) / 2,
-                                sy: pos.sy,
-                            });
-                            drawHandle({
-                                sx: pos.sx + (w * zoom) / 2,
-                                sy: pos.sy,
-                            });
+                            drawHandle({ sx: imgLeft, sy: imgTop });
+                            drawHandle({ sx: imgRight, sy: imgTop });
+                            drawHandle({ sx: imgLeft, sy: imgBottom });
+                            drawHandle({ sx: imgRight, sy: imgBottom });
                         }
                     }
 
@@ -1324,17 +1364,23 @@
                 const pos = worldToScreen(obj.x, obj.y);
                 const w = obj.img.width * obj.scale * zoom,
                     h = obj.img.height * obj.scale * zoom;
+                const originX = obj.originX ?? 0.5;
+                const originY = obj.originY ?? 1;
+                const leftX = pos.sx - w * originX;
+                const rightX = pos.sx + w * (1 - originX);
+                const topY = pos.sy - h * originY;
+                const bottomY = pos.sy + h * (1 - originY);
                 const check = (x, y) => Math.hypot(x - mx, y - my) < 8;
                 const isHitboxMode =
                     document.getElementById("editHitboxMode").checked;
                 if (!isHitboxMode) {
-                    if (check(pos.sx - w / 2, pos.sy - h))
+                    if (check(leftX, topY))
                         return { type: "objScale", h: "nw" };
-                    if (check(pos.sx + w / 2, pos.sy - h))
+                    if (check(rightX, topY))
                         return { type: "objScale", h: "ne" };
-                    if (check(pos.sx - w / 2, pos.sy))
+                    if (check(leftX, bottomY))
                         return { type: "objScale", h: "sw" };
-                    if (check(pos.sx + w / 2, pos.sy))
+                    if (check(rightX, bottomY))
                         return { type: "objScale", h: "se" };
                 } else if (selectedHitboxIndex !== -1) {
                     const hb = obj.hitboxes[selectedHitboxIndex];
@@ -1472,11 +1518,17 @@
                         if (fObjId !== null) break;
                         const w = obj.img.width * obj.scale,
                             h = obj.img.height * obj.scale;
+                        const originX = obj.originX ?? 0.5;
+                        const originY = obj.originY ?? 1;
+                        const leftX = obj.x - w * originX;
+                        const rightX = obj.x + w * (1 - originX);
+                        const topY = obj.y - h * originY;
+                        const bottomY = obj.y + h * (1 - originY);
                         if (
-                            wp.x >= obj.x - w / 2 &&
-                            wp.x <= obj.x + w / 2 &&
-                            wp.y >= obj.y - h &&
-                            wp.y <= obj.y
+                            wp.x >= leftX &&
+                            wp.x <= rightX &&
+                            wp.y >= topY &&
+                            wp.y <= bottomY
                         ) {
                             fObjId = obj.id;
                             break;
@@ -1606,8 +1658,11 @@
                         if (
                             document.getElementById("autoYSort").checked &&
                             !obj.useManualDepth
-                        )
-                            obj.depth = obj.y;
+                        ) {
+                            const originY = obj.originY ?? 1;
+                            const h = obj.img.height * obj.scale;
+                            obj.depth = obj.y + h * (1 - originY);
+                        }
 
                         if (document.getElementById("autoYSort").checked)
                             sortObjects();
@@ -1731,8 +1786,11 @@
                     if (
                         document.getElementById("autoYSort").checked &&
                         !obj.useManualDepth
-                    )
-                        obj.depth = obj.y;
+                    ) {
+                        const originY = obj.originY ?? 1;
+                        const h = obj.img.height * obj.scale;
+                        obj.depth = obj.y + h * (1 - originY);
+                    }
                     sortObjects();
                     selectObjectById(obj.id, true);
                 }
