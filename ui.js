@@ -21,6 +21,16 @@ export class UI {
       right: "D",
     });
     this.interact_key = scene.input.keyboard.addKey("E");
+    this.last_interact = 0;
+    this.interact_key.on("down", () => {
+      const currentTime = Date.now();
+      const tapLength = currentTime - this.last_interact;
+      if (tapLength < 300 && tapLength > 0) {
+        document.dispatchEvent(new Event("dblclick", { bubbles: true }));
+      }
+      document.dispatchEvent(new Event("pointerdown"));
+      this.last_interact = currentTime;
+    });
     this.joystick.container.addEventListener("pointerdown", (e) => {
       if (this.joystick.pointer === null && !window.paused) {
         this.joystick.pointer = e.pointerId;
@@ -76,7 +86,7 @@ export class UI {
       skip = true, // skip text writing with doubleclick
       freeze = undefined, // freeze game when processing
       skipTime = false, // skip timeout with doubleclick
-      answers = {}, // answers in key-value format
+      answers = {}, // answers in key-text format
     } = {},
   ) {
     if (freeze === undefined) freeze = Object.keys(answers).length > 0;
@@ -199,21 +209,34 @@ export class UI {
     }
 
     if (Object.keys(answers).length > 0) {
+      const keys = "󰎦 󰎩 󰎬 󰎮 󰎰 󰎵 󰎸 󰎻 󰎾 󰎣".split(" ");
+      const codes = "ONE TWO THREE FOUR FIVE SIX SEVEN EIGHT NINE ZERO".split(
+        " ",
+      );
       const result = await new Promise(async (resolve) => {
         let canClick = false;
-        for (const [key, value] of Object.entries(answers)) {
+        for (const [i, [key, value]] of Object.entries(answers).entries()) {
           const answer = document.createElement("button");
-          answer.textContent = value;
+          answer.style.position = "relative";
+          answer.innerHTML =
+            "<span style='position: absolute; left: 5px'>" +
+            keys[i] +
+            "</span>" +
+            value;
           answer.onclick = () => {
             if (this.currentTextId !== myTextId) return;
             if (!canClick) return;
             resolve(key);
           };
+          main.input.keyboard.on("keydown-" + codes[i], answer.onclick);
           document.getElementById("answers").appendChild(answer);
           if (!skipping) await new Promise((r) => setTimeout(r, 75));
         }
         canClick = true;
       });
+      for (const [i, [key, value]] of Object.entries(answers).entries()) {
+        main.input.keyboard.off("keydown-" + codes[i]);
+      }
       if (this.currentTextId !== myTextId) {
         unlock();
         return;
@@ -323,7 +346,7 @@ let lastTap = 0;
 document.body.addEventListener(
   "pointerdown",
   (e) => {
-    const currentTime = new Date().getTime();
+    const currentTime = Date.now();
     const tapLength = currentTime - lastTap;
     if (tapLength < 300 && tapLength > 0) {
       e.target.dispatchEvent(new Event("dblclick", { bubbles: true }));
