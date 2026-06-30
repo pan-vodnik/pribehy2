@@ -150,13 +150,13 @@
                 overflow-y: auto;
             }
             .list-item {
-                padding: 6px 10px;
-                border-bottom: 1px solid #222;
+                padding: 4px 8px;
                 cursor: pointer;
+                border-bottom: 1px solid #eee;
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
-                font-size: 12px;
+                user-select: none;
             }
             .list-item:hover {
                 background: #2a2a2a;
@@ -316,7 +316,7 @@
                             id="snapSize"
                             value="1"
                             min="0"
-                            step="1"
+                            step="0.5"
                         />
                     </div>
                     <label class="checkbox-row" style="margin-bottom: 6px">
@@ -415,8 +415,15 @@
                             <input type="number" id="objDepth" />
                         </div>
                         <div>
-                            <label for="objOriginY">Pivot Y (0=nahoře, 1=dole)</label>
-                            <input type="number" id="objOriginY" step="0.05" value="1" />
+                            <label for="objOriginY"
+                                >Pivot Y (0=nahoře, 1=dole)</label
+                            >
+                            <input
+                                type="number"
+                                id="objOriginY"
+                                step="0.05"
+                                value="1"
+                            />
                         </div>
                     </div>
 
@@ -638,7 +645,10 @@
             function restoreState(state) {
                 restoreObjects(state.objects);
                 selectedIds = new Set(state.selIds);
-                selectedId = state.selIds.length > 0 ? state.selIds[state.selIds.length - 1] : null;
+                selectedId =
+                    state.selIds.length > 0
+                        ? state.selIds[state.selIds.length - 1]
+                        : null;
                 selectedHitboxIndex = state.selHbIdx;
                 selectedHitboxIndices = new Set(state.selHbIndices);
             }
@@ -798,7 +808,9 @@
                         processItem(item, name),
                     );
                 }
-                objects.forEach(o => { if (o.id >= nextId) nextId = o.id + 1; });
+                objects.forEach((o) => {
+                    if (o.id >= nextId) nextId = o.id + 1;
+                });
                 sortObjects();
                 refreshUI();
                 saveToLocal();
@@ -878,8 +890,7 @@
                 displayList.forEach((obj) => {
                     const div = document.createElement("div");
                     div.className =
-                        "list-item" +
-                        (isSelected(obj.id) ? " selected" : "");
+                        "list-item" + (isSelected(obj.id) ? " selected" : "");
                     div.innerHTML = `<span>${obj.name}</span> <span class="dim">z:${Math.round(obj.depth)}</span>`;
                     div.onclick = (e) => {
                         e.stopPropagation();
@@ -955,8 +966,7 @@
                         obj.depth,
                     );
                 document.getElementById("objLocked").checked = obj.locked;
-                document.getElementById("objOriginY").value =
-                    obj.originY ?? 1;
+                document.getElementById("objOriginY").value = obj.originY ?? 1;
                 document.getElementById("objManualDepth").checked =
                     obj.useManualDepth || false;
                 if (activeId !== "objNotes")
@@ -989,7 +999,9 @@
                         } else {
                             selectedIds.delete(id);
                             if (selectedId === id)
-                                selectedId = objects.find(o => selectedIds.has(o.id))?.id ?? null;
+                                selectedId =
+                                    objects.find((o) => selectedIds.has(o.id))
+                                        ?.id ?? null;
                         }
                     } else {
                         selectedIds.add(id);
@@ -1052,7 +1064,9 @@
             function getSelectedHitboxes() {
                 const obj = getSelectedObject();
                 if (!obj) return [];
-                return obj.hitboxes.filter((_, i) => selectedHitboxIndices.has(i));
+                return obj.hitboxes.filter((_, i) =>
+                    selectedHitboxIndices.has(i),
+                );
             }
 
             function selectHitbox(index, shift = false) {
@@ -1067,7 +1081,9 @@
                         } else {
                             selectedHitboxIndices.delete(index);
                             if (selectedHitboxIndex === index)
-                                selectedHitboxIndex = [...selectedHitboxIndices][selectedHitboxIndices.size - 1];
+                                selectedHitboxIndex = [
+                                    ...selectedHitboxIndices,
+                                ][selectedHitboxIndices.size - 1];
                         }
                     } else {
                         selectedHitboxIndices.add(index);
@@ -1213,15 +1229,25 @@
                 el.onchange = () => {
                     if (id === "objLocked") {
                         const o = getSelectedObject();
-                        if (o) { pushUndo(); o.locked = el.checked; }
+                        if (o) {
+                            pushUndo();
+                            o.locked = el.checked;
+                        }
                     }
                     if (id === "objManualDepth") {
                         const o = getSelectedObject();
-                        if (o) { pushUndo(); o.useManualDepth = el.checked; }
+                        if (o) {
+                            pushUndo();
+                            o.useManualDepth = el.checked;
+                        }
                     }
                     if (id === "autoYSort" || id === "objManualDepth")
                         sortObjects();
-                    if (id === "editHitboxMode") { selectHitbox(-1); isDrawingHitbox = false; canvas.style.cursor = "default"; }
+                    if (id === "editHitboxMode") {
+                        selectHitbox(-1);
+                        isDrawingHitbox = false;
+                        canvas.style.cursor = "default";
+                    }
                     syncInputs();
                     render();
                     saveToLocal();
@@ -1263,7 +1289,7 @@
                 if (!o || selectedHitboxIndices.size === 0) return;
                 pushUndo();
                 const sorted = [...selectedHitboxIndices].sort((a, b) => b - a);
-                sorted.forEach(i => o.hitboxes.splice(i, 1));
+                sorted.forEach((i) => o.hitboxes.splice(i, 1));
                 selectHitbox(-1);
                 saveToLocal();
             };
@@ -1276,10 +1302,12 @@
                     pushUndo();
                     const hb = o.hitboxes[selectedHitboxIndex];
                     if (id === "hbType") {
-                        getSelectedHitboxes().forEach(h => h.type = e.target.value);
+                        getSelectedHitboxes().forEach(
+                            (h) => (h.type = e.target.value),
+                        );
                     } else {
                         const v = parseFloat(e.target.value) || 0;
-                        getSelectedHitboxes().forEach(h => {
+                        getSelectedHitboxes().forEach((h) => {
                             if (id === "hbW") h.w = snap(Math.max(0.1, v));
                             if (id === "hbH") h.h = snap(Math.max(0.1, v));
                             if (id === "hbX") h.x = snap(v);
@@ -1298,7 +1326,9 @@
                 if (sel.length === 0) return;
                 pushUndo();
                 selectedIds.clear();
-                const sorted = [...sel].sort((a, b) => objects.indexOf(a) - objects.indexOf(b));
+                const sorted = [...sel].sort(
+                    (a, b) => objects.indexOf(a) - objects.indexOf(b),
+                );
                 sorted.forEach((obj) => {
                     const newObj = {
                         ...JSON.parse(JSON.stringify(obj)),
@@ -1338,7 +1368,8 @@
                     render();
                 }
             };
-            document.getElementById("importBtn").onclick = () => document.getElementById("fileInput").click();
+            document.getElementById("importBtn").onclick = () =>
+                document.getElementById("fileInput").click();
             document.getElementById("undoBtn").onclick = undo;
             document.getElementById("redoBtn").onclick = redo;
             document.getElementById("viewJsonBtn").onclick = () => {
@@ -1456,13 +1487,7 @@
                     const imgBottom = pos.sy;
 
                     ctx.imageSmoothingEnabled = false;
-                    ctx.drawImage(
-                        obj.img,
-                        imgLeft,
-                        imgTop,
-                        w * zoom,
-                        h * zoom,
-                    );
+                    ctx.drawImage(obj.img, imgLeft, imgTop, w * zoom, h * zoom);
 
                     if (isSel) {
                         ctx.strokeStyle = "#007acc";
@@ -1511,7 +1536,11 @@
                     }
 
                     if (document.getElementById("showPivot").checked) {
-                        const depthY = obj.y - obj.img.height * obj.scale * (1 - (obj.originY ?? 1));
+                        const depthY =
+                            obj.y -
+                            obj.img.height *
+                                obj.scale *
+                                (1 - (obj.originY ?? 1));
                         const ps = worldToScreen(obj.x, depthY);
                         ctx.fillStyle = "#0f0";
                         ctx.strokeStyle = "#fff";
@@ -1556,9 +1585,12 @@
                             const hby = pos.sy + hb.y * obj.scale * zoom;
                             const hbw = hb.w * obj.scale * zoom;
                             const hbh = hb.h * obj.scale * zoom;
-                            if (check(hbx, hby)) return { type: "hb", h: "nw", hi };
-                            if (check(hbx + hbw, hby)) return { type: "hb", h: "ne", hi };
-                            if (check(hbx, hby + hbh)) return { type: "hb", h: "sw", hi };
+                            if (check(hbx, hby))
+                                return { type: "hb", h: "nw", hi };
+                            if (check(hbx + hbw, hby))
+                                return { type: "hb", h: "ne", hi };
+                            if (check(hbx, hby + hbh))
+                                return { type: "hb", h: "sw", hi };
                             if (check(hbx + hbw, hby + hbh))
                                 return { type: "hb", h: "se", hi };
                         }
@@ -1586,8 +1618,12 @@
 
                 if (isDrawingHitbox && selObj) {
                     pushUndo();
-                    const hbX = snap((snap(wp.x) - snap(selObj.x)) / selObj.scale);
-                    const hbY = snap((snap(wp.y) - snap(selObj.y)) / selObj.scale);
+                    const hbX = snap(
+                        (snap(wp.x) - snap(selObj.x)) / selObj.scale,
+                    );
+                    const hbY = snap(
+                        (snap(wp.y) - snap(selObj.y)) / selObj.scale,
+                    );
                     selObj.hitboxes.push({
                         x: hbX,
                         y: hbY,
@@ -1618,11 +1654,12 @@
                         isResizingImg = true;
                         resizeHandle = handle.h;
                         startState = {};
-                        getSelectedObjects().forEach(o => {
+                        getSelectedObjects().forEach((o) => {
                             if (o.locked) return;
                             startState[o.id] = {
                                 scale: o.scale,
-                                x: o.x, y: o.y,
+                                x: o.x,
+                                y: o.y,
                                 w: o.img.width * o.scale,
                                 h: o.img.height * o.scale,
                             };
@@ -1631,7 +1668,8 @@
                         pushUndo();
                         isResizing = true;
                         resizeHandle = handle.h;
-                        if (handle.hi !== undefined) selectedHitboxIndex = handle.hi;
+                        if (handle.hi !== undefined)
+                            selectedHitboxIndex = handle.hi;
                         startState = {
                             ...getSelectedObject().hitboxes[
                                 selectedHitboxIndex
@@ -1710,6 +1748,7 @@
                 }
 
                 if (fObjId !== null) {
+                    const wasAlreadySelected = selectedIds.has(fObjId);
                     const wasHitboxMode = isHitMode;
 
                     if (fHbIdx !== -1 && wasHitboxMode) {
@@ -1732,20 +1771,30 @@
                     }
 
                     const primaryObj = getSelectedObject();
-                    if (wasHitboxMode && fHbIdx !== -1) {
+                    if (wasHitboxMode && fHbIdx !== -1 && wasAlreadySelected && isHbSelected(fHbIdx)) {
                         pushUndo();
                         isDragging = true;
                         startState = {};
                         const obj = getSelectedObject();
-                        getSelectedHitboxes().forEach(hb => {
-                            startState[obj.hitboxes.indexOf(hb)] = { x: hb.x, y: hb.y };
+                        getSelectedHitboxes().forEach((hb) => {
+                            startState[obj.hitboxes.indexOf(hb)] = {
+                                x: hb.x,
+                                y: hb.y,
+                            };
                         });
-                    } else if (!wasHitboxMode && primaryObj && !primaryObj.locked) {
+                    } else if (
+                        !wasHitboxMode &&
+                        primaryObj &&
+                        !primaryObj.locked &&
+                        wasAlreadySelected
+                    ) {
                         pushUndo();
                         isDragging = true;
-                        const allSelected = getSelectedObjects().filter(o => !o.locked);
+                        const allSelected = getSelectedObjects().filter(
+                            (o) => !o.locked,
+                        );
                         startState = {};
-                        allSelected.forEach(o => {
+                        allSelected.forEach((o) => {
                             startState[o.id] = { x: o.x, y: o.y };
                         });
                     }
@@ -1795,13 +1844,16 @@
                     const snappedHeight = snap(newHeight);
                     const ratio = Math.max(0.01, snappedHeight / primary.h);
 
-                    getSelectedObjects().forEach(o => {
+                    getSelectedObjects().forEach((o) => {
                         if (o.locked) return;
                         const s = startState[o.id];
                         if (!s) return;
                         const newScale = s.scale * ratio;
                         o.scale = Math.max(0.01, newScale);
-                        if (document.getElementById("autoYSort").checked && !o.useManualDepth) {
+                        if (
+                            document.getElementById("autoYSort").checked &&
+                            !o.useManualDepth
+                        ) {
                             const originY = o.originY ?? 1;
                             const h = o.img.height * o.scale;
                             o.depth = o.y - h * (1 - originY);
@@ -1826,29 +1878,33 @@
                     const movingWorldX =
                         obj.x +
                         (startState.x +
-                            (resizeHandle.includes("e")
-                                ? startState.w
-                                : 0)) *
+                            (resizeHandle.includes("e") ? startState.w : 0)) *
                             obj.scale +
                         (wp.x - dragStartMouseWorld.x);
                     const movingWorldY =
                         obj.y +
                         (startState.y +
-                            (resizeHandle.includes("s")
-                                ? startState.h
-                                : 0)) *
+                            (resizeHandle.includes("s") ? startState.h : 0)) *
                             obj.scale +
                         (wp.y - dragStartMouseWorld.y);
 
-                    const movingLocalX =
-                        snap((snap(movingWorldX) - obj.x) / obj.scale);
-                    const movingLocalY =
-                        snap((snap(movingWorldY) - obj.y) / obj.scale);
+                    const movingLocalX = snap(
+                        (snap(movingWorldX) - obj.x) / obj.scale,
+                    );
+                    const movingLocalY = snap(
+                        (snap(movingWorldY) - obj.y) / obj.scale,
+                    );
 
                     hb.x = snap(Math.min(fixedLocalX, movingLocalX));
                     hb.y = snap(Math.min(fixedLocalY, movingLocalY));
-                    hb.w = Math.max(0.1, snap(Math.abs(fixedLocalX - movingLocalX)));
-                    hb.h = Math.max(0.1, snap(Math.abs(fixedLocalY - movingLocalY)));
+                    hb.w = Math.max(
+                        0.1,
+                        snap(Math.abs(fixedLocalX - movingLocalX)),
+                    );
+                    hb.h = Math.max(
+                        0.1,
+                        snap(Math.abs(fixedLocalY - movingLocalY)),
+                    );
 
                     syncInputs();
                     render();
@@ -1860,18 +1916,26 @@
                         selectedHitboxIndex !== -1 &&
                         document.getElementById("editHitboxMode").checked
                     ) {
-                        getSelectedHitboxes().forEach(hb => {
+                        getSelectedHitboxes().forEach((hb) => {
                             const s = startState[obj.hitboxes.indexOf(hb)];
                             if (!s) return;
-                            const wx = snap(obj.x + s.x * obj.scale + (wp.x - dragStartMouseWorld.x));
-                            const wy = snap(obj.y + s.y * obj.scale + (wp.y - dragStartMouseWorld.y));
+                            const wx = snap(
+                                obj.x +
+                                    s.x * obj.scale +
+                                    (wp.x - dragStartMouseWorld.x),
+                            );
+                            const wy = snap(
+                                obj.y +
+                                    s.y * obj.scale +
+                                    (wp.y - dragStartMouseWorld.y),
+                            );
                             hb.x = snap((wx - obj.x) / obj.scale);
                             hb.y = snap((wy - obj.y) / obj.scale);
                         });
                     } else {
                         const dx = wp.x - dragStartMouseWorld.x;
                         const dy = wp.y - dragStartMouseWorld.y;
-                        getSelectedObjects().forEach(o => {
+                        getSelectedObjects().forEach((o) => {
                             if (o.locked) return;
                             const s = startState[o.id];
                             if (!s) return;
@@ -1896,7 +1960,8 @@
 
             window.onmouseup = () => {
                 if (isDragging || isPanning || isResizing || isResizingImg) {
-                    if (isDragging && selectedHitboxIndices.size === 0) sortObjects();
+                    if (isDragging && selectedHitboxIndices.size === 0)
+                        sortObjects();
                     refreshUI();
                     saveToLocal();
                     render();
@@ -1928,12 +1993,20 @@
                 const activeTag = document.activeElement.tagName.toLowerCase();
                 if (activeTag === "input" || activeTag === "textarea") return;
 
-                if (e.ctrlKey && !e.shiftKey && (e.key === "z" || e.key === "Z")) {
+                if (
+                    e.ctrlKey &&
+                    !e.shiftKey &&
+                    (e.key === "z" || e.key === "Z")
+                ) {
                     e.preventDefault();
                     undo();
                     return;
                 }
-                if (e.ctrlKey && e.shiftKey && (e.key === "z" || e.key === "Z")) {
+                if (
+                    e.ctrlKey &&
+                    e.shiftKey &&
+                    (e.key === "z" || e.key === "Z")
+                ) {
                     e.preventDefault();
                     redo();
                     return;
@@ -2009,35 +2082,65 @@
                     selectedHitboxIndex !== -1 &&
                     document.getElementById("editHitboxMode").checked
                 ) {
-                    if (e.key === "ArrowUp" || e.key === "ArrowDown" || e.key === "ArrowLeft" || e.key === "ArrowRight" || e.key === "Delete") {
+                    if (
+                        e.key === "ArrowUp" ||
+                        e.key === "ArrowDown" ||
+                        e.key === "ArrowLeft" ||
+                        e.key === "ArrowRight" ||
+                        e.key === "Delete"
+                    ) {
                         pushUndo();
                     }
                     const hbStep = step / obj.scale;
-                    if (e.key === "ArrowUp") getSelectedHitboxes().forEach(hb => hb.y -= hbStep);
-                    else if (e.key === "ArrowDown") getSelectedHitboxes().forEach(hb => hb.y += hbStep);
-                    else if (e.key === "ArrowLeft") getSelectedHitboxes().forEach(hb => hb.x -= hbStep);
-                    else if (e.key === "ArrowRight") getSelectedHitboxes().forEach(hb => hb.x += hbStep);
+                    if (e.key === "ArrowUp")
+                        getSelectedHitboxes().forEach((hb) => (hb.y -= hbStep));
+                    else if (e.key === "ArrowDown")
+                        getSelectedHitboxes().forEach((hb) => (hb.y += hbStep));
+                    else if (e.key === "ArrowLeft")
+                        getSelectedHitboxes().forEach((hb) => (hb.x -= hbStep));
+                    else if (e.key === "ArrowRight")
+                        getSelectedHitboxes().forEach((hb) => (hb.x += hbStep));
                     else if (e.key === "Delete") {
-                        const sorted = [...selectedHitboxIndices].sort((a, b) => b - a);
-                        sorted.forEach(i => obj.hitboxes.splice(i, 1));
+                        const sorted = [...selectedHitboxIndices].sort(
+                            (a, b) => b - a,
+                        );
+                        sorted.forEach((i) => obj.hitboxes.splice(i, 1));
                         selectHitbox(-1);
                     } else return;
                     syncInputs();
                     render();
                 } else {
-                    if (e.key === "ArrowUp" || e.key === "ArrowDown" || e.key === "ArrowLeft" || e.key === "ArrowRight" || e.key === "Delete") {
+                    if (
+                        e.key === "ArrowUp" ||
+                        e.key === "ArrowDown" ||
+                        e.key === "ArrowLeft" ||
+                        e.key === "ArrowRight" ||
+                        e.key === "Delete"
+                    ) {
                         pushUndo();
                     }
                     const allSelected = getSelectedObjects();
-                    if (e.key === "ArrowUp") allSelected.forEach(o => { if (!o.locked) o.y -= step; });
-                    else if (e.key === "ArrowDown") allSelected.forEach(o => { if (!o.locked) o.y += step; });
-                    else if (e.key === "ArrowLeft") allSelected.forEach(o => { if (!o.locked) o.x -= step; });
-                    else if (e.key === "ArrowRight") allSelected.forEach(o => { if (!o.locked) o.x += step; });
+                    if (e.key === "ArrowUp")
+                        allSelected.forEach((o) => {
+                            if (!o.locked) o.y -= step;
+                        });
+                    else if (e.key === "ArrowDown")
+                        allSelected.forEach((o) => {
+                            if (!o.locked) o.y += step;
+                        });
+                    else if (e.key === "ArrowLeft")
+                        allSelected.forEach((o) => {
+                            if (!o.locked) o.x -= step;
+                        });
+                    else if (e.key === "ArrowRight")
+                        allSelected.forEach((o) => {
+                            if (!o.locked) o.x += step;
+                        });
                     else if (e.key === "Delete") {
                         objects = objects.filter((o) => !isSelected(o.id));
                         selectObjectById(null);
                     } else return;
-                    allSelected.forEach(o => {
+                    allSelected.forEach((o) => {
                         if (o.locked) return;
                         if (
                             document.getElementById("autoYSort").checked &&
