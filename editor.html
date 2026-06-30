@@ -415,10 +415,6 @@
                             <input type="number" id="objDepth" />
                         </div>
                         <div>
-                            <label for="objOriginX">Pivot X (0=vlevo, 1=vpravo)</label>
-                            <input type="number" id="objOriginX" step="0.05" value="0.5" />
-                        </div>
-                        <div>
                             <label for="objOriginY">Pivot Y (0=nahoře, 1=dole)</label>
                             <input type="number" id="objOriginY" step="0.05" value="1" />
                         </div>
@@ -613,7 +609,6 @@
                     scale: o.scale,
                     depth: o.depth,
                     locked: o.locked,
-                    originX: o.originX,
                     originY: o.originY,
                     useManualDepth: o.useManualDepth,
                     notes: o.notes,
@@ -659,8 +654,7 @@
                 const state = undoStack.pop();
                 restoreState(state);
                 sortObjects();
-                updateObjectList();
-                updateHitboxList();
+                syncInputs();
                 render();
                 saveToLocal();
             }
@@ -676,8 +670,7 @@
                 const state = redoStack.pop();
                 restoreState(state);
                 sortObjects();
-                updateObjectList();
-                updateHitboxList();
+                syncInputs();
                 render();
                 saveToLocal();
             }
@@ -709,7 +702,6 @@
                     scale: o.scale,
                     depth: o.depth,
                     locked: o.locked,
-                    originX: o.originX,
                     originY: o.originY,
                     useManualDepth: o.useManualDepth,
                     notes: o.notes,
@@ -742,7 +734,7 @@
 
             function loadFromLocal() {
                 const data = localStorage.getItem("pribehy_editor_data");
-                if (data) importData(JSON.parse(data));
+                if (data) importData(JSON.parse(data), true);
 
                 const settings = localStorage.getItem(
                     "pribehy_editor_settings",
@@ -770,21 +762,27 @@
                 }
             }
 
-            function importData(data) {
+            function importData(data, skipUndo = false) {
+                if (!skipUndo) pushUndo();
+                selectedIds.clear();
+                selectedId = null;
+                selectedHitboxIndex = -1;
+                selectedHitboxIndices.clear();
                 objects = [];
                 const processItem = (item, nameFromKey) => {
-                    const img = new Image();
-                    img.onload = () => render();
-                    img.src = item.src;
-                    images[item.src] = img;
+                    if (!images[item.src]) {
+                        const img = new Image();
+                        img.onload = () => render();
+                        img.src = item.src;
+                        images[item.src] = img;
+                    }
                     const obj = {
                         ...item,
                         name: nameFromKey || item.name || "object",
                         image: item.image || item.name || nameFromKey,
                         hitboxes: item.hitboxes || [],
-                        img: img,
+                        img: images[item.src],
                         locked: item.locked ?? false,
-                        originX: item.originX ?? 0.5,
                         originY: item.originY ?? 1,
                         useManualDepth: item.useManualDepth ?? false,
                         notes: item.notes ?? "",
@@ -800,9 +798,10 @@
                         processItem(item, name),
                     );
                 }
+                objects.forEach(o => { if (o.id >= nextId) nextId = o.id + 1; });
                 sortObjects();
-                updateObjectList();
-                render();
+                refreshUI();
+                saveToLocal();
             }
 
             function sortObjects() {
@@ -812,7 +811,7 @@
                     if (globalAutoY && !obj.useManualDepth) {
                         const originY = obj.originY ?? 1;
                         const h = obj.img ? obj.img.height * obj.scale : 0;
-                        obj.depth = obj.y + h * (1 - originY);
+                        obj.depth = obj.y - h * (1 - originY);
                     }
                 });
                 objects.sort((a, b) => a.depth - b.depth);
@@ -841,13 +840,6 @@
                         scale: o.scale,
                         notes: o.notes,
                     };
-
-                    if (o.originX !== undefined && o.originX !== 0.5) {
-                        exportObj.originX = o.originX;
-                    }
-                    if (o.originY !== undefined && o.originY !== 1) {
-                        exportObj.originY = o.originY;
-                    }
 
                     // Only include depth if it's different from y or if manual depth is used
                     // But user asked to remove useManualDepth, so we'll just include depth if it's not default Y
@@ -934,7 +926,6 @@
                         "objX",
                         "objY",
                         "objDepth",
-                        "objOriginX",
                         "objOriginY",
                         "objLocked",
                         "objManualDepth",
@@ -964,8 +955,6 @@
                         obj.depth,
                     );
                 document.getElementById("objLocked").checked = obj.locked;
-                document.getElementById("objOriginX").value =
-                    obj.originX ?? 0.5;
                 document.getElementById("objOriginY").value =
                     obj.originY ?? 1;
                 document.getElementById("objManualDepth").checked =
@@ -1000,7 +989,7 @@
                         } else {
                             selectedIds.delete(id);
                             if (selectedId === id)
-                                selectedId = [...selectedIds][selectedIds.size - 1];
+                                selectedId = objects.find(o => selectedIds.has(o.id))?.id ?? null;
                         }
                     } else {
                         selectedIds.add(id);
@@ -1020,6 +1009,7 @@
                 const obj = getSelectedObject();
                 if (!obj) {
                     propsDiv.style.display = "none";
+                    syncInputs();
                 } else {
                     if (
                         document.getElementById("autoFront").checked &&
@@ -1142,7 +1132,6 @@
                                 scale: 1,
                                 depth: 0,
                                 locked: false,
-                                originX: 0.5,
                                 originY: 1,
                                 useManualDepth: false,
                                 notes: "",
@@ -1175,7 +1164,6 @@
                 "objX",
                 "objY",
                 "objDepth",
-                "objOriginX",
                 "objOriginY",
                 "objNotes",
             ].forEach((id) => {
@@ -1195,26 +1183,17 @@
                         ) {
                             const originY = obj.originY ?? 1;
                             const h = obj.img.height * obj.scale;
-                            obj.depth = obj.y + h * (1 - originY);
+                            obj.depth = obj.y - h * (1 - originY);
                         }
                     }
                     if (id === "objDepth")
                         obj.depth = parseInt(e.target.value) || 0;
-                    if (id === "objOriginX") {
-                        const newVal = parseFloat(e.target.value);
-                        const delta = -obj.img.width * (newVal - (obj.originX ?? 0.5));
-                        obj.originX = newVal;
-                        obj.hitboxes.forEach(hb => hb.x += delta);
-                    }
                     if (id === "objOriginY") {
-                        const newVal = parseFloat(e.target.value);
-                        const delta = -obj.img.height * (newVal - (obj.originY ?? 1));
-                        obj.originY = newVal;
-                        obj.hitboxes.forEach(hb => hb.y += delta);
+                        obj.originY = parseFloat(e.target.value);
                     }
                     if (id === "objNotes") obj.notes = e.target.value;
                     sortObjects();
-                    // syncInputs();
+                    syncInputs();
                     render();
                     saveToLocal();
                 };
@@ -1242,7 +1221,7 @@
                     }
                     if (id === "autoYSort" || id === "objManualDepth")
                         sortObjects();
-                    if (id === "editHitboxMode") selectHitbox(-1);
+                    if (id === "editHitboxMode") { selectHitbox(-1); isDrawingHitbox = false; canvas.style.cursor = "default"; }
                     syncInputs();
                     render();
                     saveToLocal();
@@ -1301,13 +1280,13 @@
                     } else {
                         const v = parseFloat(e.target.value) || 0;
                         getSelectedHitboxes().forEach(h => {
-                            if (id === "hbW") h.w = v;
-                            if (id === "hbH") h.h = v;
-                            if (id === "hbX") h.x = v;
-                            if (id === "hbY") h.y = v;
+                            if (id === "hbW") h.w = snap(Math.max(0.1, v));
+                            if (id === "hbH") h.h = snap(Math.max(0.1, v));
+                            if (id === "hbX") h.x = snap(v);
+                            if (id === "hbY") h.y = snap(v);
                         });
                     }
-                    // syncInputs();
+                    syncInputs();
                     render();
                     saveToLocal();
                 };
@@ -1359,6 +1338,7 @@
                     render();
                 }
             };
+            document.getElementById("importBtn").onclick = () => document.getElementById("fileInput").click();
             document.getElementById("undoBtn").onclick = undo;
             document.getElementById("redoBtn").onclick = redo;
             document.getElementById("viewJsonBtn").onclick = () => {
@@ -1470,12 +1450,10 @@
                     const w = obj.img.width * obj.scale;
                     const h = obj.img.height * obj.scale;
                     const pos = worldToScreen(obj.x, obj.y);
-                    const originX = obj.originX ?? 0.5;
-                    const originY = obj.originY ?? 1;
-                    const imgLeft = pos.sx - w * zoom * originX;
-                    const imgTop = pos.sy - h * zoom * originY;
-                    const imgRight = pos.sx + w * zoom * (1 - originX);
-                    const imgBottom = pos.sy + h * zoom * (1 - originY);
+                    const imgLeft = pos.sx - w * zoom * 0.5;
+                    const imgRight = pos.sx + w * zoom * 0.5;
+                    const imgTop = pos.sy - h * zoom;
+                    const imgBottom = pos.sy;
 
                     ctx.imageSmoothingEnabled = false;
                     ctx.drawImage(
@@ -1533,8 +1511,15 @@
                     }
 
                     if (document.getElementById("showPivot").checked) {
-                        ctx.fillStyle = isSel ? "#f00" : "#800";
-                        ctx.fillRect(pos.sx - 3, pos.sy - 3, 6, 6);
+                        const depthY = obj.y - obj.img.height * obj.scale * (1 - (obj.originY ?? 1));
+                        const ps = worldToScreen(obj.x, depthY);
+                        ctx.fillStyle = "#0f0";
+                        ctx.strokeStyle = "#fff";
+                        ctx.lineWidth = 2;
+                        ctx.beginPath();
+                        ctx.arc(ps.sx, ps.sy, 4, 0, Math.PI * 2);
+                        ctx.fill();
+                        ctx.stroke();
                     }
                 });
                 coordsDiv.textContent = `X: ${snap(camX).toFixed(1)} Y: ${snap(camY).toFixed(1)} | Zoom: ${Math.round(zoom * 100)}%`;
@@ -1551,12 +1536,10 @@
                     const pos = worldToScreen(obj.x, obj.y);
                     const w = obj.img.width * obj.scale * zoom,
                         h = obj.img.height * obj.scale * zoom;
-                    const originX = obj.originX ?? 0.5;
-                    const originY = obj.originY ?? 1;
-                    const leftX = pos.sx - w * originX;
-                    const rightX = pos.sx + w * (1 - originX);
-                    const topY = pos.sy - h * originY;
-                    const bottomY = pos.sy + h * (1 - originY);
+                    const leftX = pos.sx - w * 0.5;
+                    const rightX = pos.sx + w * 0.5;
+                    const topY = pos.sy - h;
+                    const bottomY = pos.sy;
                     if (!isHitboxMode) {
                         if (check(leftX, topY))
                             return { type: "objScale", h: "nw" };
@@ -1573,11 +1556,11 @@
                             const hby = pos.sy + hb.y * obj.scale * zoom;
                             const hbw = hb.w * obj.scale * zoom;
                             const hbh = hb.h * obj.scale * zoom;
-                            if (check(hbx, hby)) return { type: "hb", h: "nw" };
-                            if (check(hbx + hbw, hby)) return { type: "hb", h: "ne" };
-                            if (check(hbx, hby + hbh)) return { type: "hb", h: "sw" };
+                            if (check(hbx, hby)) return { type: "hb", h: "nw", hi };
+                            if (check(hbx + hbw, hby)) return { type: "hb", h: "ne", hi };
+                            if (check(hbx, hby + hbh)) return { type: "hb", h: "sw", hi };
                             if (check(hbx + hbw, hby + hbh))
-                                return { type: "hb", h: "se" };
+                                return { type: "hb", h: "se", hi };
                         }
                     }
                 }
@@ -1603,11 +1586,11 @@
 
                 if (isDrawingHitbox && selObj) {
                     pushUndo();
-                    const hbX = (wp.x - selObj.x) / selObj.scale;
-                    const hbY = (wp.y - selObj.y) / selObj.scale;
+                    const hbX = snap((snap(wp.x) - snap(selObj.x)) / selObj.scale);
+                    const hbY = snap((snap(wp.y) - snap(selObj.y)) / selObj.scale);
                     selObj.hitboxes.push({
-                        x: snap(hbX),
-                        y: snap(hbY),
+                        x: hbX,
+                        y: hbY,
                         w: 0.1,
                         h: 0.1,
                         type: "solid",
@@ -1648,6 +1631,7 @@
                         pushUndo();
                         isResizing = true;
                         resizeHandle = handle.h;
+                        if (handle.hi !== undefined) selectedHitboxIndex = handle.hi;
                         startState = {
                             ...getSelectedObject().hitboxes[
                                 selectedHitboxIndex
@@ -1709,12 +1693,10 @@
                         if (fObjId !== null) break;
                         const w = obj.img.width * obj.scale,
                             h = obj.img.height * obj.scale;
-                        const originX = obj.originX ?? 0.5;
-                        const originY = obj.originY ?? 1;
-                        const leftX = obj.x - w * originX;
-                        const rightX = obj.x + w * (1 - originX);
-                        const topY = obj.y - h * originY;
-                        const bottomY = obj.y + h * (1 - originY);
+                        const leftX = obj.x - w * 0.5;
+                        const rightX = obj.x + w * 0.5;
+                        const topY = obj.y - h;
+                        const bottomY = obj.y;
                         if (
                             wp.x >= leftX &&
                             wp.x <= rightX &&
@@ -1822,7 +1804,7 @@
                         if (document.getElementById("autoYSort").checked && !o.useManualDepth) {
                             const originY = o.originY ?? 1;
                             const h = o.img.height * o.scale;
-                            o.depth = o.y + h * (1 - originY);
+                            o.depth = o.y - h * (1 - originY);
                         }
                     });
 
@@ -1833,34 +1815,40 @@
 
                 if (isResizing) {
                     const hb = obj.hitboxes[selectedHitboxIndex];
-                    const dwx = (wp.x - dragStartMouseWorld.x) / obj.scale,
-                        dwy = (wp.y - dragStartMouseWorld.y) / obj.scale;
 
-                    // Pokud kreslíme nový nebo resizujeme z jihovýchodu
-                    const fixedX =
+                    const fixedLocalX =
                         startState.x +
                         (resizeHandle.includes("e") ? 0 : startState.w);
-                    const fixedY =
+                    const fixedLocalY =
                         startState.y +
                         (resizeHandle.includes("s") ? 0 : startState.h);
 
-                    const movingX = snap(
-                        startState.x +
+                    const movingWorldX =
+                        obj.x +
+                        (startState.x +
                             (resizeHandle.includes("e")
-                                ? startState.w + dwx
-                                : dwx),
-                    );
-                    const movingY = snap(
-                        startState.y +
+                                ? startState.w
+                                : 0)) *
+                            obj.scale +
+                        (wp.x - dragStartMouseWorld.x);
+                    const movingWorldY =
+                        obj.y +
+                        (startState.y +
                             (resizeHandle.includes("s")
-                                ? startState.h + dwy
-                                : dwy),
-                    );
+                                ? startState.h
+                                : 0)) *
+                            obj.scale +
+                        (wp.y - dragStartMouseWorld.y);
 
-                    hb.x = Math.min(fixedX, movingX);
-                    hb.y = Math.min(fixedY, movingY);
-                    hb.w = Math.max(0.1, Math.abs(fixedX - movingX));
-                    hb.h = Math.max(0.1, Math.abs(fixedY - movingY));
+                    const movingLocalX =
+                        snap((snap(movingWorldX) - obj.x) / obj.scale);
+                    const movingLocalY =
+                        snap((snap(movingWorldY) - obj.y) / obj.scale);
+
+                    hb.x = snap(Math.min(fixedLocalX, movingLocalX));
+                    hb.y = snap(Math.min(fixedLocalY, movingLocalY));
+                    hb.w = Math.max(0.1, snap(Math.abs(fixedLocalX - movingLocalX)));
+                    hb.h = Math.max(0.1, snap(Math.abs(fixedLocalY - movingLocalY)));
 
                     syncInputs();
                     render();
@@ -1872,13 +1860,13 @@
                         selectedHitboxIndex !== -1 &&
                         document.getElementById("editHitboxMode").checked
                     ) {
-                        const dx = (wp.x - dragStartMouseWorld.x) / obj.scale;
-                        const dy = (wp.y - dragStartMouseWorld.y) / obj.scale;
                         getSelectedHitboxes().forEach(hb => {
                             const s = startState[obj.hitboxes.indexOf(hb)];
                             if (!s) return;
-                            hb.x = snap(s.x + dx);
-                            hb.y = snap(s.y + dy);
+                            const wx = snap(obj.x + s.x * obj.scale + (wp.x - dragStartMouseWorld.x));
+                            const wy = snap(obj.y + s.y * obj.scale + (wp.y - dragStartMouseWorld.y));
+                            hb.x = snap((wx - obj.x) / obj.scale);
+                            hb.y = snap((wy - obj.y) / obj.scale);
                         });
                     } else {
                         const dx = wp.x - dragStartMouseWorld.x;
@@ -1895,7 +1883,7 @@
                             ) {
                                 const originY = o.originY ?? 1;
                                 const h = o.img.height * o.scale;
-                                o.depth = o.y + h * (1 - originY);
+                                o.depth = o.y - h * (1 - originY);
                             }
                         });
                         if (document.getElementById("autoYSort").checked)
@@ -1917,6 +1905,7 @@
                 isPanning = false;
                 isResizing = false;
                 isResizingImg = false;
+                canvas.style.cursor = "default";
             };
 
             canvas.onwheel = (e) => {
@@ -1939,12 +1928,17 @@
                 const activeTag = document.activeElement.tagName.toLowerCase();
                 if (activeTag === "input" || activeTag === "textarea") return;
 
-                if (e.ctrlKey && e.key === "z") {
+                if (e.ctrlKey && !e.shiftKey && (e.key === "z" || e.key === "Z")) {
                     e.preventDefault();
                     undo();
                     return;
                 }
-                if ((e.ctrlKey && e.key === "Z") || (e.ctrlKey && e.key === "y")) {
+                if (e.ctrlKey && e.shiftKey && (e.key === "z" || e.key === "Z")) {
+                    e.preventDefault();
+                    redo();
+                    return;
+                }
+                if (e.ctrlKey && !e.shiftKey && e.key === "y") {
                     e.preventDefault();
                     redo();
                     return;
@@ -1964,6 +1958,8 @@
                 }
                 if (e.key === "h") {
                     document.getElementById("editHitboxMode").click();
+                    isDrawingHitbox = false;
+                    canvas.style.cursor = "default";
                     return;
                 }
                 if (e.key === "v") {
@@ -1999,6 +1995,10 @@
                     saveToLocal();
                     return;
                 }
+                if (e.key === "p") {
+                    document.getElementById("playBtn").click();
+                    return;
+                }
 
                 if (!selectedId) return;
                 const obj = getSelectedObject();
@@ -2012,10 +2012,11 @@
                     if (e.key === "ArrowUp" || e.key === "ArrowDown" || e.key === "ArrowLeft" || e.key === "ArrowRight" || e.key === "Delete") {
                         pushUndo();
                     }
-                    if (e.key === "ArrowUp") getSelectedHitboxes().forEach(hb => hb.y -= step);
-                    else if (e.key === "ArrowDown") getSelectedHitboxes().forEach(hb => hb.y += step);
-                    else if (e.key === "ArrowLeft") getSelectedHitboxes().forEach(hb => hb.x -= step);
-                    else if (e.key === "ArrowRight") getSelectedHitboxes().forEach(hb => hb.x += step);
+                    const hbStep = step / obj.scale;
+                    if (e.key === "ArrowUp") getSelectedHitboxes().forEach(hb => hb.y -= hbStep);
+                    else if (e.key === "ArrowDown") getSelectedHitboxes().forEach(hb => hb.y += hbStep);
+                    else if (e.key === "ArrowLeft") getSelectedHitboxes().forEach(hb => hb.x -= hbStep);
+                    else if (e.key === "ArrowRight") getSelectedHitboxes().forEach(hb => hb.x += hbStep);
                     else if (e.key === "Delete") {
                         const sorted = [...selectedHitboxIndices].sort((a, b) => b - a);
                         sorted.forEach(i => obj.hitboxes.splice(i, 1));
@@ -2044,7 +2045,7 @@
                         ) {
                             const originY = o.originY ?? 1;
                             const h = o.img.height * o.scale;
-                            o.depth = o.y + h * (1 - originY);
+                            o.depth = o.y - h * (1 - originY);
                         }
                     });
                     sortObjects();
