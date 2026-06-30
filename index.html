@@ -142,7 +142,7 @@
                     reload
                 </button>
                 <button
-                    onpointerdown="location.href='?debug'"
+                    onpointerdown="(location.search.includes('debug')) ? location.search=location.search.replace('debug', '') : location.search+='&debug'"
                     style="padding: 10px"
                 >
                     debug
