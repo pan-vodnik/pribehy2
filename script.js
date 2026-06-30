@@ -16,15 +16,16 @@ class MainScene extends Phaser.Scene {
       frameWidth: 32,
       frameHeight: 32,
     });
-    this.load.image("room", "assets/images/room.png");
-    this.load.image("thing", "assets/images/thing.png");
+    this.load.image("chair", "assets/images/chair.png");
+    this.load.image("class", "assets/images/class.png");
+    this.load.image("table", "assets/images/table.png");
   }
 
   create() {
     this.player = new Player(this);
     this.world = new World(this);
     this.cameras.main.startFollow(this.player, true); //, 0.1, 0.1);
-    this.cameras.main.setZoom(2);
+    this.cameras.main.setZoom(3);
     window.ui.create(this);
     create();
   }
@@ -51,6 +52,8 @@ let config = {
     default: "arcade",
     arcade: {
       debug: params.has("debug"),
+      overlapBias: 1,
+      tileBias: 1,
     },
   },
   scene: MainScene,

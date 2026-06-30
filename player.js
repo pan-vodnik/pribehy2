@@ -5,19 +5,30 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     super(scene, x, y, "person");
     scene.add.existing(this);
     scene.physics.add.existing(this);
-    this.body.setSize(11, 30);
+    this.body.setSize(12, 5);
     this.setOrigin(0.5, 1);
+    this.body.setOffset(10, 25);
 
+    this.anims.create({
+      key: "idle",
+      frames: this.anims.generateFrameNumbers("person", {
+        start: 0,
+        end: 2,
+      }),
+      frameRate: 4,
+      repeat: -1,
+    });
     this.anims.create({
       key: "walk",
       frames: this.anims.generateFrameNumbers("person", {
-        start: 1,
-        end: 7,
+        start: 3,
+        end: 9,
       }),
       frameRate: 10,
       repeat: -1,
     });
     this.texture.setFilter(Phaser.Textures.FilterMode.NEAREST);
+    this.anims.play("idle");
 
     this.speed = 100;
     this.overlaps = [];
@@ -35,9 +46,9 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
           Math.pow(dir.x, 2) + Math.pow(dir.y, 2),
         ); // TODO: tweak speed
       } else {
-        this.anims.stop();
+        this.anims.play("idle", true);
+        this.anims.timeScale = 1;
         this.setVelocity(0);
-        this.setFrame(0);
       }
       this.getOverlaps();
       document.getElementById("interact").disabled =
@@ -45,9 +56,9 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
         this.overlaps.every((o) => !o.parent.interact);
     } else {
       document.getElementById("interact").disabled = true;
-      this.anims.stop();
+      this.anims.play("idle", true);
+      this.anims.timeScale = 1;
       this.setVelocity(0);
-      this.setFrame(0);
     }
   }
   getOverlaps() {
