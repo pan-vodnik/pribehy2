@@ -13,7 +13,7 @@ export class World {
       t.setScale(thing.scale);
       if (thing.interact) t.interact = thing.interact;
       t.setOrigin(0.5, 1);
-      t.setDepth(thing.depth);
+      t.setDepth(thing.depth || thing.y);
       t.zones = [];
       t.name = key;
       thing.hitboxes.forEach((hitbox) => {
