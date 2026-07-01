@@ -20,16 +20,16 @@ export class UI {
       left: "A",
       right: "D",
     });
-    this.interact_key = scene.input.keyboard.addKey("E");
-    this.last_interact = 0;
-    this.interact_key.on("down", () => {
+    this.interactKey = scene.input.keyboard.addKey("E");
+    this.lastInteract = 0;
+    this.interactKey.on("down", () => {
       const currentTime = Date.now();
-      const tapLength = currentTime - this.last_interact;
+      const tapLength = currentTime - this.lastInteract;
       if (tapLength < 300 && tapLength > 0) {
         document.dispatchEvent(new Event("dblclick", { bubbles: true }));
       }
       document.dispatchEvent(new Event("pointerdown"));
-      this.last_interact = currentTime;
+      this.lastInteract = currentTime;
     });
     this.joystick.container.addEventListener("pointerdown", (e) => {
       if (this.joystick.pointer === null && !window.paused) {
@@ -98,8 +98,8 @@ export class UI {
         window.paused = false;
       }
     };
-    const text_visible = document.getElementById("text-visible");
-    const text_invisible = document.getElementById("text-invisible");
+    const textVisible = document.getElementById("text-visible");
+    const textInisible = document.getElementById("text-invisible");
     const myTextId = Symbol("writeTask");
     this.currentTextId = myTextId;
     let skipping = false;
@@ -111,19 +111,19 @@ export class UI {
         };
       }
 
-      text_visible.innerHTML = "";
-      text_invisible.innerHTML = text;
+      textVisible.innerHTML = "";
+      textInisible.innerHTML = text;
       document.getElementById("answers").innerHTML = "";
       document.getElementById("text").scroll(0, 0);
 
       const steps = [];
-      const stack = [text_visible];
+      const stack = [textVisible];
 
-      for (const child of text_invisible.childNodes) {
+      for (const child of textInisible.childNodes) {
         steps.push({
           node: child,
-          parentNode: text_visible,
-          cloneParent: text_invisible,
+          parentNode: textVisible,
+          cloneParent: textInisible,
         });
       }
 
@@ -145,7 +145,7 @@ export class UI {
               parentNode: parentNode,
               cloneParent: cloneParent,
             });
-          } else if (cloneParent !== text_invisible) {
+          } else if (cloneParent !== textInisible) {
             cloneParent.remove();
           }
         }
@@ -176,8 +176,8 @@ export class UI {
         return;
       }
     } else {
-      text_visible.textContent = text;
-      text_invisible.textContent = "";
+      textVisible.textContent = text;
+      textInisible.textContent = "";
       document.getElementById("text").scroll(0, 0);
     }
 
@@ -204,8 +204,8 @@ export class UI {
         unlock();
         return;
       }
-      text_visible.textContent = "";
-      text_invisible.textContent = "";
+      textVisible.textContent = "";
+      textInisible.textContent = "";
     }
 
     if (Object.keys(answers).length > 0) {
@@ -241,8 +241,8 @@ export class UI {
         unlock();
         return;
       }
-      text_visible.textContent = "";
-      text_invisible.textContent = "";
+      textVisible.textContent = "";
+      textInisible.textContent = "";
       document.getElementById("answers").innerHTML = "";
       return result;
     }
@@ -283,7 +283,7 @@ export class UI {
         this.joystick.dir.x = vec.x;
         this.joystick.dir.y = vec.y;
       }
-      if (Phaser.Input.Keyboard.JustDown(this.interact_key)) {
+      if (Phaser.Input.Keyboard.JustDown(this.interactKey)) {
         this.scene.player.interact();
       }
     } else {
