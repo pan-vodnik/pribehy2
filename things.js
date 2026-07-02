@@ -2,9 +2,9 @@ export let things = {
   class: {
     image: "class",
     x: 0,
-    y: 150,
-    scale: 2.1875,
-    depth: -68.4,
+    y: 100,
+    scale: 1.65,
+    depth: -64.73599999999999,
     hitboxes: [
       {
         x: -64,
@@ -38,9 +38,54 @@ export let things = {
   },
   table: {
     image: "table",
-    x: -84,
-    y: -18,
-    scale: 1.5,
+    x: 21,
+    y: -8,
+    scale: 1.1739130434782608,
+    hitboxes: [
+      {
+        x: -17,
+        y: -13,
+        w: 34,
+        h: 13,
+        type: "solid",
+      },
+    ],
+  },
+  table1: {
+    image: "table",
+    x: 61,
+    y: -8,
+    scale: 1.1739130434782608,
+    hitboxes: [
+      {
+        x: -17,
+        y: -13,
+        w: 34,
+        h: 13,
+        type: "solid",
+      },
+    ],
+  },
+  table2: {
+    image: "table",
+    x: -79,
+    y: -8,
+    scale: 1.1739130434782608,
+    hitboxes: [
+      {
+        x: -17,
+        y: -13,
+        w: 34,
+        h: 13,
+        type: "solid",
+      },
+    ],
+  },
+  table3: {
+    image: "table",
+    x: -39,
+    y: -8,
+    scale: 1.1739130434782608,
     hitboxes: [
       {
         x: -17,
@@ -53,9 +98,9 @@ export let things = {
   },
   chair: {
     image: "chair",
-    x: -74,
-    y: -15,
-    scale: 1.3333333333333333,
+    x: 29,
+    y: -6,
+    scale: 1.2222222222222223,
     hitboxes: [
       {
         x: -5.5,
@@ -68,9 +113,639 @@ export let things = {
   },
   chair1: {
     image: "chair",
-    x: -94,
-    y: -15,
-    scale: 1.3333333333333333,
+    x: 13,
+    y: -6,
+    scale: 1.2222222222222223,
+    hitboxes: [
+      {
+        x: -5.5,
+        y: -10,
+        w: 11,
+        h: 10,
+        type: "solid",
+      },
+    ],
+  },
+  chair2: {
+    image: "chair",
+    x: 69,
+    y: -6,
+    scale: 1.2222222222222223,
+    hitboxes: [
+      {
+        x: -5.5,
+        y: -10,
+        w: 11,
+        h: 10,
+        type: "solid",
+      },
+    ],
+  },
+  chair3: {
+    image: "chair",
+    x: 53,
+    y: -6,
+    scale: 1.2222222222222223,
+    hitboxes: [
+      {
+        x: -5.5,
+        y: -10,
+        w: 11,
+        h: 10,
+        type: "solid",
+      },
+    ],
+  },
+  chair4: {
+    image: "chair",
+    x: -71,
+    y: -6,
+    scale: 1.2222222222222223,
+    hitboxes: [
+      {
+        x: -5.5,
+        y: -10,
+        w: 11,
+        h: 10,
+        type: "solid",
+      },
+    ],
+  },
+  chair5: {
+    image: "chair",
+    x: -87,
+    y: -6,
+    scale: 1.2222222222222223,
+    hitboxes: [
+      {
+        x: -5.5,
+        y: -10,
+        w: 11,
+        h: 10,
+        type: "solid",
+      },
+    ],
+  },
+  chair6: {
+    image: "chair",
+    x: -31,
+    y: -6,
+    scale: 1.2222222222222223,
+    hitboxes: [
+      {
+        x: -5.5,
+        y: -10,
+        w: 11,
+        h: 10,
+        type: "solid",
+      },
+    ],
+  },
+  chair7: {
+    image: "chair",
+    x: -47,
+    y: -6,
+    scale: 1.2222222222222223,
+    hitboxes: [
+      {
+        x: -5.5,
+        y: -10,
+        w: 11,
+        h: 10,
+        type: "solid",
+      },
+    ],
+  },
+  table4: {
+    image: "table",
+    x: 21,
+    y: 23,
+    scale: 1.1739130434782608,
+    hitboxes: [
+      {
+        x: -17,
+        y: -13,
+        w: 34,
+        h: 13,
+        type: "solid",
+      },
+    ],
+  },
+  table5: {
+    image: "table",
+    x: 61,
+    y: 23,
+    scale: 1.1739130434782608,
+    hitboxes: [
+      {
+        x: -17,
+        y: -13,
+        w: 34,
+        h: 13,
+        type: "solid",
+      },
+    ],
+  },
+  table6: {
+    image: "table",
+    x: -79,
+    y: 23,
+    scale: 1.1739130434782608,
+    hitboxes: [
+      {
+        x: -17,
+        y: -13,
+        w: 34,
+        h: 13,
+        type: "solid",
+      },
+    ],
+  },
+  table7: {
+    image: "table",
+    x: -39,
+    y: 23,
+    scale: 1.1739130434782608,
+    hitboxes: [
+      {
+        x: -17,
+        y: -13,
+        w: 34,
+        h: 13,
+        type: "solid",
+      },
+    ],
+  },
+  chair8: {
+    image: "chair",
+    x: 29,
+    y: 25,
+    scale: 1.2222222222222223,
+    hitboxes: [
+      {
+        x: -5.5,
+        y: -10,
+        w: 11,
+        h: 10,
+        type: "solid",
+      },
+    ],
+  },
+  chair9: {
+    image: "chair",
+    x: 13,
+    y: 25,
+    scale: 1.2222222222222223,
+    hitboxes: [
+      {
+        x: -5.5,
+        y: -10,
+        w: 11,
+        h: 10,
+        type: "solid",
+      },
+    ],
+  },
+  chair10: {
+    image: "chair",
+    x: 69,
+    y: 25,
+    scale: 1.2222222222222223,
+    hitboxes: [
+      {
+        x: -5.5,
+        y: -10,
+        w: 11,
+        h: 10,
+        type: "solid",
+      },
+    ],
+  },
+  chair11: {
+    image: "chair",
+    x: 53,
+    y: 25,
+    scale: 1.2222222222222223,
+    hitboxes: [
+      {
+        x: -5.5,
+        y: -10,
+        w: 11,
+        h: 10,
+        type: "solid",
+      },
+    ],
+  },
+  chair12: {
+    image: "chair",
+    x: -71,
+    y: 25,
+    scale: 1.2222222222222223,
+    hitboxes: [
+      {
+        x: -5.5,
+        y: -10,
+        w: 11,
+        h: 10,
+        type: "solid",
+      },
+    ],
+  },
+  chair13: {
+    image: "chair",
+    x: -87,
+    y: 25,
+    scale: 1.2222222222222223,
+    hitboxes: [
+      {
+        x: -5.5,
+        y: -10,
+        w: 11,
+        h: 10,
+        type: "solid",
+      },
+    ],
+  },
+  chair14: {
+    image: "chair",
+    x: -31,
+    y: 25,
+    scale: 1.2222222222222223,
+    hitboxes: [
+      {
+        x: -5.5,
+        y: -10,
+        w: 11,
+        h: 10,
+        type: "solid",
+      },
+    ],
+  },
+  chair15: {
+    image: "chair",
+    x: -47,
+    y: 25,
+    scale: 1.2222222222222223,
+    hitboxes: [
+      {
+        x: -5.5,
+        y: -10,
+        w: 11,
+        h: 10,
+        type: "solid",
+      },
+    ],
+  },
+  table8: {
+    image: "table",
+    x: 21,
+    y: 54,
+    scale: 1.1739130434782608,
+    hitboxes: [
+      {
+        x: -17,
+        y: -13,
+        w: 34,
+        h: 13,
+        type: "solid",
+      },
+    ],
+  },
+  table9: {
+    image: "table",
+    x: 61,
+    y: 54,
+    scale: 1.1739130434782608,
+    hitboxes: [
+      {
+        x: -17,
+        y: -13,
+        w: 34,
+        h: 13,
+        type: "solid",
+      },
+    ],
+  },
+  table10: {
+    image: "table",
+    x: -79,
+    y: 54,
+    scale: 1.1739130434782608,
+    hitboxes: [
+      {
+        x: -17,
+        y: -13,
+        w: 34,
+        h: 13,
+        type: "solid",
+      },
+    ],
+  },
+  table11: {
+    image: "table",
+    x: -39,
+    y: 54,
+    scale: 1.1739130434782608,
+    hitboxes: [
+      {
+        x: -17,
+        y: -13,
+        w: 34,
+        h: 13,
+        type: "solid",
+      },
+    ],
+  },
+  chair16: {
+    image: "chair",
+    x: 29,
+    y: 56,
+    scale: 1.2222222222222223,
+    hitboxes: [
+      {
+        x: -5.5,
+        y: -10,
+        w: 11,
+        h: 10,
+        type: "solid",
+      },
+    ],
+  },
+  chair17: {
+    image: "chair",
+    x: 13,
+    y: 56,
+    scale: 1.2222222222222223,
+    hitboxes: [
+      {
+        x: -5.5,
+        y: -10,
+        w: 11,
+        h: 10,
+        type: "solid",
+      },
+    ],
+  },
+  chair18: {
+    image: "chair",
+    x: 69,
+    y: 56,
+    scale: 1.2222222222222223,
+    hitboxes: [
+      {
+        x: -5.5,
+        y: -10,
+        w: 11,
+        h: 10,
+        type: "solid",
+      },
+    ],
+  },
+  chair19: {
+    image: "chair",
+    x: 53,
+    y: 56,
+    scale: 1.2222222222222223,
+    hitboxes: [
+      {
+        x: -5.5,
+        y: -10,
+        w: 11,
+        h: 10,
+        type: "solid",
+      },
+    ],
+  },
+  chair20: {
+    image: "chair",
+    x: -71,
+    y: 56,
+    scale: 1.2222222222222223,
+    hitboxes: [
+      {
+        x: -5.5,
+        y: -10,
+        w: 11,
+        h: 10,
+        type: "solid",
+      },
+    ],
+  },
+  chair21: {
+    image: "chair",
+    x: -87,
+    y: 56,
+    scale: 1.2222222222222223,
+    hitboxes: [
+      {
+        x: -5.5,
+        y: -10,
+        w: 11,
+        h: 10,
+        type: "solid",
+      },
+    ],
+  },
+  chair22: {
+    image: "chair",
+    x: -31,
+    y: 56,
+    scale: 1.2222222222222223,
+    hitboxes: [
+      {
+        x: -5.5,
+        y: -10,
+        w: 11,
+        h: 10,
+        type: "solid",
+      },
+    ],
+  },
+  chair23: {
+    image: "chair",
+    x: -47,
+    y: 56,
+    scale: 1.2222222222222223,
+    hitboxes: [
+      {
+        x: -5.5,
+        y: -10,
+        w: 11,
+        h: 10,
+        type: "solid",
+      },
+    ],
+  },
+  table12: {
+    image: "table",
+    x: 22,
+    y: 85,
+    scale: 1.1739130434782608,
+    hitboxes: [
+      {
+        x: -17,
+        y: -13,
+        w: 34,
+        h: 13,
+        type: "solid",
+      },
+    ],
+  },
+  table13: {
+    image: "table",
+    x: 62,
+    y: 85,
+    scale: 1.1739130434782608,
+    hitboxes: [
+      {
+        x: -17,
+        y: -13,
+        w: 34,
+        h: 13,
+        type: "solid",
+      },
+    ],
+  },
+  table14: {
+    image: "table",
+    x: -78,
+    y: 85,
+    scale: 1.1739130434782608,
+    hitboxes: [
+      {
+        x: -17,
+        y: -13,
+        w: 34,
+        h: 13,
+        type: "solid",
+      },
+    ],
+  },
+  table15: {
+    image: "table",
+    x: -38,
+    y: 85,
+    scale: 1.1739130434782608,
+    hitboxes: [
+      {
+        x: -17,
+        y: -13,
+        w: 34,
+        h: 13,
+        type: "solid",
+      },
+    ],
+  },
+  chair24: {
+    image: "chair",
+    x: 30,
+    y: 87,
+    scale: 1.2222222222222223,
+    hitboxes: [
+      {
+        x: -5.5,
+        y: -10,
+        w: 11,
+        h: 10,
+        type: "solid",
+      },
+    ],
+  },
+  chair25: {
+    image: "chair",
+    x: 14,
+    y: 87,
+    scale: 1.2222222222222223,
+    hitboxes: [
+      {
+        x: -5.5,
+        y: -10,
+        w: 11,
+        h: 10,
+        type: "solid",
+      },
+    ],
+  },
+  chair26: {
+    image: "chair",
+    x: 70,
+    y: 87,
+    scale: 1.2222222222222223,
+    hitboxes: [
+      {
+        x: -5.5,
+        y: -10,
+        w: 11,
+        h: 10,
+        type: "solid",
+      },
+    ],
+  },
+  chair27: {
+    image: "chair",
+    x: 54,
+    y: 87,
+    scale: 1.2222222222222223,
+    hitboxes: [
+      {
+        x: -5.5,
+        y: -10,
+        w: 11,
+        h: 10,
+        type: "solid",
+      },
+    ],
+  },
+  chair28: {
+    image: "chair",
+    x: -70,
+    y: 87,
+    scale: 1.2222222222222223,
+    hitboxes: [
+      {
+        x: -5.5,
+        y: -10,
+        w: 11,
+        h: 10,
+        type: "solid",
+      },
+    ],
+  },
+  chair29: {
+    image: "chair",
+    x: -86,
+    y: 87,
+    scale: 1.2222222222222223,
+    hitboxes: [
+      {
+        x: -5.5,
+        y: -10,
+        w: 11,
+        h: 10,
+        type: "solid",
+      },
+    ],
+  },
+  chair30: {
+    image: "chair",
+    x: -30,
+    y: 87,
+    scale: 1.2222222222222223,
+    hitboxes: [
+      {
+        x: -5.5,
+        y: -10,
+        w: 11,
+        h: 10,
+        type: "solid",
+      },
+    ],
+  },
+  chair31: {
+    image: "chair",
+    x: -46,
+    y: 87,
+    scale: 1.2222222222222223,
     hitboxes: [
       {
         x: -5.5,
