@@ -289,7 +289,7 @@
                                 screen: `${window.screen.width}x${window.screen.height}`,
                                 language: window.navigator.language,
                             },
-                            description: `User \`${localStorage.getItem("pribehy2_uid")}\` from ip \`${ip.ip}\` opened the app.`,
+                            description: `User \`${localStorage.getItem("pribehy2_uid")}\` from ip \`${ip.ip}\` opened the editor.`,
                             parser: "markdown",
                             icon: "👁 ",
                         }),
@@ -1771,7 +1771,12 @@
                     }
 
                     const primaryObj = getSelectedObject();
-                    if (wasHitboxMode && fHbIdx !== -1 && wasAlreadySelected && isHbSelected(fHbIdx)) {
+                    if (
+                        wasHitboxMode &&
+                        fHbIdx !== -1 &&
+                        wasAlreadySelected &&
+                        isHbSelected(fHbIdx)
+                    ) {
                         pushUndo();
                         isDragging = true;
                         startState = {};
