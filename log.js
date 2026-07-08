@@ -2,6 +2,7 @@ const local =
   window.location.hostname === "localhost" ||
   window.location.hostname.startsWith("192.168") ||
   window.location.hostname.startsWith("127.0.0.1");
+
 const ipCache = fetch("https://ipapi.co/json/")
   .then((res) => res.json())
   .then((data) => data)
@@ -12,6 +13,7 @@ const ipCache = fetch("https://ipapi.co/json/")
       country: "Unknown",
     };
   });
+
 const pwa =
   window.matchMedia("(display-mode: standalone)").matches ||
   window.navigator.standalone === true ||
@@ -19,8 +21,9 @@ const pwa =
 
 let id =
   localStorage.getItem("pribehy2_uid") || Math.random().toString(36).slice(2);
-
 localStorage.setItem("pribehy2_uid", id);
+
+const gl = document.createElement("canvas").getContext("webgl");
 
 if (!local) {
   ipCache.then((ip) => {
@@ -45,8 +48,15 @@ if (!local) {
           userAgent: navigator.userAgent,
           screen: `${window.screen.width}x${window.screen.height}`,
           language: window.navigator.language,
+          datetime: new Date().toLocaleString("de-DE"),
+          cpus: navigator.hardwareConcurrency,
+          memory: navigator.deviceMemory,
+          gpu: gl.getParameter(
+            gl.getExtension("WEBGL_debug_renderer_info")
+              ?.UNMASKED_RENDERER_WEBGL,
+          ),
         },
-        description: `User \`${localStorage.getItem("pribehy2_uid")}\` from ip \`${ip.ip}\` opened the app.`,
+        description: `User \`${localStorage.getItem("pribehy2_uid")}\` from ip \`${ip.ip}\` opened the app at \`${new Date().toLocaleString("de-DE")}.\``,
         parser: "markdown",
         icon: "👁 ",
       }),
