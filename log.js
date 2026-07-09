@@ -56,7 +56,7 @@ if (!local) {
               ?.UNMASKED_RENDERER_WEBGL,
           ),
         },
-        description: `User \`${localStorage.getItem("pribehy2_uid")}\` from ip \`${ip.ip}\` opened the app at \`${new Date().toLocaleString("de-DE")}.\``,
+        description: `User \`${localStorage.getItem("pribehy2_uid")}\` from ip \`${ip.ip}\` opened the app at \`${new Date().toLocaleString("de-DE")}\`.`,
         parser: "markdown",
         icon: "👁 ",
       }),
