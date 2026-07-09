@@ -9,6 +9,9 @@ export class World {
     this.thingsTriggerGroup = scene.physics.add.staticGroup();
     this.things = things;
     Object.entries(this.things).forEach(([key, thing]) => {
+      if (thing.src && !scene.textures.exists(thing.image)) {
+        scene.textures.addBase64(thing.image, thing.src);
+      }
       const t = this.thingsGroup.create(thing.x, thing.y, thing.image, false);
       t.setScale(thing.scale);
       if (thing.interact) t.interact = thing.interact;
