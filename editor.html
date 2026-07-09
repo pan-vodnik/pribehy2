@@ -311,6 +311,9 @@
             <div class="sidebar-scroll">
                 <h3>Soubory</h3>
                 <input type="file" id="fileInput" multiple accept="image/*" />
+                <div class="list-container" style="margin-top: 6px">
+                    <div id="fileList" class="scroll-list"></div>
+                </div>
 
                 <h3>Nastavení plochy</h3>
                 <div
@@ -523,6 +526,12 @@
                         Duplikovat objekt <kbd>D</kbd>
                     </button>
                     <button
+                        id="changeImgBtn"
+                        style="background: #3a4a3a; margin-top: 5px"
+                    >
+                        Změnit obrázek
+                    </button>
+                    <button
                         id="deleteBtn"
                         class="danger"
                         style="margin-top: 5px"
@@ -572,11 +581,15 @@
             </div>
         </div>
 
+        <input type="file" id="jsonImportInput" accept=".json,application/json" style="display:none" />
+        <input type="file" id="changeImgInput" accept="image/*" style="display:none" />
+
         <script>
             const canvas = document.getElementById("canvas");
             const ctx = canvas.getContext("2d");
             const viewport = document.getElementById("viewport");
             const fileInput = document.getElementById("fileInput");
+            const fileListDiv = document.getElementById("fileList");
             const objectListDiv = document.getElementById("objectList");
             const hitboxListDiv = document.getElementById("hitboxList");
             const propsDiv = document.getElementById("props");
@@ -584,6 +597,7 @@
             const snapSizeInput = document.getElementById("snapSize");
 
             let objects = [];
+            let files = [];
             let selectedId = null;
             let selectedIds = new Set();
             let selectedHitboxIndex = -1;
@@ -739,6 +753,7 @@
                     camY,
                     zoom,
                     nextId,
+                    files,
                 };
                 localStorage.setItem(
                     "pribehy_editor_data",
@@ -752,11 +767,28 @@
 
             function loadFromLocal() {
                 const data = localStorage.getItem("pribehy_editor_data");
-                if (data) importData(JSON.parse(data), true);
-
                 const settings = localStorage.getItem(
                     "pribehy_editor_settings",
                 );
+
+                if (settings) {
+                    const s = JSON.parse(settings);
+                    if (s.files) {
+                        s.files.forEach((f) => {
+                            if (!images[f.src]) {
+                                const img = new Image();
+                                img.onload = () => { sortObjects(); render(); };
+                                img.src = f.src;
+                                images[f.src] = img;
+                            }
+                        });
+                        files = s.files;
+                        updateFileList();
+                    }
+                }
+
+                if (data) importData(JSON.parse(data), true, true);
+
                 if (settings) {
                     const s = JSON.parse(settings);
                     snapSizeInput.value = s.snapSize ?? 1;
@@ -780,7 +812,7 @@
                 }
             }
 
-            function importData(data, skipUndo = false) {
+            function importData(data, skipUndo = false, skipSave = false) {
                 if (!skipUndo) pushUndo();
                 selectedIds.clear();
                 selectedId = null;
@@ -824,7 +856,7 @@
                 });
                 sortObjects();
                 refreshUI();
-                saveToLocal();
+                if (!skipSave) saveToLocal();
             }
 
             function sortObjects() {
@@ -903,10 +935,27 @@
                     const div = document.createElement("div");
                     div.className =
                         "list-item" + (isSelected(obj.id) ? " selected" : "");
-                    div.innerHTML = `<span>${obj.name}</span> <span class="dim">z:${Math.round(obj.depth)}</span>`;
+                    div.innerHTML =
+                        `<span>${obj.name} <span class="dim">z:${Math.round(obj.depth)}</span></span>` +
+                        `<button class="danger" style="width:26px;height:26px;padding:0;font-size:14px;line-height:1;flex-shrink:0" title="Smazat objekt">×</button>`;
                     div.onclick = (e) => {
+                        if (e.target.tagName === "BUTTON") return;
                         e.stopPropagation();
                         selectObjectById(obj.id, false, e.shiftKey);
+                    };
+                    const delBtn = div.querySelector("button");
+                    delBtn.onclick = (e) => {
+                        e.stopPropagation();
+                        pushUndo();
+                        objects = objects.filter((o) => o.id !== obj.id);
+                        if (selectedIds.has(obj.id)) {
+                            selectedIds.delete(obj.id);
+                            if (selectedId === obj.id)
+                                selectedId = selectedIds.values().next().value || null;
+                        }
+                        refreshUI();
+                        render();
+                        saveToLocal();
                     };
                     objectListDiv.appendChild(div);
                 });
@@ -1143,48 +1192,89 @@
             };
 
             fileInput.onchange = (e) => {
-                const files = Array.from(e.target.files);
-                files.forEach((file) => {
+                const fileArray = Array.from(e.target.files);
+                fileArray.forEach((file) => {
                     const reader = new FileReader();
                     reader.onload = (ev) => {
+                        const src = ev.target.result;
+                        if (files.find((f) => f.src === src)) return;
                         const img = new Image();
                         img.onload = () => {
-                            const obj = {
-                                id: nextId++,
+                            images[src] = img;
+                            files.push({
                                 name: file.name.split(".")[0],
-                                image: file.name.split(".")[0],
-                                src: ev.target.result,
-                                img: img,
-                                x: 0,
-                                y: 0,
-                                scale: 1,
-                                depth: 0,
-                                locked: false,
-                                originY: 1,
-                                useManualDepth: false,
-                                notes: "",
-                                hitboxes: [
-                                    {
-                                        x: -img.width / 2,
-                                        y: -img.height,
-                                        w: img.width,
-                                        h: img.height,
-                                        type: "solid",
-                                    },
-                                ],
-                            };
-                            pushUndo();
-                            objects.push(obj);
-                            images[ev.target.result] = img;
-                            sortObjects();
-                            selectObjectById(obj.id);
+                                src: src,
+                            });
+                            updateFileList();
                             saveToLocal();
                         };
-                        img.src = ev.target.result;
+                        img.src = src;
                     };
                     reader.readAsDataURL(file);
                 });
+                e.target.value = "";
             };
+
+            function updateFileList() {
+                fileListDiv.innerHTML = "";
+                files.forEach((f, fi) => {
+                    const div = document.createElement("div");
+                    div.className = "list-item";
+                    div.innerHTML =
+                        `<span>${f.name}</span>` +
+                        `<span style="display:flex;gap:4px">` +
+                        `<button class="primary" style="width:26px;height:26px;padding:0;font-size:14px;line-height:1" title="Vytvořit objekt">+</button>` +
+                        `<button class="danger" style="width:26px;height:26px;padding:0;font-size:14px;line-height:1" title="Smazat soubor">×</button>` +
+                        `</span>`;
+                    const addBtn = div.querySelector("button.primary");
+                    addBtn.onclick = (e) => {
+                        e.stopPropagation();
+                        createObjectFromFile(f);
+                    };
+                    const delBtn = div.querySelector("button.danger");
+                    delBtn.onclick = (e) => {
+                        e.stopPropagation();
+                        files.splice(fi, 1);
+                        updateFileList();
+                        saveToLocal();
+                    };
+                    fileListDiv.appendChild(div);
+                });
+            }
+
+            function createObjectFromFile(file) {
+                const img = images[file.src];
+                if (!img || !img.width) return;
+                pushUndo();
+                const obj = {
+                    id: nextId++,
+                    name: file.name,
+                    image: file.name,
+                    src: file.src,
+                    img: img,
+                    x: 0,
+                    y: 0,
+                    scale: 1,
+                    depth: 0,
+                    locked: false,
+                    originY: 1,
+                    useManualDepth: false,
+                    notes: "",
+                    hitboxes: [
+                        {
+                            x: -img.width / 2,
+                            y: -img.height,
+                            w: img.width,
+                            h: img.height,
+                            type: "solid",
+                        },
+                    ],
+                };
+                objects.push(obj);
+                sortObjects();
+                selectObjectById(obj.id);
+                saveToLocal();
+            }
 
             [
                 "objName",
@@ -1362,6 +1452,36 @@
 
             document.getElementById("duplicateBtn").onclick = duplicateObject;
 
+            document.getElementById("changeImgBtn").onclick = () => {
+                if (!getSelectedObject()) return;
+                document.getElementById("changeImgInput").click();
+            };
+
+            document.getElementById("changeImgInput").onchange = (e) => {
+                const file = e.target.files[0];
+                if (!file) return;
+                const obj = getSelectedObject();
+                if (!obj) return;
+                const reader = new FileReader();
+                reader.onload = (ev) => {
+                    const src = ev.target.result;
+                    const img = new Image();
+                    img.onload = () => {
+                        pushUndo();
+                        images[src] = img;
+                        obj.src = src;
+                        obj.img = img;
+                        sortObjects();
+                        refreshUI();
+                        render();
+                        saveToLocal();
+                    };
+                    img.src = src;
+                };
+                reader.readAsDataURL(file);
+                e.target.value = "";
+            };
+
             document.getElementById("deleteBtn").onclick = () => {
                 const sel = getSelectedObjects();
                 if (sel.length > 0) {
@@ -1381,7 +1501,23 @@
                 }
             };
             document.getElementById("importBtn").onclick = () =>
-                document.getElementById("fileInput").click();
+                document.getElementById("jsonImportInput").click();
+
+            document.getElementById("jsonImportInput").onchange = (e) => {
+                const file = e.target.files[0];
+                if (!file) return;
+                const reader = new FileReader();
+                reader.onload = (ev) => {
+                    try {
+                        const data = JSON.parse(ev.target.result);
+                        importData(data);
+                    } catch (err) {
+                        alert("Chyba při načítání JSON: " + err.message);
+                    }
+                };
+                reader.readAsText(file);
+                e.target.value = "";
+            };
             document.getElementById("undoBtn").onclick = undo;
             document.getElementById("redoBtn").onclick = redo;
             document.getElementById("viewJsonBtn").onclick = () => {
@@ -1418,7 +1554,7 @@
                 const clean = formatForExport();
                 const jsonString = JSON.stringify(clean);
                 const dataUri = encodeURIComponent(jsonString);
-                window.open(`index.html?things=${dataUri}`, "_blank");
+                window.open(`index.html?edit`, "_blank");
             };
 
             // --- Interaction ---
