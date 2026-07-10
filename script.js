@@ -43,7 +43,7 @@ class MainScene extends Phaser.Scene {
  */
 let config = {
   type: Phaser.AUTO,
-  backgroundColor: "#ffffff",
+  backgroundColor: "#222222",
   pixelArt: true,
   roundPixels: true,
   // smoothPixelArt: true,
