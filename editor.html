@@ -38,6 +38,18 @@
                 overflow-y: auto;
                 padding: 15px;
             }
+            #sidebar-right {
+                width: 300px;
+                background: var(--bg-sidebar);
+                border-left: 1px solid var(--border);
+                display: flex;
+                flex-direction: column;
+                box-sizing: border-box;
+                box-shadow: -2px 0 10px rgba(0, 0, 0, 0.5);
+                z-index: 10;
+                overflow-y: auto;
+                padding: 15px;
+            }
             #viewport {
                 flex-grow: 1;
                 position: relative;
@@ -58,8 +70,8 @@
                 padding-bottom: 5px;
                 letter-spacing: 1px;
             }
-            h3:first-child {
-                margin-top: 0;
+            .sidebar-scroll > h3 {
+                margin-top: 12px;
             }
 
             .control-group {
@@ -146,13 +158,17 @@
                 margin-bottom: 10px;
             }
             .scroll-list {
-                max-height: 200px;
+                max-height: 150px;
                 overflow-y: auto;
             }
+            .list-item:last-child {
+                border-bottom: none;
+            }
             .list-item {
-                padding: 4px 8px;
+                padding: 2px 8px;
+                font-size: 12px;
                 cursor: pointer;
-                border-bottom: 1px solid #eee;
+                border-bottom: 1px solid var(--border);
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
@@ -309,7 +325,7 @@
     <body>
         <div id="sidebar">
             <div class="sidebar-scroll">
-                <h3>Soubory</h3>
+                <h3 style="margin-top: 0">Soubory</h3>
                 <input type="file" id="fileInput" multiple accept="image/*" />
                 <div class="list-container" style="margin-top: 6px">
                     <div id="fileList" class="scroll-list"></div>
@@ -384,163 +400,7 @@
                     Vyčistit <kbd>K</kbd>
                 </button>
 
-                <div id="props" style="display: none">
-                    <h3>Vlastnosti objektu</h3>
-                    <div class="control-group">
-                        <label for="objName">Název</label>
-                        <input type="text" id="objName" />
-                    </div>
-
-                    <div
-                        style="
-                            display: grid;
-                            grid-template-columns: 1fr 1fr;
-                            gap: 10px;
-                        "
-                        class="control-group"
-                    >
-                        <div>
-                            <label for="objX">X</label>
-                            <input type="number" id="objX" step="0.1" />
-                        </div>
-                        <div>
-                            <label for="objY">Y</label>
-                            <input type="number" id="objY" step="0.1" />
-                        </div>
-                    </div>
-
-                    <div
-                        style="
-                            display: grid;
-                            grid-template-columns: 1fr 1fr;
-                            gap: 10px;
-                        "
-                        class="control-group"
-                    >
-                        <div>
-                            <label for="objScale">Měřítko (Scale)</label>
-                            <input type="number" id="objScale" step="0.01" />
-                        </div>
-                        <div>
-                            <label for="objDepth">Hloubka (Depth)</label>
-                            <input type="number" id="objDepth" />
-                        </div>
-                        <div>
-                            <label for="objOriginY"
-                                >Pivot Y (0=nahoře, 1=dole)</label
-                            >
-                            <input
-                                type="number"
-                                id="objOriginY"
-                                step="0.05"
-                                value="1"
-                            />
-                        </div>
-                    </div>
-
-                    <div class="control-group">
-                        <label for="objNotes">Poznámky</label>
-                        <textarea
-                            id="objNotes"
-                            placeholder="Zde můžete napsat poznámku k objektu..."
-                        ></textarea>
-                    </div>
-
-                    <label class="checkbox-row">
-                        <input type="checkbox" id="objManualDepth" />
-                        <span>Vlastní hloubka (ignorovat Auto Y-Sort)</span>
-                    </label>
-
-                    <label class="checkbox-row">
-                        <input type="checkbox" id="objLocked" />
-                        <span>Zamknout (nelze posouvat)</span>
-                    </label>
-
-                    <h3>Hitboxy</h3>
-                    <button id="addHitboxBtn" style="margin-bottom: 8px">
-                        + Nový hitbox <kbd>A</kbd>
-                    </button>
-                    <div class="list-container">
-                        <div id="hitboxList" class="scroll-list"></div>
-                    </div>
-
-                    <div
-                        id="hitboxProps"
-                        style="
-                            display: none;
-                            margin-top: 10px;
-                            background: rgba(0, 0, 0, 0.2);
-                            padding: 10px;
-                            border-radius: 4px;
-                            border: 1px solid #444;
-                        "
-                    >
-                        <div
-                            style="
-                                display: grid;
-                                grid-template-columns: 1fr 1fr;
-                                gap: 8px;
-                            "
-                        >
-                            <div>
-                                <label for="hbX">Rel X</label
-                                ><input type="number" id="hbX" step="0.1" />
-                            </div>
-                            <div>
-                                <label for="hbY">Rel Y</label
-                                ><input type="number" id="hbY" step="0.1" />
-                            </div>
-                            <div>
-                                <label for="hbW">Šířka</label
-                                ><input type="number" id="hbW" step="0.1" />
-                            </div>
-                            <div>
-                                <label for="hbH">Výška</label
-                                ><input type="number" id="hbH" step="0.1" />
-                            </div>
-                        </div>
-                        <div class="control-group" style="margin-top: 8px">
-                            <label for="hbType">Typ hitboxu</label>
-                            <select id="hbType">
-                                <option value="solid">
-                                    Pevný (neprůchozí)
-                                </option>
-                                <option value="trigger">
-                                    Dotykový (trigger)
-                                </option>
-                            </select>
-                        </div>
-                        <button
-                            id="delHitboxBtn"
-                            class="danger"
-                            style="margin-top: 10px; padding: 4px"
-                        >
-                            Smazat hitbox <kbd>Del</kbd>
-                        </button>
-                    </div>
-
-                    <button
-                        id="duplicateBtn"
-                        style="background: #3a4a3a; margin-top: 10px"
-                    >
-                        Duplikovat objekt <kbd>D</kbd>
-                    </button>
-                    <button
-                        id="changeImgBtn"
-                        style="background: #3a4a3a; margin-top: 5px"
-                    >
-                        Změnit obrázek
-                    </button>
-                    <button
-                        id="deleteBtn"
-                        class="danger"
-                        style="margin-top: 5px"
-                    >
-                        Smazat objekt <kbd>Del</kbd>
-                    </button>
-                </div>
-
-                <h3>Obsah scény</h3>
+                <h3>Obsah scény <span class="dim" style="font-weight:normal;font-size:10px">Shift+klik | Ctrl+A</span></h3>
                 <div class="list-container">
                     <div id="objectList" class="scroll-list"></div>
                 </div>
@@ -563,6 +423,162 @@
         <div id="viewport">
             <canvas id="canvas"></canvas>
             <div id="coords">X: 0 Y: 0 | Zoom: 100%</div>
+        </div>
+
+        <div id="sidebar-right">
+            <div id="props" style="display: none">
+                <h3 style="margin-top: 0">Vlastnosti objektu</h3>
+                <div class="control-group">
+                    <label for="objName">Název</label>
+                    <input type="text" id="objName" />
+                </div>
+
+                <div
+                    style="
+                        display: grid;
+                        grid-template-columns: 1fr 1fr;
+                        gap: 10px;
+                    "
+                    class="control-group"
+                >
+                    <div>
+                        <label for="objX">X</label>
+                        <input type="number" id="objX" step="0.1" />
+                    </div>
+                    <div>
+                        <label for="objY">Y</label>
+                        <input type="number" id="objY" step="0.1" />
+                    </div>
+                </div>
+
+                <div
+                    style="
+                        display: grid;
+                        grid-template-columns: 1fr 1fr;
+                        gap: 10px;
+                    "
+                    class="control-group"
+                >
+                    <div>
+                        <label for="objScale">Měřítko (Scale)</label>
+                        <input type="number" id="objScale" step="0.01" />
+                    </div>
+                    <div>
+                        <label for="objDepth">Hloubka (Depth)</label>
+                        <input type="number" id="objDepth" />
+                    </div>
+                    <div>
+                        <label for="objOriginY">Pivot Y (0=nahoře, 1=dole)</label>
+                        <input
+                            type="number"
+                            id="objOriginY"
+                            step="0.05"
+                            value="1"
+                        />
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label for="objNotes">Poznámky</label>
+                    <textarea
+                        id="objNotes"
+                        placeholder="Zde můžete napsat poznámku k objektu..."
+                    ></textarea>
+                </div>
+
+                <label class="checkbox-row">
+                    <input type="checkbox" id="objManualDepth" />
+                    <span>Vlastní hloubka (ignorovat Auto Y-Sort)</span>
+                </label>
+
+                <label class="checkbox-row">
+                    <input type="checkbox" id="objLocked" />
+                    <span>Zamknout (nelze posouvat)</span>
+                </label>
+
+                <h3>Hitboxy</h3>
+                <button id="addHitboxBtn" style="margin-bottom: 8px">
+                    + Nový hitbox <kbd>A</kbd>
+                </button>
+                <div class="list-container">
+                    <div id="hitboxList" class="scroll-list"></div>
+                </div>
+
+                <div
+                    id="hitboxProps"
+                    style="
+                        display: none;
+                        margin-top: 10px;
+                        background: rgba(0, 0, 0, 0.2);
+                        padding: 10px;
+                        border-radius: 4px;
+                        border: 1px solid #444;
+                    "
+                >
+                    <div
+                        style="
+                            display: grid;
+                            grid-template-columns: 1fr 1fr;
+                            gap: 8px;
+                        "
+                    >
+                        <div>
+                            <label for="hbX">Rel X</label
+                            ><input type="number" id="hbX" step="0.1" />
+                        </div>
+                        <div>
+                            <label for="hbY">Rel Y</label
+                            ><input type="number" id="hbY" step="0.1" />
+                        </div>
+                        <div>
+                            <label for="hbW">Šířka</label
+                            ><input type="number" id="hbW" step="0.1" />
+                        </div>
+                        <div>
+                            <label for="hbH">Výška</label
+                            ><input type="number" id="hbH" step="0.1" />
+                        </div>
+                    </div>
+                    <div class="control-group" style="margin-top: 8px">
+                        <label for="hbType">Typ hitboxu</label>
+                        <select id="hbType">
+                            <option value="solid">
+                                Pevný (neprůchozí)
+                            </option>
+                            <option value="trigger">
+                                Dotykový (trigger)
+                            </option>
+                        </select>
+                    </div>
+                    <button
+                        id="delHitboxBtn"
+                        class="danger"
+                        style="margin-top: 10px; padding: 4px"
+                    >
+                        Smazat hitbox <kbd>Del</kbd>
+                    </button>
+                </div>
+
+                <button
+                    id="duplicateBtn"
+                    style="background: #3a4a3a; margin-top: 10px"
+                >
+                    Duplikovat objekt <kbd>D</kbd>
+                </button>
+                <button
+                    id="changeImgBtn"
+                    style="background: #3a4a3a; margin-top: 5px"
+                >
+                    Změnit obrázek
+                </button>
+                <button
+                    id="deleteBtn"
+                    class="danger"
+                    style="margin-top: 5px"
+                >
+                    Smazat objekt <kbd>Del</kbd>
+                </button>
+            </div>
         </div>
 
         <div id="modal-overlay">
@@ -593,6 +609,7 @@
             const objectListDiv = document.getElementById("objectList");
             const hitboxListDiv = document.getElementById("hitboxList");
             const propsDiv = document.getElementById("props");
+            const sidebarRight = document.getElementById("sidebar-right");
             const coordsDiv = document.getElementById("coords");
             const snapSizeInput = document.getElementById("snapSize");
 
@@ -613,6 +630,8 @@
             // Interaction
             let isDragging = false;
             let isPanning = false;
+            let didMove = false;
+
             let isResizing = false;
             let isResizingImg = false;
             let isDrawingHitbox = false;
@@ -1637,25 +1656,6 @@
                     ctx.imageSmoothingEnabled = false;
                     ctx.drawImage(obj.img, imgLeft, imgTop, w * zoom, h * zoom);
 
-                    if (isSel) {
-                        ctx.strokeStyle = "#007acc";
-                        ctx.lineWidth = 2;
-                        ctx.strokeRect(
-                            imgLeft,
-                            imgTop,
-                            imgRight - imgLeft,
-                            imgBottom - imgTop,
-                        );
-                        const isHitMode =
-                            document.getElementById("editHitboxMode").checked;
-                        if (!isHitMode) {
-                            drawHandle({ sx: imgLeft, sy: imgTop });
-                            drawHandle({ sx: imgRight, sy: imgTop });
-                            drawHandle({ sx: imgLeft, sy: imgBottom });
-                            drawHandle({ sx: imgRight, sy: imgBottom });
-                        }
-                    }
-
                     if (document.getElementById("showHitboxes").checked) {
                         obj.hitboxes.forEach((hb, hi) => {
                             const isHbSel = isSel && isHbSelected(hi);
@@ -1681,6 +1681,25 @@
                                 drawHandle({ sx: hbx + hbw, sy: hby + hbh });
                             }
                         });
+                    }
+
+                    if (isSel) {
+                        ctx.strokeStyle = "#007acc";
+                        ctx.lineWidth = 2;
+                        ctx.strokeRect(
+                            imgLeft,
+                            imgTop,
+                            imgRight - imgLeft,
+                            imgBottom - imgTop,
+                        );
+                        const isHitMode =
+                            document.getElementById("editHitboxMode").checked;
+                        if (!isHitMode) {
+                            drawHandle({ sx: imgLeft, sy: imgTop });
+                            drawHandle({ sx: imgRight, sy: imgTop });
+                            drawHandle({ sx: imgLeft, sy: imgBottom });
+                            drawHandle({ sx: imgRight, sy: imgBottom });
+                        }
                     }
 
                     if (document.getElementById("showPivot").checked) {
@@ -1913,6 +1932,8 @@
                     } else if (e.shiftKey) {
                         if (!selectedIds.has(fObjId)) {
                             selectObjectById(fObjId, false, true);
+                        } else {
+                            selectObjectById(fObjId, false, true);
                         }
                     } else if (!selectedIds.has(fObjId)) {
                         selectObjectById(fObjId, false, false);
@@ -1936,6 +1957,7 @@
                             };
                         });
                     } else if (
+                        !e.shiftKey &&
                         !wasHitboxMode &&
                         primaryObj &&
                         !primaryObj.locked &&
@@ -2065,6 +2087,7 @@
                 }
 
                 if (isDragging) {
+                    didMove = true;
                     if (
                         selectedHitboxIndex !== -1 &&
                         document.getElementById("editHitboxMode").checked
@@ -2111,18 +2134,29 @@
                 }
             };
 
-            window.onmouseup = () => {
+            window.onmouseup = (e) => {
                 if (isDragging || isPanning || isResizing || isResizingImg) {
-                    if (isDragging && selectedHitboxIndices.size === 0)
-                        sortObjects();
-                    refreshUI();
+                    if (isDragging && selectedHitboxIndices.size === 0) {
+                        if (!didMove && selectedId && !e.shiftKey) {
+                            // click without drag → deselect
+                            selectedIds.clear();
+                            selectedId = null;
+                            propsDiv.style.display = "none";
+                            refreshUI();
+                        } else {
+                            sortObjects();
+                            refreshUI();
+                        }
+                    } else {
+                        refreshUI();
+                    }
                     saveToLocal();
-                    render();
                 }
                 isDragging = false;
                 isPanning = false;
                 isResizing = false;
                 isResizingImg = false;
+                didMove = false;
                 canvas.style.cursor = "default";
             };
 
@@ -2206,6 +2240,24 @@
                 }
                 if (e.key === "X" && e.shiftKey) {
                     document.getElementById("clearBtn").click();
+                    return;
+                }
+                if (e.ctrlKey && e.key === "a") {
+                    e.preventDefault();
+                    objects.forEach((o) => selectedIds.add(o.id));
+                    selectedId = [...selectedIds][0] ?? null;
+                    propsDiv.style.display = selectedId ? "block" : "none";
+                    updateObjectList();
+                    render();
+                    return;
+                }
+                if (e.ctrlKey && e.shiftKey && e.key === "a") {
+                    e.preventDefault();
+                    selectedIds.clear();
+                    selectedId = null;
+                    propsDiv.style.display = "none";
+                    updateObjectList();
+                    render();
                     return;
                 }
                 if (e.key === "a") {
