@@ -2,10 +2,10 @@ export let things = {
   "class": {
     "image": "class",
     "src": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIAAAACZCAMAAADQOcKqAAAAAXNSR0IArs4c6QAAAB5QTFRFAAAAAAAAlHZG0cku+/I2m4BVoZV9p5yG29vb////5NVVlQAAAAp0Uk5TAP///////////36JFFYAAAElSURBVHic7ZwxEoQwDMSS5g7+/+GDXOUPWDtjuQA6tI5my6y11sZmndk3Nhv+/yF4/0+dwCF4nvuCZgsggAACCCCAAAIIIIAAMQAfaIIAvu/8n42fSQD8EbSnPy8Bkhzoj183IECGA6OrGAfgHaCbUADegf74dQMCZDgwuopxAN4BugkF4B3oj183IECGA6OrGAfgHaCbUADegf74dQMCZDgwuopxAN4BugkF4B3oj183IECGA6OrGAfgHaCbUADegf74dQMCZDgwuopxAN4BugkF4B3oj183IECGA6OrGAfgHaCbUADegf74dQMCZDgwuopxAN4BugkF4B3oj183IECGA6OrGAfgHaCbUADegf74dQMCwA6wNzIdAvJOKv5WLvhesh8sqP4BK+iBqgAAAABJRU5ErkJggg==",
-    "x": 0,
-    "y": 100,
+    "x": -29,
+    "y": 103,
     "scale": 1.65,
-    "depth": -96.9,
+    "depth": -104,
     "hitboxes": [
       {
         "x": -64,
@@ -40,8 +40,8 @@ export let things = {
   "table": {
     "image": "table",
     "src": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACIAAAAXCAMAAABZLm3uAAAAAXNSR0IArs4c6QAAAB5QTFRFAAAAAAAAlHZG0cku+/I2m4BVoZV9p5yG29vb////5NVVlQAAAAp0Uk5TAP///////////36JFFYAAABfSURBVCiRzZBLDoAwCEQHrPe/skBiQy0fV8a36WJeBwJADQCdDRQqbCwKe961LE2B8qyaSjKlGOQWM8X/38vydb3CDXreUZ1/iKHKoW+ABH9UEkOyqWTGHX6moDAsvAC2UgY31rLEzgAAAABJRU5ErkJggg==",
-    "x": 21,
-    "y": -44,
+    "x": -8,
+    "y": -41,
     "scale": 1.1721311475409835,
     "hitboxes": [
       {
@@ -56,8 +56,8 @@ export let things = {
   "table1": {
     "image": "table",
     "src": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACIAAAAXCAMAAABZLm3uAAAAAXNSR0IArs4c6QAAAB5QTFRFAAAAAAAAlHZG0cku+/I2m4BVoZV9p5yG29vb////5NVVlQAAAAp0Uk5TAP///////////36JFFYAAABfSURBVCiRzZBLDoAwCEQHrPe/skBiQy0fV8a36WJeBwJADQCdDRQqbCwKe961LE2B8qyaSjKlGOQWM8X/38vydb3CDXreUZ1/iKHKoW+ABH9UEkOyqWTGHX6moDAsvAC2UgY31rLEzgAAAABJRU5ErkJggg==",
-    "x": 61,
-    "y": -44,
+    "x": 32,
+    "y": -41,
     "scale": 1.1721311475409835,
     "hitboxes": [
       {
@@ -72,8 +72,8 @@ export let things = {
   "table2": {
     "image": "table",
     "src": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACIAAAAXCAMAAABZLm3uAAAAAXNSR0IArs4c6QAAAB5QTFRFAAAAAAAAlHZG0cku+/I2m4BVoZV9p5yG29vb////5NVVlQAAAAp0Uk5TAP///////////36JFFYAAABfSURBVCiRzZBLDoAwCEQHrPe/skBiQy0fV8a36WJeBwJADQCdDRQqbCwKe961LE2B8qyaSjKlGOQWM8X/38vydb3CDXreUZ1/iKHKoW+ABH9UEkOyqWTGHX6moDAsvAC2UgY31rLEzgAAAABJRU5ErkJggg==",
-    "x": -79,
-    "y": -44,
+    "x": -108,
+    "y": -41,
     "scale": 1.1721311475409835,
     "hitboxes": [
       {
@@ -88,8 +88,8 @@ export let things = {
   "table3": {
     "image": "table",
     "src": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACIAAAAXCAMAAABZLm3uAAAAAXNSR0IArs4c6QAAAB5QTFRFAAAAAAAAlHZG0cku+/I2m4BVoZV9p5yG29vb////5NVVlQAAAAp0Uk5TAP///////////36JFFYAAABfSURBVCiRzZBLDoAwCEQHrPe/skBiQy0fV8a36WJeBwJADQCdDRQqbCwKe961LE2B8qyaSjKlGOQWM8X/38vydb3CDXreUZ1/iKHKoW+ABH9UEkOyqWTGHX6moDAsvAC2UgY31rLEzgAAAABJRU5ErkJggg==",
-    "x": -39,
-    "y": -44,
+    "x": -68,
+    "y": -41,
     "scale": 1.1721311475409835,
     "hitboxes": [
       {
@@ -104,8 +104,8 @@ export let things = {
   "chair": {
     "image": "chair",
     "src": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAASCAMAAAC6q9RHAAAAAXNSR0IArs4c6QAAAB5QTFRFAAAAAAAAlHZG0cku+/I2m4BVoZV9p5yG29vb////5NVVlQAAAAp0Uk5TAP///////////36JFFYAAABNSURBVAiZjY9LDgAxCEIR6f2vPML8uiwL8jCVWAAoC1Etq35MMJJMqNUZd1hhmSlaoheUTmV3ezPumo/feT+d7YVJo1y09eDEcX9j/ALi+AHYqeKLXAAAAABJRU5ErkJggg==",
-    "x": 29,
-    "y": -42,
+    "x": 0,
+    "y": -39,
     "scale": 1.222222222222222,
     "hitboxes": [
       {
@@ -120,8 +120,8 @@ export let things = {
   "chair1": {
     "image": "chair",
     "src": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAASCAMAAAC6q9RHAAAAAXNSR0IArs4c6QAAAB5QTFRFAAAAAAAAlHZG0cku+/I2m4BVoZV9p5yG29vb////5NVVlQAAAAp0Uk5TAP///////////36JFFYAAABNSURBVAiZjY9LDgAxCEIR6f2vPML8uiwL8jCVWAAoC1Etq35MMJJMqNUZd1hhmSlaoheUTmV3ezPumo/feT+d7YVJo1y09eDEcX9j/ALi+AHYqeKLXAAAAABJRU5ErkJggg==",
-    "x": 13,
-    "y": -42,
+    "x": -16,
+    "y": -39,
     "scale": 1.222222222222222,
     "hitboxes": [
       {
@@ -136,8 +136,8 @@ export let things = {
   "chair2": {
     "image": "chair",
     "src": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAASCAMAAAC6q9RHAAAAAXNSR0IArs4c6QAAAB5QTFRFAAAAAAAAlHZG0cku+/I2m4BVoZV9p5yG29vb////5NVVlQAAAAp0Uk5TAP///////////36JFFYAAABNSURBVAiZjY9LDgAxCEIR6f2vPML8uiwL8jCVWAAoC1Etq35MMJJMqNUZd1hhmSlaoheUTmV3ezPumo/feT+d7YVJo1y09eDEcX9j/ALi+AHYqeKLXAAAAABJRU5ErkJggg==",
-    "x": 69,
-    "y": -42,
+    "x": 40,
+    "y": -39,
     "scale": 1.222222222222222,
     "hitboxes": [
       {
@@ -152,8 +152,8 @@ export let things = {
   "chair3": {
     "image": "chair",
     "src": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAASCAMAAAC6q9RHAAAAAXNSR0IArs4c6QAAAB5QTFRFAAAAAAAAlHZG0cku+/I2m4BVoZV9p5yG29vb////5NVVlQAAAAp0Uk5TAP///////////36JFFYAAABNSURBVAiZjY9LDgAxCEIR6f2vPML8uiwL8jCVWAAoC1Etq35MMJJMqNUZd1hhmSlaoheUTmV3ezPumo/feT+d7YVJo1y09eDEcX9j/ALi+AHYqeKLXAAAAABJRU5ErkJggg==",
-    "x": 53,
-    "y": -42,
+    "x": 24,
+    "y": -39,
     "scale": 1.222222222222222,
     "hitboxes": [
       {
@@ -168,8 +168,8 @@ export let things = {
   "chair4": {
     "image": "chair",
     "src": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAASCAMAAAC6q9RHAAAAAXNSR0IArs4c6QAAAB5QTFRFAAAAAAAAlHZG0cku+/I2m4BVoZV9p5yG29vb////5NVVlQAAAAp0Uk5TAP///////////36JFFYAAABNSURBVAiZjY9LDgAxCEIR6f2vPML8uiwL8jCVWAAoC1Etq35MMJJMqNUZd1hhmSlaoheUTmV3ezPumo/feT+d7YVJo1y09eDEcX9j/ALi+AHYqeKLXAAAAABJRU5ErkJggg==",
-    "x": -71,
-    "y": -42,
+    "x": -100,
+    "y": -39,
     "scale": 1.222222222222222,
     "hitboxes": [
       {
@@ -184,8 +184,8 @@ export let things = {
   "chair5": {
     "image": "chair",
     "src": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAASCAMAAAC6q9RHAAAAAXNSR0IArs4c6QAAAB5QTFRFAAAAAAAAlHZG0cku+/I2m4BVoZV9p5yG29vb////5NVVlQAAAAp0Uk5TAP///////////36JFFYAAABNSURBVAiZjY9LDgAxCEIR6f2vPML8uiwL8jCVWAAoC1Etq35MMJJMqNUZd1hhmSlaoheUTmV3ezPumo/feT+d7YVJo1y09eDEcX9j/ALi+AHYqeKLXAAAAABJRU5ErkJggg==",
-    "x": -87,
-    "y": -42,
+    "x": -116,
+    "y": -39,
     "scale": 1.222222222222222,
     "hitboxes": [
       {
@@ -200,8 +200,8 @@ export let things = {
   "chair6": {
     "image": "chair",
     "src": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAASCAMAAAC6q9RHAAAAAXNSR0IArs4c6QAAAB5QTFRFAAAAAAAAlHZG0cku+/I2m4BVoZV9p5yG29vb////5NVVlQAAAAp0Uk5TAP///////////36JFFYAAABNSURBVAiZjY9LDgAxCEIR6f2vPML8uiwL8jCVWAAoC1Etq35MMJJMqNUZd1hhmSlaoheUTmV3ezPumo/feT+d7YVJo1y09eDEcX9j/ALi+AHYqeKLXAAAAABJRU5ErkJggg==",
-    "x": -31,
-    "y": -42,
+    "x": -60,
+    "y": -39,
     "scale": 1.222222222222222,
     "hitboxes": [
       {
@@ -216,8 +216,8 @@ export let things = {
   "chair7": {
     "image": "chair",
     "src": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAASCAMAAAC6q9RHAAAAAXNSR0IArs4c6QAAAB5QTFRFAAAAAAAAlHZG0cku+/I2m4BVoZV9p5yG29vb////5NVVlQAAAAp0Uk5TAP///////////36JFFYAAABNSURBVAiZjY9LDgAxCEIR6f2vPML8uiwL8jCVWAAoC1Etq35MMJJMqNUZd1hhmSlaoheUTmV3ezPumo/feT+d7YVJo1y09eDEcX9j/ALi+AHYqeKLXAAAAABJRU5ErkJggg==",
-    "x": -47,
-    "y": -42,
+    "x": -76,
+    "y": -39,
     "scale": 1.222222222222222,
     "hitboxes": [
       {
@@ -232,8 +232,8 @@ export let things = {
   "table4": {
     "image": "table",
     "src": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACIAAAAXCAMAAABZLm3uAAAAAXNSR0IArs4c6QAAAB5QTFRFAAAAAAAAlHZG0cku+/I2m4BVoZV9p5yG29vb////5NVVlQAAAAp0Uk5TAP///////////36JFFYAAABfSURBVCiRzZBLDoAwCEQHrPe/skBiQy0fV8a36WJeBwJADQCdDRQqbCwKe961LE2B8qyaSjKlGOQWM8X/38vydb3CDXreUZ1/iKHKoW+ABH9UEkOyqWTGHX6moDAsvAC2UgY31rLEzgAAAABJRU5ErkJggg==",
-    "x": 21,
-    "y": -13,
+    "x": -8,
+    "y": -10,
     "scale": 1.17,
     "hitboxes": [
       {
@@ -248,8 +248,8 @@ export let things = {
   "table5": {
     "image": "table",
     "src": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACIAAAAXCAMAAABZLm3uAAAAAXNSR0IArs4c6QAAAB5QTFRFAAAAAAAAlHZG0cku+/I2m4BVoZV9p5yG29vb////5NVVlQAAAAp0Uk5TAP///////////36JFFYAAABfSURBVCiRzZBLDoAwCEQHrPe/skBiQy0fV8a36WJeBwJADQCdDRQqbCwKe961LE2B8qyaSjKlGOQWM8X/38vydb3CDXreUZ1/iKHKoW+ABH9UEkOyqWTGHX6moDAsvAC2UgY31rLEzgAAAABJRU5ErkJggg==",
-    "x": 61,
-    "y": -13,
+    "x": 32,
+    "y": -10,
     "scale": 1.17,
     "hitboxes": [
       {
@@ -264,8 +264,8 @@ export let things = {
   "table6": {
     "image": "table",
     "src": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACIAAAAXCAMAAABZLm3uAAAAAXNSR0IArs4c6QAAAB5QTFRFAAAAAAAAlHZG0cku+/I2m4BVoZV9p5yG29vb////5NVVlQAAAAp0Uk5TAP///////////36JFFYAAABfSURBVCiRzZBLDoAwCEQHrPe/skBiQy0fV8a36WJeBwJADQCdDRQqbCwKe961LE2B8qyaSjKlGOQWM8X/38vydb3CDXreUZ1/iKHKoW+ABH9UEkOyqWTGHX6moDAsvAC2UgY31rLEzgAAAABJRU5ErkJggg==",
-    "x": -79,
-    "y": -13,
+    "x": -108,
+    "y": -10,
     "scale": 1.1721311475409835,
     "hitboxes": [
       {
@@ -280,8 +280,8 @@ export let things = {
   "table7": {
     "image": "table",
     "src": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACIAAAAXCAMAAABZLm3uAAAAAXNSR0IArs4c6QAAAB5QTFRFAAAAAAAAlHZG0cku+/I2m4BVoZV9p5yG29vb////5NVVlQAAAAp0Uk5TAP///////////36JFFYAAABfSURBVCiRzZBLDoAwCEQHrPe/skBiQy0fV8a36WJeBwJADQCdDRQqbCwKe961LE2B8qyaSjKlGOQWM8X/38vydb3CDXreUZ1/iKHKoW+ABH9UEkOyqWTGHX6moDAsvAC2UgY31rLEzgAAAABJRU5ErkJggg==",
-    "x": -39,
-    "y": -13,
+    "x": -68,
+    "y": -10,
     "scale": 1.1721311475409835,
     "hitboxes": [
       {
@@ -296,8 +296,8 @@ export let things = {
   "chair8": {
     "image": "chair",
     "src": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAASCAMAAAC6q9RHAAAAAXNSR0IArs4c6QAAAB5QTFRFAAAAAAAAlHZG0cku+/I2m4BVoZV9p5yG29vb////5NVVlQAAAAp0Uk5TAP///////////36JFFYAAABNSURBVAiZjY9LDgAxCEIR6f2vPML8uiwL8jCVWAAoC1Etq35MMJJMqNUZd1hhmSlaoheUTmV3ezPumo/feT+d7YVJo1y09eDEcX9j/ALi+AHYqeKLXAAAAABJRU5ErkJggg==",
-    "x": 29,
-    "y": -11,
+    "x": 0,
+    "y": -8,
     "scale": 1.22,
     "hitboxes": [
       {
@@ -312,8 +312,8 @@ export let things = {
   "chair9": {
     "image": "chair",
     "src": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAASCAMAAAC6q9RHAAAAAXNSR0IArs4c6QAAAB5QTFRFAAAAAAAAlHZG0cku+/I2m4BVoZV9p5yG29vb////5NVVlQAAAAp0Uk5TAP///////////36JFFYAAABNSURBVAiZjY9LDgAxCEIR6f2vPML8uiwL8jCVWAAoC1Etq35MMJJMqNUZd1hhmSlaoheUTmV3ezPumo/feT+d7YVJo1y09eDEcX9j/ALi+AHYqeKLXAAAAABJRU5ErkJggg==",
-    "x": 13,
-    "y": -11,
+    "x": -16,
+    "y": -8,
     "scale": 1.222222222222222,
     "hitboxes": [
       {
@@ -328,8 +328,8 @@ export let things = {
   "chair10": {
     "image": "chair",
     "src": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAASCAMAAAC6q9RHAAAAAXNSR0IArs4c6QAAAB5QTFRFAAAAAAAAlHZG0cku+/I2m4BVoZV9p5yG29vb////5NVVlQAAAAp0Uk5TAP///////////36JFFYAAABNSURBVAiZjY9LDgAxCEIR6f2vPML8uiwL8jCVWAAoC1Etq35MMJJMqNUZd1hhmSlaoheUTmV3ezPumo/feT+d7YVJo1y09eDEcX9j/ALi+AHYqeKLXAAAAABJRU5ErkJggg==",
-    "x": 69,
-    "y": -11,
+    "x": 40,
+    "y": -8,
     "scale": 1.22,
     "hitboxes": [
       {
@@ -344,8 +344,8 @@ export let things = {
   "chair11": {
     "image": "chair",
     "src": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAASCAMAAAC6q9RHAAAAAXNSR0IArs4c6QAAAB5QTFRFAAAAAAAAlHZG0cku+/I2m4BVoZV9p5yG29vb////5NVVlQAAAAp0Uk5TAP///////////36JFFYAAABNSURBVAiZjY9LDgAxCEIR6f2vPML8uiwL8jCVWAAoC1Etq35MMJJMqNUZd1hhmSlaoheUTmV3ezPumo/feT+d7YVJo1y09eDEcX9j/ALi+AHYqeKLXAAAAABJRU5ErkJggg==",
-    "x": 53,
-    "y": -11,
+    "x": 24,
+    "y": -8,
     "scale": 1.22,
     "hitboxes": [
       {
@@ -360,8 +360,8 @@ export let things = {
   "chair12": {
     "image": "chair",
     "src": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAASCAMAAAC6q9RHAAAAAXNSR0IArs4c6QAAAB5QTFRFAAAAAAAAlHZG0cku+/I2m4BVoZV9p5yG29vb////5NVVlQAAAAp0Uk5TAP///////////36JFFYAAABNSURBVAiZjY9LDgAxCEIR6f2vPML8uiwL8jCVWAAoC1Etq35MMJJMqNUZd1hhmSlaoheUTmV3ezPumo/feT+d7YVJo1y09eDEcX9j/ALi+AHYqeKLXAAAAABJRU5ErkJggg==",
-    "x": -71,
-    "y": -11,
+    "x": -100,
+    "y": -8,
     "scale": 1.222222222222222,
     "hitboxes": [
       {
@@ -376,8 +376,8 @@ export let things = {
   "chair13": {
     "image": "chair",
     "src": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAASCAMAAAC6q9RHAAAAAXNSR0IArs4c6QAAAB5QTFRFAAAAAAAAlHZG0cku+/I2m4BVoZV9p5yG29vb////5NVVlQAAAAp0Uk5TAP///////////36JFFYAAABNSURBVAiZjY9LDgAxCEIR6f2vPML8uiwL8jCVWAAoC1Etq35MMJJMqNUZd1hhmSlaoheUTmV3ezPumo/feT+d7YVJo1y09eDEcX9j/ALi+AHYqeKLXAAAAABJRU5ErkJggg==",
-    "x": -87,
-    "y": -11,
+    "x": -116,
+    "y": -8,
     "scale": 1.222222222222222,
     "hitboxes": [
       {
@@ -392,8 +392,8 @@ export let things = {
   "chair14": {
     "image": "chair",
     "src": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAASCAMAAAC6q9RHAAAAAXNSR0IArs4c6QAAAB5QTFRFAAAAAAAAlHZG0cku+/I2m4BVoZV9p5yG29vb////5NVVlQAAAAp0Uk5TAP///////////36JFFYAAABNSURBVAiZjY9LDgAxCEIR6f2vPML8uiwL8jCVWAAoC1Etq35MMJJMqNUZd1hhmSlaoheUTmV3ezPumo/feT+d7YVJo1y09eDEcX9j/ALi+AHYqeKLXAAAAABJRU5ErkJggg==",
-    "x": -31,
-    "y": -11,
+    "x": -60,
+    "y": -8,
     "scale": 1.222222222222222,
     "hitboxes": [
       {
@@ -408,8 +408,8 @@ export let things = {
   "chair15": {
     "image": "chair",
     "src": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAASCAMAAAC6q9RHAAAAAXNSR0IArs4c6QAAAB5QTFRFAAAAAAAAlHZG0cku+/I2m4BVoZV9p5yG29vb////5NVVlQAAAAp0Uk5TAP///////////36JFFYAAABNSURBVAiZjY9LDgAxCEIR6f2vPML8uiwL8jCVWAAoC1Etq35MMJJMqNUZd1hhmSlaoheUTmV3ezPumo/feT+d7YVJo1y09eDEcX9j/ALi+AHYqeKLXAAAAABJRU5ErkJggg==",
-    "x": -47,
-    "y": -11,
+    "x": -76,
+    "y": -8,
     "scale": 1.222222222222222,
     "hitboxes": [
       {
@@ -424,8 +424,8 @@ export let things = {
   "table8": {
     "image": "table",
     "src": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACIAAAAXCAMAAABZLm3uAAAAAXNSR0IArs4c6QAAAB5QTFRFAAAAAAAAlHZG0cku+/I2m4BVoZV9p5yG29vb////5NVVlQAAAAp0Uk5TAP///////////36JFFYAAABfSURBVCiRzZBLDoAwCEQHrPe/skBiQy0fV8a36WJeBwJADQCdDRQqbCwKe961LE2B8qyaSjKlGOQWM8X/38vydb3CDXreUZ1/iKHKoW+ABH9UEkOyqWTGHX6moDAsvAC2UgY31rLEzgAAAABJRU5ErkJggg==",
-    "x": 21,
-    "y": 18,
+    "x": -8,
+    "y": 21,
     "scale": 1.17,
     "hitboxes": [
       {
@@ -440,8 +440,8 @@ export let things = {
   "table9": {
     "image": "table",
     "src": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACIAAAAXCAMAAABZLm3uAAAAAXNSR0IArs4c6QAAAB5QTFRFAAAAAAAAlHZG0cku+/I2m4BVoZV9p5yG29vb////5NVVlQAAAAp0Uk5TAP///////////36JFFYAAABfSURBVCiRzZBLDoAwCEQHrPe/skBiQy0fV8a36WJeBwJADQCdDRQqbCwKe961LE2B8qyaSjKlGOQWM8X/38vydb3CDXreUZ1/iKHKoW+ABH9UEkOyqWTGHX6moDAsvAC2UgY31rLEzgAAAABJRU5ErkJggg==",
-    "x": 61,
-    "y": 18,
+    "x": 32,
+    "y": 21,
     "scale": 1.17,
     "hitboxes": [
       {
@@ -456,8 +456,8 @@ export let things = {
   "table10": {
     "image": "table",
     "src": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACIAAAAXCAMAAABZLm3uAAAAAXNSR0IArs4c6QAAAB5QTFRFAAAAAAAAlHZG0cku+/I2m4BVoZV9p5yG29vb////5NVVlQAAAAp0Uk5TAP///////////36JFFYAAABfSURBVCiRzZBLDoAwCEQHrPe/skBiQy0fV8a36WJeBwJADQCdDRQqbCwKe961LE2B8qyaSjKlGOQWM8X/38vydb3CDXreUZ1/iKHKoW+ABH9UEkOyqWTGHX6moDAsvAC2UgY31rLEzgAAAABJRU5ErkJggg==",
-    "x": -79,
-    "y": 18,
+    "x": -108,
+    "y": 21,
     "scale": 1.17,
     "hitboxes": [
       {
@@ -472,8 +472,8 @@ export let things = {
   "table11": {
     "image": "table",
     "src": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACIAAAAXCAMAAABZLm3uAAAAAXNSR0IArs4c6QAAAB5QTFRFAAAAAAAAlHZG0cku+/I2m4BVoZV9p5yG29vb////5NVVlQAAAAp0Uk5TAP///////////36JFFYAAABfSURBVCiRzZBLDoAwCEQHrPe/skBiQy0fV8a36WJeBwJADQCdDRQqbCwKe961LE2B8qyaSjKlGOQWM8X/38vydb3CDXreUZ1/iKHKoW+ABH9UEkOyqWTGHX6moDAsvAC2UgY31rLEzgAAAABJRU5ErkJggg==",
-    "x": -39,
-    "y": 18,
+    "x": -68,
+    "y": 21,
     "scale": 1.17,
     "hitboxes": [
       {
@@ -488,8 +488,8 @@ export let things = {
   "chair16": {
     "image": "chair",
     "src": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAASCAMAAAC6q9RHAAAAAXNSR0IArs4c6QAAAB5QTFRFAAAAAAAAlHZG0cku+/I2m4BVoZV9p5yG29vb////5NVVlQAAAAp0Uk5TAP///////////36JFFYAAABNSURBVAiZjY9LDgAxCEIR6f2vPML8uiwL8jCVWAAoC1Etq35MMJJMqNUZd1hhmSlaoheUTmV3ezPumo/feT+d7YVJo1y09eDEcX9j/ALi+AHYqeKLXAAAAABJRU5ErkJggg==",
-    "x": 29,
-    "y": 20,
+    "x": 0,
+    "y": 23,
     "scale": 1.22,
     "hitboxes": [
       {
@@ -504,8 +504,8 @@ export let things = {
   "chair17": {
     "image": "chair",
     "src": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAASCAMAAAC6q9RHAAAAAXNSR0IArs4c6QAAAB5QTFRFAAAAAAAAlHZG0cku+/I2m4BVoZV9p5yG29vb////5NVVlQAAAAp0Uk5TAP///////////36JFFYAAABNSURBVAiZjY9LDgAxCEIR6f2vPML8uiwL8jCVWAAoC1Etq35MMJJMqNUZd1hhmSlaoheUTmV3ezPumo/feT+d7YVJo1y09eDEcX9j/ALi+AHYqeKLXAAAAABJRU5ErkJggg==",
-    "x": 13,
-    "y": 20,
+    "x": -16,
+    "y": 23,
     "scale": 1.22,
     "hitboxes": [
       {
@@ -520,8 +520,8 @@ export let things = {
   "chair18": {
     "image": "chair",
     "src": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAASCAMAAAC6q9RHAAAAAXNSR0IArs4c6QAAAB5QTFRFAAAAAAAAlHZG0cku+/I2m4BVoZV9p5yG29vb////5NVVlQAAAAp0Uk5TAP///////////36JFFYAAABNSURBVAiZjY9LDgAxCEIR6f2vPML8uiwL8jCVWAAoC1Etq35MMJJMqNUZd1hhmSlaoheUTmV3ezPumo/feT+d7YVJo1y09eDEcX9j/ALi+AHYqeKLXAAAAABJRU5ErkJggg==",
-    "x": 69,
-    "y": 20,
+    "x": 40,
+    "y": 23,
     "scale": 1.22,
     "hitboxes": [
       {
@@ -536,8 +536,8 @@ export let things = {
   "chair19": {
     "image": "chair",
     "src": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAASCAMAAAC6q9RHAAAAAXNSR0IArs4c6QAAAB5QTFRFAAAAAAAAlHZG0cku+/I2m4BVoZV9p5yG29vb////5NVVlQAAAAp0Uk5TAP///////////36JFFYAAABNSURBVAiZjY9LDgAxCEIR6f2vPML8uiwL8jCVWAAoC1Etq35MMJJMqNUZd1hhmSlaoheUTmV3ezPumo/feT+d7YVJo1y09eDEcX9j/ALi+AHYqeKLXAAAAABJRU5ErkJggg==",
-    "x": 53,
-    "y": 20,
+    "x": 24,
+    "y": 23,
     "scale": 1.22,
     "hitboxes": [
       {
@@ -552,8 +552,8 @@ export let things = {
   "chair20": {
     "image": "chair",
     "src": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAASCAMAAAC6q9RHAAAAAXNSR0IArs4c6QAAAB5QTFRFAAAAAAAAlHZG0cku+/I2m4BVoZV9p5yG29vb////5NVVlQAAAAp0Uk5TAP///////////36JFFYAAABNSURBVAiZjY9LDgAxCEIR6f2vPML8uiwL8jCVWAAoC1Etq35MMJJMqNUZd1hhmSlaoheUTmV3ezPumo/feT+d7YVJo1y09eDEcX9j/ALi+AHYqeKLXAAAAABJRU5ErkJggg==",
-    "x": -71,
-    "y": 20,
+    "x": -100,
+    "y": 23,
     "scale": 1.22,
     "hitboxes": [
       {
@@ -568,8 +568,8 @@ export let things = {
   "chair21": {
     "image": "chair",
     "src": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAASCAMAAAC6q9RHAAAAAXNSR0IArs4c6QAAAB5QTFRFAAAAAAAAlHZG0cku+/I2m4BVoZV9p5yG29vb////5NVVlQAAAAp0Uk5TAP///////////36JFFYAAABNSURBVAiZjY9LDgAxCEIR6f2vPML8uiwL8jCVWAAoC1Etq35MMJJMqNUZd1hhmSlaoheUTmV3ezPumo/feT+d7YVJo1y09eDEcX9j/ALi+AHYqeKLXAAAAABJRU5ErkJggg==",
-    "x": -87,
-    "y": 20,
+    "x": -116,
+    "y": 23,
     "scale": 1.22,
     "hitboxes": [
       {
@@ -584,8 +584,8 @@ export let things = {
   "chair22": {
     "image": "chair",
     "src": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAASCAMAAAC6q9RHAAAAAXNSR0IArs4c6QAAAB5QTFRFAAAAAAAAlHZG0cku+/I2m4BVoZV9p5yG29vb////5NVVlQAAAAp0Uk5TAP///////////36JFFYAAABNSURBVAiZjY9LDgAxCEIR6f2vPML8uiwL8jCVWAAoC1Etq35MMJJMqNUZd1hhmSlaoheUTmV3ezPumo/feT+d7YVJo1y09eDEcX9j/ALi+AHYqeKLXAAAAABJRU5ErkJggg==",
-    "x": -31,
-    "y": 20,
+    "x": -60,
+    "y": 23,
     "scale": 1.22,
     "hitboxes": [
       {
@@ -600,8 +600,8 @@ export let things = {
   "chair23": {
     "image": "chair",
     "src": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAASCAMAAAC6q9RHAAAAAXNSR0IArs4c6QAAAB5QTFRFAAAAAAAAlHZG0cku+/I2m4BVoZV9p5yG29vb////5NVVlQAAAAp0Uk5TAP///////////36JFFYAAABNSURBVAiZjY9LDgAxCEIR6f2vPML8uiwL8jCVWAAoC1Etq35MMJJMqNUZd1hhmSlaoheUTmV3ezPumo/feT+d7YVJo1y09eDEcX9j/ALi+AHYqeKLXAAAAABJRU5ErkJggg==",
-    "x": -47,
-    "y": 20,
+    "x": -76,
+    "y": 23,
     "scale": 1.22,
     "hitboxes": [
       {
@@ -616,8 +616,8 @@ export let things = {
   "table12": {
     "image": "table",
     "src": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACIAAAAXCAMAAABZLm3uAAAAAXNSR0IArs4c6QAAAB5QTFRFAAAAAAAAlHZG0cku+/I2m4BVoZV9p5yG29vb////5NVVlQAAAAp0Uk5TAP///////////36JFFYAAABfSURBVCiRzZBLDoAwCEQHrPe/skBiQy0fV8a36WJeBwJADQCdDRQqbCwKe961LE2B8qyaSjKlGOQWM8X/38vydb3CDXreUZ1/iKHKoW+ABH9UEkOyqWTGHX6moDAsvAC2UgY31rLEzgAAAABJRU5ErkJggg==",
-    "x": 21,
-    "y": 49,
+    "x": -8,
+    "y": 52,
     "scale": 1.17,
     "hitboxes": [
       {
@@ -632,8 +632,8 @@ export let things = {
   "table13": {
     "image": "table",
     "src": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACIAAAAXCAMAAABZLm3uAAAAAXNSR0IArs4c6QAAAB5QTFRFAAAAAAAAlHZG0cku+/I2m4BVoZV9p5yG29vb////5NVVlQAAAAp0Uk5TAP///////////36JFFYAAABfSURBVCiRzZBLDoAwCEQHrPe/skBiQy0fV8a36WJeBwJADQCdDRQqbCwKe961LE2B8qyaSjKlGOQWM8X/38vydb3CDXreUZ1/iKHKoW+ABH9UEkOyqWTGHX6moDAsvAC2UgY31rLEzgAAAABJRU5ErkJggg==",
-    "x": 61,
-    "y": 49,
+    "x": 32,
+    "y": 52,
     "scale": 1.17,
     "hitboxes": [
       {
@@ -648,8 +648,8 @@ export let things = {
   "table14": {
     "image": "table",
     "src": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACIAAAAXCAMAAABZLm3uAAAAAXNSR0IArs4c6QAAAB5QTFRFAAAAAAAAlHZG0cku+/I2m4BVoZV9p5yG29vb////5NVVlQAAAAp0Uk5TAP///////////36JFFYAAABfSURBVCiRzZBLDoAwCEQHrPe/skBiQy0fV8a36WJeBwJADQCdDRQqbCwKe961LE2B8qyaSjKlGOQWM8X/38vydb3CDXreUZ1/iKHKoW+ABH9UEkOyqWTGHX6moDAsvAC2UgY31rLEzgAAAABJRU5ErkJggg==",
-    "x": -79,
-    "y": 49,
+    "x": -108,
+    "y": 52,
     "scale": 1.17,
     "hitboxes": [
       {
@@ -664,8 +664,8 @@ export let things = {
   "table15": {
     "image": "table",
     "src": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACIAAAAXCAMAAABZLm3uAAAAAXNSR0IArs4c6QAAAB5QTFRFAAAAAAAAlHZG0cku+/I2m4BVoZV9p5yG29vb////5NVVlQAAAAp0Uk5TAP///////////36JFFYAAABfSURBVCiRzZBLDoAwCEQHrPe/skBiQy0fV8a36WJeBwJADQCdDRQqbCwKe961LE2B8qyaSjKlGOQWM8X/38vydb3CDXreUZ1/iKHKoW+ABH9UEkOyqWTGHX6moDAsvAC2UgY31rLEzgAAAABJRU5ErkJggg==",
-    "x": -39,
-    "y": 49,
+    "x": -68,
+    "y": 52,
     "scale": 1.17,
     "hitboxes": [
       {
@@ -680,8 +680,8 @@ export let things = {
   "chair24": {
     "image": "chair",
     "src": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAASCAMAAAC6q9RHAAAAAXNSR0IArs4c6QAAAB5QTFRFAAAAAAAAlHZG0cku+/I2m4BVoZV9p5yG29vb////5NVVlQAAAAp0Uk5TAP///////////36JFFYAAABNSURBVAiZjY9LDgAxCEIR6f2vPML8uiwL8jCVWAAoC1Etq35MMJJMqNUZd1hhmSlaoheUTmV3ezPumo/feT+d7YVJo1y09eDEcX9j/ALi+AHYqeKLXAAAAABJRU5ErkJggg==",
-    "x": 29,
-    "y": 51,
+    "x": 0,
+    "y": 54,
     "scale": 1.22,
     "hitboxes": [
       {
@@ -696,8 +696,8 @@ export let things = {
   "chair25": {
     "image": "chair",
     "src": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAASCAMAAAC6q9RHAAAAAXNSR0IArs4c6QAAAB5QTFRFAAAAAAAAlHZG0cku+/I2m4BVoZV9p5yG29vb////5NVVlQAAAAp0Uk5TAP///////////36JFFYAAABNSURBVAiZjY9LDgAxCEIR6f2vPML8uiwL8jCVWAAoC1Etq35MMJJMqNUZd1hhmSlaoheUTmV3ezPumo/feT+d7YVJo1y09eDEcX9j/ALi+AHYqeKLXAAAAABJRU5ErkJggg==",
-    "x": 13,
-    "y": 51,
+    "x": -16,
+    "y": 54,
     "scale": 1.22,
     "hitboxes": [
       {
@@ -712,8 +712,8 @@ export let things = {
   "chair26": {
     "image": "chair",
     "src": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAASCAMAAAC6q9RHAAAAAXNSR0IArs4c6QAAAB5QTFRFAAAAAAAAlHZG0cku+/I2m4BVoZV9p5yG29vb////5NVVlQAAAAp0Uk5TAP///////////36JFFYAAABNSURBVAiZjY9LDgAxCEIR6f2vPML8uiwL8jCVWAAoC1Etq35MMJJMqNUZd1hhmSlaoheUTmV3ezPumo/feT+d7YVJo1y09eDEcX9j/ALi+AHYqeKLXAAAAABJRU5ErkJggg==",
-    "x": 69,
-    "y": 51,
+    "x": 40,
+    "y": 54,
     "scale": 1.22,
     "hitboxes": [
       {
@@ -728,8 +728,8 @@ export let things = {
   "chair27": {
     "image": "chair",
     "src": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAASCAMAAAC6q9RHAAAAAXNSR0IArs4c6QAAAB5QTFRFAAAAAAAAlHZG0cku+/I2m4BVoZV9p5yG29vb////5NVVlQAAAAp0Uk5TAP///////////36JFFYAAABNSURBVAiZjY9LDgAxCEIR6f2vPML8uiwL8jCVWAAoC1Etq35MMJJMqNUZd1hhmSlaoheUTmV3ezPumo/feT+d7YVJo1y09eDEcX9j/ALi+AHYqeKLXAAAAABJRU5ErkJggg==",
-    "x": 53,
-    "y": 51,
+    "x": 24,
+    "y": 54,
     "scale": 1.22,
     "hitboxes": [
       {
@@ -744,8 +744,8 @@ export let things = {
   "chair28": {
     "image": "chair",
     "src": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAASCAMAAAC6q9RHAAAAAXNSR0IArs4c6QAAAB5QTFRFAAAAAAAAlHZG0cku+/I2m4BVoZV9p5yG29vb////5NVVlQAAAAp0Uk5TAP///////////36JFFYAAABNSURBVAiZjY9LDgAxCEIR6f2vPML8uiwL8jCVWAAoC1Etq35MMJJMqNUZd1hhmSlaoheUTmV3ezPumo/feT+d7YVJo1y09eDEcX9j/ALi+AHYqeKLXAAAAABJRU5ErkJggg==",
-    "x": -71,
-    "y": 51,
+    "x": -100,
+    "y": 54,
     "scale": 1.22,
     "hitboxes": [
       {
@@ -760,8 +760,8 @@ export let things = {
   "chair29": {
     "image": "chair",
     "src": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAASCAMAAAC6q9RHAAAAAXNSR0IArs4c6QAAAB5QTFRFAAAAAAAAlHZG0cku+/I2m4BVoZV9p5yG29vb////5NVVlQAAAAp0Uk5TAP///////////36JFFYAAABNSURBVAiZjY9LDgAxCEIR6f2vPML8uiwL8jCVWAAoC1Etq35MMJJMqNUZd1hhmSlaoheUTmV3ezPumo/feT+d7YVJo1y09eDEcX9j/ALi+AHYqeKLXAAAAABJRU5ErkJggg==",
-    "x": -87,
-    "y": 51,
+    "x": -116,
+    "y": 54,
     "scale": 1.22,
     "hitboxes": [
       {
@@ -776,8 +776,8 @@ export let things = {
   "chair30": {
     "image": "chair",
     "src": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAASCAMAAAC6q9RHAAAAAXNSR0IArs4c6QAAAB5QTFRFAAAAAAAAlHZG0cku+/I2m4BVoZV9p5yG29vb////5NVVlQAAAAp0Uk5TAP///////////36JFFYAAABNSURBVAiZjY9LDgAxCEIR6f2vPML8uiwL8jCVWAAoC1Etq35MMJJMqNUZd1hhmSlaoheUTmV3ezPumo/feT+d7YVJo1y09eDEcX9j/ALi+AHYqeKLXAAAAABJRU5ErkJggg==",
-    "x": -31,
-    "y": 51,
+    "x": -60,
+    "y": 54,
     "scale": 1.22,
     "hitboxes": [
       {
@@ -792,8 +792,8 @@ export let things = {
   "chair31": {
     "image": "chair",
     "src": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAASCAMAAAC6q9RHAAAAAXNSR0IArs4c6QAAAB5QTFRFAAAAAAAAlHZG0cku+/I2m4BVoZV9p5yG29vb////5NVVlQAAAAp0Uk5TAP///////////36JFFYAAABNSURBVAiZjY9LDgAxCEIR6f2vPML8uiwL8jCVWAAoC1Etq35MMJJMqNUZd1hhmSlaoheUTmV3ezPumo/feT+d7YVJo1y09eDEcX9j/ALi+AHYqeKLXAAAAABJRU5ErkJggg==",
-    "x": -47,
-    "y": 51,
+    "x": -76,
+    "y": 54,
     "scale": 1.22,
     "hitboxes": [
       {
