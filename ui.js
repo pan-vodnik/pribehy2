@@ -301,9 +301,12 @@ export class UI {
   }
 }
 
+let activeBtn = null;
+
 document.body.addEventListener("pointerdown", (e) => {
   const btn = e.target.closest("button");
   if (btn) {
+    activeBtn = btn;
     btn.classList.add("active");
   }
 });
@@ -317,18 +320,22 @@ document.body.addEventListener("pointerup", (e) => {
       btn.dispatchEvent(new Event("click", { bubbles: true }));
     }
     btn.classList.remove("active");
+  } else {
+    activeBtn.classList.remove("active");
+    activeBtn = null;
+  }
+  activeBtn = null;
+});
+document.body.addEventListener("pointerleave", () => {
+  if (activeBtn) {
+    activeBtn.classList.remove("active");
+    activeBtn = null;
   }
 });
-document.body.addEventListener("pointerleave", (e) => {
-  const btn = e.target.closest("button");
-  if (btn) {
-    btn.classList.remove("active");
-  }
-});
-document.body.addEventListener("pointercancel", (e) => {
-  const btn = e.target.closest("button");
-  if (btn) {
-    btn.classList.remove("active");
+document.body.addEventListener("pointercancel", () => {
+  if (activeBtn) {
+    activeBtn.classList.remove("active");
+    activeBtn = null;
   }
 });
 
