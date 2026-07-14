@@ -13,6 +13,7 @@ class MainScene extends Phaser.Scene {
     window.main = this;
   }
   preload() {
+    let keys = ["person", "chair", "class", "table"];
     this.load.spritesheet("person", "assets/images/person.png", {
       frameWidth: 32,
       frameHeight: 32,
@@ -22,8 +23,9 @@ class MainScene extends Phaser.Scene {
     this.load.image("table", "assets/images/table.png");
 
     Object.entries(things).forEach(([key, thing]) => {
-      if (thing.src && !this.textures.exists(thing.image)) {
+      if (thing.src && !this.textures.exists(thing.image) && !keys.includes(thing.image)) {
         this.textures.addBase64(thing.image, thing.src);
+        keys.push(thing.image);
       }
     });
   }
