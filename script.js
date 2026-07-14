@@ -3,6 +3,7 @@ import { UI } from "./ui.js";
 import { Player } from "./player.js";
 import { World } from "./world.js";
 import { create } from "./things.js";
+import { things } from "./things.js";
 
 class MainScene extends Phaser.Scene {
   constructor() {
@@ -19,6 +20,12 @@ class MainScene extends Phaser.Scene {
     this.load.image("chair", "assets/images/chair.png");
     this.load.image("class", "assets/images/class.png");
     this.load.image("table", "assets/images/table.png");
+
+    Object.entries(things).forEach(([key, thing]) => {
+      if (thing.src && !this.textures.exists(thing.image)) {
+        this.textures.addBase64(thing.image, thing.src);
+      }
+    });
   }
 
   create() {
