@@ -41,7 +41,7 @@
                 right: 0;
                 top: 0;
                 bottom: 0;
-                z-index: 100;
+                z-index: 50;
             }
             #joystick-container {
                 position: absolute;
@@ -113,21 +113,36 @@
                 padding: 10px;
             }
             button {
-                background-color: #e0e0e0;
+                background-color: #d0d0d0;
             }
             button.active {
                 background-color: #b3b3b3;
+            }
+            #intro {
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                background-color: #efefef;
+                z-index: 500;
             }
         </style>
         <script type="module" src="script.js"></script>
         <script src="log.js" defer></script>
     </head>
     <body>
+        <div style="position: absolute; font-size: 15px; z-index: 1000">
+            <span id="version" style="font-size: inherit"></span>
+            <span id="fps" style="font-size: inherit"></span>
+        </div>
+        <div id="intro">
+            <button id="start">start</button>
+        </div>
         <div id="ui">
-            <div style="position: absolute; font-size: 15px">
-                <span id="version" style="font-size: inherit">v0.0.0</span>
-                <span id="fps" style="font-size: inherit">fps: 0</span>
-            </div>
             <div id="text">
                 <span id="text-visible" style="white-space: pre-wrap"></span
                 ><span

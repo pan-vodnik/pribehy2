@@ -68,7 +68,10 @@ let config = {
   scene: MainScene,
 };
 
-window.game = new Phaser.Game(config);
-window.ui = new UI();
-window.main = game.scene.getScene("MainScene");
-window.paused = false;
+document.getElementById("start").addEventListener("click", () => {
+  document.getElementById("intro").style.display = "none";
+  window.game = new Phaser.Game(config);
+  window.ui = new UI();
+  window.main = game.scene.getScene("MainScene");
+  window.paused = false;
+});
