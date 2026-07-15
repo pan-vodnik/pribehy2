@@ -33,7 +33,7 @@ class MainScene extends Phaser.Scene {
   create() {
     this.player = new Player(this);
     this.world = new World(this);
-    this.cameras.main.startFollow(this.player, true); //, 0.1, 0.1);
+    this.cameras.main.startFollow(this.player, true);
     this.cameras.main.setZoom(3);
     window.ui.create(this);
     create();
@@ -55,7 +55,6 @@ let config = {
   backgroundColor: "#222222",
   pixelArt: true,
   roundPixels: true,
-  // smoothPixelArt: true,
   scaleMode: Phaser.Scale.RESIZE,
   physics: {
     default: "arcade",

@@ -1,4 +1,3 @@
-import Phaser from "./phaser.esm.min.js";
 import { things } from "./things.js";
 
 export class World {
