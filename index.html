@@ -23,6 +23,7 @@
             * {
                 font-family: Pixelbasel;
                 font-size: 18px;
+                font-size: inherit;
                 font-smooth: never;
                 -webkit-font-smoothing: none;
                 -moz-osx-font-smoothing: none;
@@ -116,6 +117,9 @@
             button.active {
                 background-color: #b3b3b3;
             }
+            button.pressed {
+                background-color: #b3b3b3;
+            }
             #intro {
                 position: absolute;
                 top: 0;
@@ -128,17 +132,109 @@
                 background-color: #efefef;
                 z-index: 500;
             }
+            #intro-panel {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                max-width: 400px;
+                width: 80%;
+            }
+            #intro-panel * {
+                width: 100%;
+            }
+            .title {
+                font-size: 52px;
+                text-align: center;
+            }
+            .subtitle {
+                font-size: 14px;
+                color: #888888;
+                margin-bottom: 15px;
+                text-align: center;
+            }
+            #settings {
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                z-index: 1000;
+                background-color: #efefef;
+                display: none;
+                justify-content: center;
+                align-items: center;
+            }
+            #settings-panel {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                max-width: 400px;
+                width: 80%;
+            }
+            #settings-panel * {
+                width: 100%;
+            }
+            #overlay {
+                position: absolute;
+                font-size: 15px;
+                z-index: 10000;
+                background-color: #efefef80;
+                border-radius: 0 0 3px 0;
+                padding: 1px;
+            }
         </style>
         <script type="module" src="script.js"></script>
         <script src="log.js" defer></script>
     </head>
     <body>
-        <div style="position: absolute; font-size: 15px; z-index: 1000">
-            <span id="version" style="font-size: inherit"></span>
-            <span id="fps" style="font-size: inherit"></span>
+        <div id="overlay">
+            <span id="version">v0.0.0</span>
+            <span id="fps">fps: 60</span>
         </div>
         <div id="intro">
-            <button id="start">start</button>
+            <div id="intro-panel">
+                <span id="intro-title" class="title">Příběhy 2</span>
+                <span id="intro-subtitle" class="subtitle"
+                    >[vložte nějakou vtipnou hlášku]</span
+                >
+                <button id="start">start</button>
+                <button id="open-settings">nastavení</button>
+                <button id="reload" onclick="location.reload()">reload</button>
+            </div>
+            <script>
+                const subtitles = [
+                    "Vyrobeno ve 3.G/4.G/5.G/...",
+                    "42",
+                    "73",
+                    "5381",
+                    "cat /dev/zero | sudo tee /dev/sda",
+                    "[nic tu není]",
+                    "' OR 1=1 --",
+                    "Tomateve!",
+                    "Byli jste varováni!",
+                    "Dobrý večer milé děti",
+                    "Jsou tu nějaké easter eggs?",
+                    "Už znáte originální Příběhy?",
+                    "[vložte nějakou vtipnou hlášku]",
+                    "Micro$oft sucks",
+                ];
+
+                document.getElementById("intro-subtitle").innerHTML =
+                    subtitles[Math.floor(Math.random() * subtitles.length)];
+            </script>
+        </div>
+        <div id="settings">
+            <div id="settings-panel">
+                <span id="settings-title" class="title">Nastavení</span>
+                <span id="settings-subtitle" class="subtitle"
+                    >Změň si, co jen chceš</span
+                >
+                <button id="toggle-showfps">ukazovat fps</button>
+                <button id="toggle-showversion">ukazovat verzi</button>
+                <button id="close-settings">zpět</button>
+            </div>
         </div>
         <div id="ui">
             <div id="text">

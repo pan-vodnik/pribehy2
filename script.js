@@ -23,7 +23,11 @@ class MainScene extends Phaser.Scene {
     this.load.image("table", "assets/images/table.png");
 
     Object.entries(things).forEach(([key, thing]) => {
-      if (thing.src && !this.textures.exists(thing.image) && !keys.includes(thing.image)) {
+      if (
+        thing.src &&
+        !this.textures.exists(thing.image) &&
+        !keys.includes(thing.image)
+      ) {
         this.textures.addBase64(thing.image, thing.src);
         keys.push(thing.image);
       }
@@ -44,6 +48,19 @@ class MainScene extends Phaser.Scene {
     window.ui.update();
     document.getElementById("fps").textContent =
       "fps: " + Math.round(this.game.loop.actualFps);
+  }
+}
+
+function reloadSettings() {
+  if (window.settings.showfps) {
+    document.getElementById("fps").style.display = "unset";
+  } else {
+    document.getElementById("fps").style.display = "none";
+  }
+  if (window.settings.showversion) {
+    document.getElementById("version").style.display = "unset";
+  } else {
+    document.getElementById("version").style.display = "none";
   }
 }
 
@@ -74,3 +91,40 @@ document.getElementById("start").addEventListener("click", () => {
   window.main = game.scene.getScene("MainScene");
   window.paused = false;
 });
+
+document.getElementById("open-settings").addEventListener("click", () => {
+  document.getElementById("settings").style.display = "flex";
+});
+
+document.getElementById("close-settings").addEventListener("click", () => {
+  document.getElementById("settings").style.display = "none";
+});
+
+window.settings = JSON.parse(localStorage.getItem("pribehy2_settings")) || {
+  showfps: true,
+  showversion: true,
+};
+reloadSettings();
+
+for (const child of document.getElementById("settings-panel").children) {
+  if (child.id.includes("toggle-")) {
+    if (window.settings[child.id.replace("toggle-", "")]) {
+      child.classList.add("pressed");
+    } else {
+      child.classList.remove("pressed");
+    }
+    child.addEventListener("click", () => {
+      child.classList.toggle("pressed");
+      if (child.classList.contains("pressed")) {
+        window.settings[child.id.replace("toggle-", "")] = true;
+      } else {
+        window.settings[child.id.replace("toggle-", "")] = false;
+      }
+      localStorage.setItem(
+        "pribehy2_settings",
+        JSON.stringify(window.settings),
+      );
+      reloadSettings();
+    });
+  }
+}
