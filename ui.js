@@ -301,6 +301,17 @@ export class UI {
   }
 }
 
+document.addEventListener(
+  "click",
+  (e) => {
+    if (e.isTrusted) {
+      e.stopImmediatePropagation();
+      e.preventDefault();
+    }
+  },
+  { capture: true },
+);
+
 let activeBtn = null;
 
 document.body.addEventListener("pointerdown", (e) => {
