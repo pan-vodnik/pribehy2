@@ -55,7 +55,6 @@ if (!local) {
             gl.getExtension("WEBGL_debug_renderer_info")
               ?.UNMASKED_RENDERER_WEBGL,
           ),
-          whois: JSON.stringify(ip),
         },
         description: `User \`${localStorage.getItem("pribehy2_uid")}\` from ip \`${ip.ip}\` opened the app at \`${new Date().toLocaleString("de-DE")}\`.`,
         parser: "markdown",
