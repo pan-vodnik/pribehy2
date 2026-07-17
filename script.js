@@ -64,6 +64,14 @@ function reloadSettings() {
   }
 }
 
+function startGame() {
+  document.getElementById("intro").style.display = "none";
+  window.game = new Phaser.Game(config);
+  window.ui = new UI();
+  window.main = game.scene.getScene("MainScene");
+  window.paused = false;
+}
+
 /**
  * @type Phaser.Core.Config
  */
@@ -84,13 +92,7 @@ let config = {
   scene: MainScene,
 };
 
-document.getElementById("start").addEventListener("click", () => {
-  document.getElementById("intro").style.display = "none";
-  window.game = new Phaser.Game(config);
-  window.ui = new UI();
-  window.main = game.scene.getScene("MainScene");
-  window.paused = false;
-});
+document.getElementById("start").addEventListener("click", startGame);
 
 document.getElementById("open-settings").addEventListener("click", () => {
   document.getElementById("settings").style.display = "flex";
@@ -127,4 +129,8 @@ for (const child of document.getElementById("settings-panel").children) {
       reloadSettings();
     });
   }
+}
+
+if (params.has("edit")) {
+  startGame();
 }
