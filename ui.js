@@ -331,9 +331,8 @@ document.body.addEventListener("pointerup", (e) => {
       btn.dispatchEvent(new Event("click", { bubbles: true }));
     }
     btn.classList.remove("active");
-  } else {
+  } else if (activeBtn) {
     activeBtn.classList.remove("active");
-    activeBtn = null;
   }
   activeBtn = null;
 });
