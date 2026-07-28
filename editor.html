@@ -496,6 +496,11 @@
                     <span>Zamknout (nelze posouvat)</span>
                 </label>
 
+                <label class="checkbox-row">
+                    <input type="checkbox" id="objInteractable" />
+                    <span>Interaktivní (lze kliknout ve hře)</span>
+                </label>
+
                 <h3>Hitboxy</h3>
                 <button id="addHitboxBtn" style="margin-bottom: 8px">
                     + Nový hitbox <kbd>A</kbd>
@@ -657,6 +662,7 @@
                     scale: o.scale,
                     depth: o.depth,
                     locked: o.locked,
+                    interactable: o.interactable,
                     originY: o.originY,
                     useManualDepth: o.useManualDepth,
                     notes: o.notes,
@@ -753,6 +759,7 @@
                     scale: o.scale,
                     depth: o.depth,
                     locked: o.locked,
+                    interactable: o.interactable,
                     originY: o.originY,
                     useManualDepth: o.useManualDepth,
                     notes: o.notes,
@@ -855,6 +862,7 @@
                         hitboxes: item.hitboxes || [],
                         img: images[item.src],
                         locked: item.locked ?? false,
+                        interactable: item.interactable ?? false,
                         originY: item.originY ?? 1,
                         useManualDepth: item.useManualDepth ?? false,
                         notes: item.notes ?? "",
@@ -915,6 +923,10 @@
                         scale: o.scale,
                         notes: o.notes,
                     };
+
+                    if (o.interactable) {
+                        exportObj.interactable = true;
+                    }
 
                     // Only include depth if it's different from y or if manual depth is used
                     // But user asked to remove useManualDepth, so we'll just include depth if it's not default Y
@@ -1019,6 +1031,7 @@
                         "objDepth",
                         "objOriginY",
                         "objLocked",
+                        "objInteractable",
                         "objManualDepth",
                         "objNotes",
                     ];
@@ -1046,6 +1059,8 @@
                         obj.depth,
                     );
                 document.getElementById("objLocked").checked = obj.locked;
+                document.getElementById("objInteractable").checked =
+                    obj.interactable || false;
                 document.getElementById("objOriginY").value = obj.originY ?? 1;
                 document.getElementById("objManualDepth").checked =
                     obj.useManualDepth || false;
@@ -1276,6 +1291,7 @@
                     scale: 1,
                     depth: 0,
                     locked: false,
+                    interactable: false,
                     originY: 1,
                     useManualDepth: false,
                     notes: "",
@@ -1344,6 +1360,7 @@
                 "showHitboxes",
                 "showPivot",
                 "objLocked",
+                "objInteractable",
                 "objManualDepth",
             ].forEach((id) => {
                 const el = document.getElementById(id);
@@ -1353,6 +1370,13 @@
                         if (o) {
                             pushUndo();
                             o.locked = el.checked;
+                        }
+                    }
+                    if (id === "objInteractable") {
+                        const o = getSelectedObject();
+                        if (o) {
+                            pushUndo();
+                            o.interactable = el.checked;
                         }
                     }
                     if (id === "objManualDepth") {
