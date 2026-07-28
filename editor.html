@@ -782,19 +782,19 @@
                     files,
                 };
                 localStorage.setItem(
-                    "pribehy_editor_data",
+                    "pribehy2_editor_data",
                     JSON.stringify(data),
                 );
                 localStorage.setItem(
-                    "pribehy_editor_settings",
+                    "pribehy2_editor_settings",
                     JSON.stringify(settings),
                 );
             }
 
             function loadFromLocal() {
-                const data = localStorage.getItem("pribehy_editor_data");
+                const data = localStorage.getItem("pribehy2_editor_data");
                 const settings = localStorage.getItem(
-                    "pribehy_editor_settings",
+                    "pribehy2_editor_settings",
                 );
 
                 if (settings) {
