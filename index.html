@@ -193,6 +193,23 @@
             <span id="version">v0.0.0</span>
             <span id="fps">fps: 60</span>
         </div>
+        <div style="z-index: 10000; position: absolute; bottom: 0">
+            <button onpointerdown="location.reload()" style="padding: 10px">
+                reload
+            </button>
+            <button
+                onpointerdown="(location.search.includes('debug')) ? location.search=location.search.replace('debug', '') : location.search+='&debug'"
+                style="padding: 10px"
+            >
+                debug
+            </button>
+            <button
+                onpointerdown="(location.search.includes('pixelart')) ? location.search=location.search.replace('pixelart', '') : location.search+='&pixelart'"
+                style="padding: 10px"
+            >
+                pixelart
+            </button>
+        </div>
         <div id="intro">
             <div id="intro-panel">
                 <span id="intro-title" class="title">Příběhy 2</span>
@@ -246,17 +263,6 @@
             </div>
             <div id="answers"></div>
             <div id="content"></div>
-            <div style="z-index: 10; position: absolute; bottom: 0">
-                <button onpointerdown="location.reload()" style="padding: 10px">
-                    reload
-                </button>
-                <button
-                    onpointerdown="(location.search.includes('debug')) ? location.search=location.search.replace('debug', '') : location.search+='&debug'"
-                    style="padding: 10px"
-                >
-                    debug
-                </button>
-            </div>
             <button
                 id="interact"
                 onclick="main.player.interact()"
