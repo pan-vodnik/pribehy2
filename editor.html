@@ -497,7 +497,7 @@
                 </label>
 
                 <label class="checkbox-row">
-                    <input type="checkbox" id="objInteractable" />
+                    <input type="checkbox" id="objInteract" />
                     <span>Interaktivní (lze kliknout ve hře)</span>
                 </label>
 
@@ -662,7 +662,7 @@
                     scale: o.scale,
                     depth: o.depth,
                     locked: o.locked,
-                    interactable: o.interactable,
+                    interact: o.interact,
                     originY: o.originY,
                     useManualDepth: o.useManualDepth,
                     notes: o.notes,
@@ -759,7 +759,7 @@
                     scale: o.scale,
                     depth: o.depth,
                     locked: o.locked,
-                    interactable: o.interactable,
+                    interact: o.interact,
                     originY: o.originY,
                     useManualDepth: o.useManualDepth,
                     notes: o.notes,
@@ -862,7 +862,7 @@
                         hitboxes: item.hitboxes || [],
                         img: images[item.src],
                         locked: item.locked ?? false,
-                        interactable: item.interactable ?? false,
+                        interact: item.interact ?? false,
                         originY: item.originY ?? 1,
                         useManualDepth: item.useManualDepth ?? false,
                         notes: item.notes ?? "",
@@ -924,8 +924,8 @@
                         notes: o.notes,
                     };
 
-                    if (o.interactable) {
-                        exportObj.interactable = true;
+                    if (o.interact) {
+                        exportObj.interact = true;
                     }
 
                     // Only include depth if it's different from y or if manual depth is used
@@ -1031,7 +1031,7 @@
                         "objDepth",
                         "objOriginY",
                         "objLocked",
-                        "objInteractable",
+                        "objInteract",
                         "objManualDepth",
                         "objNotes",
                     ];
@@ -1059,8 +1059,8 @@
                         obj.depth,
                     );
                 document.getElementById("objLocked").checked = obj.locked;
-                document.getElementById("objInteractable").checked =
-                    obj.interactable || false;
+                document.getElementById("objInteract").checked =
+                    obj.interact || false;
                 document.getElementById("objOriginY").value = obj.originY ?? 1;
                 document.getElementById("objManualDepth").checked =
                     obj.useManualDepth || false;
@@ -1291,7 +1291,7 @@
                     scale: 1,
                     depth: 0,
                     locked: false,
-                    interactable: false,
+                    interact: false,
                     originY: 1,
                     useManualDepth: false,
                     notes: "",
@@ -1360,7 +1360,7 @@
                 "showHitboxes",
                 "showPivot",
                 "objLocked",
-                "objInteractable",
+                "objInteract",
                 "objManualDepth",
             ].forEach((id) => {
                 const el = document.getElementById(id);
@@ -1372,11 +1372,11 @@
                             o.locked = el.checked;
                         }
                     }
-                    if (id === "objInteractable") {
+                    if (id === "objInteract") {
                         const o = getSelectedObject();
                         if (o) {
                             pushUndo();
-                            o.interactable = el.checked;
+                            o.interact = el.checked;
                         }
                     }
                     if (id === "objManualDepth") {

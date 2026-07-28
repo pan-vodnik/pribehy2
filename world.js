@@ -29,7 +29,7 @@ export class World {
           scene.physics.add.collider(scene.player, h);
           t.zones.push(h);
         }
-        if (hitbox.type === "trigger" && thing.interactable) {
+        if (hitbox.type === "trigger" && thing.interact) {
           const h = scene.add.zone(
             thing.x + thing.scale * hitbox.x + (thing.scale * hitbox.w) / 2,
             thing.y + thing.scale * hitbox.y + (thing.scale * hitbox.h) / 2,

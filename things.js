@@ -41,9 +41,11 @@ export let things = {
     image: "teacher_chair",
     src: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAUCAMAAACDMFxkAAAAAXNSR0IArs4c6QAAACRQTFRFAAAAAAAAlHZG0cku+/I2m4BVoZV9p5yG29vb////piMjjx4ejH+uyQAAAAx0Uk5TAP//////////////CcRQJgAAAD5JREFUCJmVjbkRADAMwqCN9983MX7ydOEoVEkAqGGNQ2OT84kWZI45liAUoP7gT0IN9zIbZBeEpbwQ3dw4AaXXAz0R3oQcAAAAAElFTkSuQmCC",
     x: -73,
-    y: -75,
+    y: -76,
     scale: 1.3499999999999999,
-    interactable: true,
+    interact: () => {
+      alert("sedíš :D");
+    },
     hitboxes: [
       {
         x: -5,
@@ -51,6 +53,13 @@ export let things = {
         w: 10,
         h: 5,
         type: "solid",
+      },
+      {
+        x: -5,
+        y: -20,
+        w: 10,
+        h: 15,
+        type: "trigger",
       },
     ],
   },
