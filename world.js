@@ -1,4 +1,5 @@
 import { things } from "./things.js";
+import Phaser from "./phaser.esm.min.js";
 
 export class World {
   constructor(scene) {
@@ -15,6 +16,7 @@ export class World {
       t.setDepth(thing.depth || thing.y);
       t.zones = [];
       t.name = key;
+      t.texture.setFilter(Phaser.Textures.FilterMode.NEAREST);
       thing.hitboxes.forEach((hitbox) => {
         if (hitbox.type === "solid") {
           const h = scene.add.zone(
@@ -27,7 +29,7 @@ export class World {
           scene.physics.add.collider(scene.player, h);
           t.zones.push(h);
         }
-        if (hitbox.type === "trigger") {
+        if (hitbox.type === "trigger" && thing.interactable) {
           const h = scene.add.zone(
             thing.x + thing.scale * hitbox.x + (thing.scale * hitbox.w) / 2,
             thing.y + thing.scale * hitbox.y + (thing.scale * hitbox.h) / 2,

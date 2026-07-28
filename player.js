@@ -32,6 +32,12 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
 
     this.speed = 100;
     this.overlaps = [];
+
+    this.interact_marker = scene.add.graphics();
+    this.interact_marker.fillStyle(0xffffff, 1);
+    this.interact_marker.fillCircle(0, 0, 3);
+    this.interact_marker.setDepth(1000);
+    this.interact_marker.setVisible(false);
   }
 
   update() {
@@ -54,6 +60,15 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
       document.getElementById("interact").disabled =
         this.overlaps.length === 0 ||
         this.overlaps.every((o) => !o.parent.interact);
+      if (this.overlaps.length > 0) {
+        this.interact_marker.setVisible(true);
+        this.interact_marker.setPosition(
+          this.overlaps[0].parent.x,
+          this.overlaps[0].parent.y,
+        );
+      } else {
+        this.interact_marker.setVisible(false);
+      }
     } else {
       document.getElementById("interact").disabled = true;
       this.anims.play("idle", true);
