@@ -120,6 +120,9 @@
             button.pressed {
                 background-color: #b3b3b3;
             }
+            button:disabled {
+                display: none;
+            }
             #intro {
                 position: absolute;
                 top: 0;
@@ -184,6 +187,15 @@
                 border-radius: 0 0 3px 0;
                 padding: 1px;
             }
+            #interact {
+                padding: 10px;
+                z-index: 10;
+                position: absolute;
+                right: 0;
+                bottom: 0;
+                width: 120px;
+                height: 120px;
+            }
         </style>
         <script type="module" src="script.js"></script>
         <script src="log.js" defer></script>
@@ -193,7 +205,7 @@
             <span id="version">v0.0.0</span>
             <span id="fps">fps: 60</span>
         </div>
-        <div style="z-index: 10000; position: absolute; bottom: 0">
+        <div id="devmode" style="z-index: 10000; position: absolute; bottom: 0">
             <button onpointerdown="location.reload()" style="padding: 10px">
                 reload
             </button>
@@ -218,7 +230,6 @@
                 >
                 <button id="start">start</button>
                 <button id="open-settings">nastavení</button>
-                <button id="reload" onclick="location.reload()">reload</button>
             </div>
             <script>
                 const subtitles = [
@@ -250,6 +261,7 @@
                 >
                 <button id="toggle-showfps">ukazovat fps</button>
                 <button id="toggle-showversion">ukazovat verzi</button>
+                <button id="toggle-showdevmode">devmode</button>
                 <button id="close-settings">zpět</button>
             </div>
         </div>
@@ -263,18 +275,7 @@
             </div>
             <div id="answers"></div>
             <div id="content"></div>
-            <button
-                id="interact"
-                onclick="main.player.interact()"
-                disabled
-                style="
-                    padding: 10px;
-                    z-index: 10;
-                    position: absolute;
-                    bottom: 0;
-                    right: 0;
-                "
-            >
+            <button id="interact" onclick="main.player.interact()" disabled>
                 interact
             </button>
             <div id="joystick-container">

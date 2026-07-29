@@ -37,7 +37,7 @@ class MainScene extends Phaser.Scene {
   create() {
     this.player = new Player(this);
     this.world = new World(this);
-    this.cameras.main.startFollow(this.player, true, 0.1, 0.1);
+    this.cameras.main.startFollow(this.player, true);
     this.cameras.main.setZoom(3);
     window.ui.create(this);
     create();
@@ -61,6 +61,11 @@ function reloadSettings() {
     document.getElementById("version").style.display = "unset";
   } else {
     document.getElementById("version").style.display = "none";
+  }
+  if (window.settings.showdevmode) {
+    document.getElementById("devmode").style.display = "unset";
+  } else {
+    document.getElementById("devmode").style.display = "none";
   }
 }
 
@@ -104,6 +109,7 @@ document.getElementById("close-settings").addEventListener("click", () => {
 window.settings = JSON.parse(localStorage.getItem("pribehy2_settings")) || {
   showfps: true,
   showversion: true,
+  showdevmode: false,
 };
 reloadSettings();
 

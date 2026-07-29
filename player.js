@@ -57,16 +57,15 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
         this.setVelocity(0);
       }
       this.getOverlaps();
-      document.getElementById("interact").disabled =
-        this.overlaps.length === 0 ||
-        this.overlaps.every((o) => !o.parent.interact);
       if (this.overlaps.length > 0) {
+        document.getElementById("interact").disabled = false;
         this.interact_marker.setVisible(true);
         this.interact_marker.setPosition(
           this.overlaps[0].parent.x,
-          this.overlaps[0].parent.y,
+          this.overlaps[0].parent.y - 10,
         );
       } else {
+        document.getElementById("interact").disabled = true;
         this.interact_marker.setVisible(false);
       }
     } else {
