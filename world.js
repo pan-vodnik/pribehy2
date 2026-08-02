@@ -12,6 +12,7 @@ export class World {
       const t = this.thingsGroup.create(thing.x, thing.y, thing.image, false);
       t.setScale(thing.scale);
       if (thing.interact) t.interact = thing.interact;
+      if (thing.action) t.action = thing.action;
       t.setOrigin(0.5, 1);
       t.setDepth(thing.depth || thing.y);
       t.zones = [];

@@ -59,6 +59,8 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
       this.getOverlaps();
       if (this.overlaps.length > 0) {
         document.getElementById("interact").disabled = false;
+        document.getElementById("interact").innerHTML =
+          this.overlaps[0].parent.action ?? "použít";
         this.interact_marker.setVisible(true);
         this.interact_marker.setPosition(
           this.overlaps[0].parent.x,

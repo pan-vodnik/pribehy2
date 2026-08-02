@@ -46,6 +46,7 @@ export let things = {
     interact: () => {
       alert("sedíš :D");
     },
+    action: "sednout si",
     hitboxes: [
       {
         x: -5,
