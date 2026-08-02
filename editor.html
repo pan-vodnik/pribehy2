@@ -373,7 +373,7 @@
                 >
                     <input type="checkbox" id="editHitboxMode" />
                     <span style="font-weight: bold; color: #ff0"
-                        >Režim úpravy hitboxů <kbd>H</kbd></span
+                        >Režim úpravy hitboxů <kbd>H</kbd> <kbd>Tab</kbd></span
                     >
                 </label>
 
@@ -1667,7 +1667,25 @@
                 ctx.lineTo(canvas.width, origin.sy);
                 ctx.stroke();
 
-                objects.forEach((obj) => {
+                const hitMode = document
+                    .getElementById("editHitboxMode")
+                    .checked;
+                const editedIds = new Set(
+                    getSelectedObjects().map((o) => o.id),
+                );
+                const drawOrder =
+                    hitMode && editedIds.size
+                        ? [
+                              ...objects.filter(
+                                  (o) => !editedIds.has(o.id),
+                              ),
+                              ...objects.filter((o) =>
+                                  editedIds.has(o.id),
+                              ),
+                          ]
+                        : objects;
+
+                drawOrder.forEach((obj) => {
                     const isSel = isSelected(obj.id);
                     const w = obj.img.width * obj.scale;
                     const h = obj.img.height * obj.scale;
@@ -2240,7 +2258,8 @@
                     document.getElementById("snapActive").click();
                     return;
                 }
-                if (e.key === "h") {
+                if (e.key === "h" || e.key === "Tab") {
+                    if (e.key === "Tab") e.preventDefault();
                     document.getElementById("editHitboxMode").click();
                     isDrawingHitbox = false;
                     canvas.style.cursor = "default";
