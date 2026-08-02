@@ -501,6 +501,20 @@
                     <span>Interaktivní (lze kliknout ve hře)</span>
                 </label>
 
+                <div style="margin: 4px 0 8px">
+                    <label
+                        style="
+                            display: block;
+                            font-size: 11px;
+                            color: #aaa;
+                            margin-bottom: 3px;
+                        "
+                    >
+                        Popisek akce (pro interaktivní objekty)
+                    </label>
+                    <input type="text" id="objAction" value="použít" />
+                </div>
+
                 <h3>Hitboxy</h3>
                 <button id="addHitboxBtn" style="margin-bottom: 8px">
                     + Nový hitbox <kbd>A</kbd>
@@ -663,6 +677,7 @@
                     depth: o.depth,
                     locked: o.locked,
                     interact: o.interact,
+                    action: o.action,
                     originY: o.originY,
                     useManualDepth: o.useManualDepth,
                     notes: o.notes,
@@ -760,6 +775,7 @@
                     depth: o.depth,
                     locked: o.locked,
                     interact: o.interact,
+                    action: o.action,
                     originY: o.originY,
                     useManualDepth: o.useManualDepth,
                     notes: o.notes,
@@ -863,6 +879,7 @@
                         img: images[item.src],
                         locked: item.locked ?? false,
                         interact: item.interact ?? false,
+                        action: item.action ?? "použít",
                         originY: item.originY ?? 1,
                         useManualDepth: item.useManualDepth ?? false,
                         notes: item.notes ?? "",
@@ -926,6 +943,9 @@
 
                     if (o.interact) {
                         exportObj.interact = true;
+                        if (o.action) {
+                            exportObj.action = o.action;
+                        }
                     }
 
                     // Only include depth if it's different from y or if manual depth is used
@@ -1034,6 +1054,7 @@
                         "objInteract",
                         "objManualDepth",
                         "objNotes",
+                        "objAction",
                     ];
                     fields.forEach((id) => {
                         if (id !== activeId) {
@@ -1066,6 +1087,9 @@
                     obj.useManualDepth || false;
                 if (activeId !== "objNotes")
                     document.getElementById("objNotes").value = obj.notes || "";
+                if (activeId !== "objAction")
+                    document.getElementById("objAction").value =
+                        obj.action || "";
 
                 if (selectedHitboxIndex !== -1) {
                     const hb = obj.hitboxes[selectedHitboxIndex];
@@ -1292,6 +1316,7 @@
                     depth: 0,
                     locked: false,
                     interact: false,
+                    action: "použít",
                     originY: 1,
                     useManualDepth: false,
                     notes: "",
@@ -1319,6 +1344,7 @@
                 "objDepth",
                 "objOriginY",
                 "objNotes",
+                "objAction",
             ].forEach((id) => {
                 document.getElementById(id).oninput = (e) => {
                     const obj = getSelectedObject();
@@ -1345,6 +1371,7 @@
                         obj.originY = parseFloat(e.target.value);
                     }
                     if (id === "objNotes") obj.notes = e.target.value;
+                    if (id === "objAction") obj.action = e.target.value;
                     sortObjects();
                     syncInputs();
                     render();

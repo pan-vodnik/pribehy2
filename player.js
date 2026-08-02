@@ -97,7 +97,11 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     if (this.overlaps.length === 0) return;
     for (const o of this.overlaps) {
       if (o.parent.interact) {
-        o.parent.interact(o.parent);
+        if (typeof o.parent.interact === "function") {
+          o.parent.interact(o.parent);
+        } else {
+          alert("interact (placeholder)");
+        }
         break;
       }
     }
