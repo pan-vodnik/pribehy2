@@ -650,6 +650,9 @@
             let isDragging = false;
             let isPanning = false;
             let didMove = false;
+            let isBoxSelecting = false;
+            let boxStart = { x: 0, y: 0 };
+            let boxEnd = { x: 0, y: 0 };
 
             let isResizing = false;
             let isResizingImg = false;
@@ -1787,6 +1790,19 @@
                         ctx.stroke();
                     }
                 });
+
+                if (isBoxSelecting) {
+                    const p1 = worldToScreen(boxStart.x, boxStart.y);
+                    const p2 = worldToScreen(boxEnd.x, boxEnd.y);
+                    ctx.strokeStyle = "#007acc";
+                    ctx.lineWidth = 1;
+                    ctx.setLineDash([5, 3]);
+                    ctx.strokeRect(p1.sx, p1.sy, p2.sx - p1.sx, p2.sy - p1.sy);
+                    ctx.setLineDash([]);
+                    ctx.fillStyle = "rgba(0,122,204,0.1)";
+                    ctx.fillRect(p1.sx, p1.sy, p2.sx - p1.sx, p2.sy - p1.sy);
+                }
+
                 coordsDiv.textContent = `X: ${snap(camX).toFixed(1)} Y: ${snap(camY).toFixed(1)} | Zoom: ${Math.round(zoom * 100)}%`;
             }
 
@@ -1986,6 +2002,10 @@
                 if (fObjId !== null) {
                     const wasAlreadySelected = selectedIds.has(fObjId);
                     const wasHitboxMode = isHitMode;
+                    const startBoxOnObject =
+                        !wasHitboxMode &&
+                        !e.shiftKey &&
+                        !wasAlreadySelected;
 
                     if (fHbIdx !== -1 && wasHitboxMode) {
                         if (fObjId !== selectedId) {
@@ -2009,7 +2029,12 @@
                     }
 
                     const primaryObj = getSelectedObject();
-                    if (
+                    if (startBoxOnObject) {
+                        isBoxSelecting = true;
+                        boxStart = { x: wp.x, y: wp.y };
+                        boxEnd = { x: wp.x, y: wp.y };
+                        canvas.style.cursor = "crosshair";
+                    } else if (
                         wasHitboxMode &&
                         fHbIdx !== -1 &&
                         wasAlreadySelected &&
@@ -2042,8 +2067,14 @@
                             startState[o.id] = { x: o.x, y: o.y };
                         });
                     }
-                } else {
+                } else if (isHitMode) {
                     selectObjectById(null);
+                } else {
+                    if (!e.shiftKey) selectObjectById(null);
+                    isBoxSelecting = true;
+                    boxStart = { x: wp.x, y: wp.y };
+                    boxEnd = { x: wp.x, y: wp.y };
+                    canvas.style.cursor = "crosshair";
                 }
             };
 
@@ -2059,6 +2090,11 @@
                 if (isPanning) {
                     camX -= dx / zoom;
                     camY -= dy / zoom;
+                    render();
+                    return;
+                }
+                if (isBoxSelecting) {
+                    boxEnd = { x: wp.x, y: wp.y };
                     render();
                     return;
                 }
@@ -2204,6 +2240,41 @@
             };
 
             window.onmouseup = (e) => {
+                if (isBoxSelecting) {
+                    const x1 = Math.min(boxStart.x, boxEnd.x);
+                    const x2 = Math.max(boxStart.x, boxEnd.x);
+                    const y1 = Math.min(boxStart.y, boxEnd.y);
+                    const y2 = Math.max(boxStart.y, boxEnd.y);
+                    if (x2 - x1 > 1 || y2 - y1 > 1) {
+                        if (!e.shiftKey) {
+                            selectedIds.clear();
+                            selectedId = null;
+                        }
+                        objects.forEach((o) => {
+                            const ow = o.img.width * o.scale;
+                            const oh = o.img.height * o.scale;
+                            const leftX = o.x - ow * 0.5;
+                            const rightX = o.x + ow * 0.5;
+                            const topY = o.y - oh;
+                            const bottomY = o.y;
+                            const fullyInside =
+                                leftX >= x1 &&
+                                rightX <= x2 &&
+                                topY >= y1 &&
+                                bottomY <= y2;
+                            if (fullyInside) {
+                                selectedIds.add(o.id);
+                                selectedId = o.id;
+                            }
+                        });
+                        refreshUI();
+                        saveToLocal();
+                    }
+                    isBoxSelecting = false;
+                    canvas.style.cursor = "default";
+                    render();
+                    return;
+                }
                 if (isDragging || isPanning || isResizing || isResizingImg) {
                     if (isDragging && selectedHitboxIndices.size === 0) {
                         if (!didMove && selectedId && !e.shiftKey) {
