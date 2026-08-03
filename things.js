@@ -43,8 +43,22 @@ export let things = {
     x: -73,
     y: -76,
     scale: 1.3499999999999999,
-    interact: () => {
-      alert("sedíš :D");
+    interact: async () => {
+      await window.ui.convo({
+        start: {
+          text: "Opravdu si chceš sednout???",
+          answers: {
+            yes: "ano",
+            no: "ne",
+          },
+        },
+        yes: {
+          text: "sedíš :D",
+        },
+        no: {
+          text: "nesedíš :(",
+        },
+      })
     },
     action: "sednout si",
     hitboxes: [

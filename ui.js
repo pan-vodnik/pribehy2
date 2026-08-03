@@ -31,6 +31,9 @@ export class UI {
       document.dispatchEvent(new Event("pointerdown"));
       this.lastInteract = currentTime;
     });
+    this.interactKey.on("up", () => {
+      document.dispatchEvent(new Event("pointerup"));
+    });
     this.joystick.container.addEventListener("pointerdown", (e) => {
       if (this.joystick.pointer === null && !window.paused) {
         this.joystick.pointer = e.pointerId;
@@ -183,7 +186,7 @@ export class UI {
 
     if (next) {
       await new Promise((resolve) =>
-        document.addEventListener("pointerdown", resolve, { once: true }),
+        document.addEventListener("pointerup", resolve, { once: true }),
       );
       if (this.currentTextId !== myTextId) {
         unlock();
@@ -238,15 +241,44 @@ export class UI {
         main.input.keyboard.off("keydown-" + codes[i]);
       }
       if (this.currentTextId !== myTextId) {
-        unlock();
         return;
       }
       textVisible.textContent = "";
       textInisible.textContent = "";
       document.getElementById("answers").innerHTML = "";
+      unlock();
       return result;
     }
+    textVisible.textContent = "";
+    textInisible.textContent = "";
     unlock();
+  }
+  async convo(data) {
+    let currentState = "start";
+    while (Object.keys(data).includes(currentState)) {
+      let next = null;
+
+      if (data[currentState].code) {
+        eval(data[currentState].code);
+      }
+
+      if (data[currentState].answers) {
+        next = await this.write(data[currentState].text, {
+          answers: data[currentState].answers,
+        });
+      } else {
+        await this.write(data[currentState].text, { next: true, freeze: true });
+        next = data[currentState].next;
+      }
+
+      console.log(currentState, next);
+      if (next !== null && next !== undefined) {
+        currentState = next;
+      } else {
+        break;
+      }
+    }
+    return currentState;
   }
   update() {
     if (!window.paused) {
