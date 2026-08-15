@@ -50,6 +50,7 @@ if (!local) {
           language: window.navigator.language,
           datetime: new Date().toLocaleString("de-DE"),
           cpus: navigator.hardwareConcurrency,
+          version: gameVersion,
           memory: navigator.deviceMemory,
           gpu: gl.getParameter(
             gl.getExtension("WEBGL_debug_renderer_info")
