@@ -25,7 +25,7 @@ echo $NEW_VERSION > version.txt
 echo "New version: v$NEW_VERSION"
 
 gh auth switch --user pan-vodnik
-git add .
+git add version.txt
 git commit -m "Bump to v$NEW_VERSION"
 git tag $NEW_VERSION
 git push origin master
